@@ -1,0 +1,82 @@
+{
+  "_meta": {
+    "description": "AstroPay brand design tokens — source of truth for color and typography",
+    "last_updated": "2025-04-26",
+    "figma_file": "6kHkKTxW1ygct6vTQsIGF1",
+    "sync": "Manual — update this file whenever Figma variables are published"
+  },
+
+  "color": {
+    "teal": {
+      "100": { "hex": "#edfdfb", "rgb": [237, 253, 251], "contrast": "20 AAA" },
+      "200": { "hex": "#d5faf5", "rgb": [213, 250, 245], "contrast": "19 AAA" },
+      "300": { "hex": "#b7f6ee", "rgb": [183, 246, 238], "contrast": "17 AAA" },
+      "400": { "hex": "#46e9d4", "rgb": [70, 233, 212],  "contrast": "14 AAA" },
+      "500": { "hex": "#42deca", "rgb": [66, 222, 202],  "contrast": "13 AAA", "role": "primary-accent, CTA background" },
+      "600": { "hex": "#39bfad", "rgb": [57, 191, 173],  "contrast": "9 AAA"  },
+      "700": { "hex": "#2b9083", "rgb": [43, 144, 131],  "contrast": "5 AA"   },
+      "800": { "hex": "#1f685f", "rgb": [31, 104, 95],   "contrast": "7 AA"   },
+      "900": { "hex": "#174c45", "rgb": [23, 76, 69],    "contrast": "10 AAA", "role": "dark background" },
+      "1000":{ "hex": "#113833", "rgb": [17, 56, 51],    "contrast": "13 AAA", "role": "darker teal background" },
+      "1100":{ "hex": "#0c2825", "rgb": [12, 40, 37],    "contrast": "16 AAA" },
+      "1200":{ "hex": "#0a201e", "rgb": [10, 32, 30],    "contrast": "17 AAA" }
+    },
+    "neutral": {
+      "000": { "hex": "#ffffff", "rgb": [255, 255, 255], "contrast": "21 AAA", "role": "white" },
+      "100": { "hex": "#f6f8f8", "rgb": [246, 248, 248], "contrast": "20 AAA" },
+      "200": { "hex": "#f1f4f3", "rgb": [241, 244, 243], "contrast": "19 AAA" },
+      "300": { "hex": "#e1e6e5", "rgb": [225, 230, 229], "contrast": "17 AAA" },
+      "400": { "hex": "#cfd5d4", "rgb": [207, 213, 212], "contrast": "14 AAA" },
+      "500": { "hex": "#b7c0bf", "rgb": [183, 192, 191], "contrast": "11 AAA" },
+      "600": { "hex": "#96a3a1", "rgb": [150, 163, 161], "contrast": "8 AAA",  "role": "muted text" },
+      "700": { "hex": "#788785", "rgb": [120, 135, 133], "contrast": "6 AA"   },
+      "800": { "hex": "#576967", "rgb": [87, 105, 103],  "contrast": "6 AA"   },
+      "900": { "hex": "#3e4d4b", "rgb": [62, 77, 75],    "contrast": "9 AAA"  },
+      "1000":{ "hex": "#2d3a38", "rgb": [45, 58, 56],    "contrast": "12 AAA" },
+      "1100":{ "hex": "#222c2b", "rgb": [34, 44, 43],    "contrast": "14 AAA" },
+      "1200":{ "hex": "#192120", "rgb": [25, 33, 32],    "contrast": "16 AAA" },
+      "1300":{ "hex": "#0f1514", "rgb": [15, 21, 20],    "contrast": "18 AAA", "role": "darkest background" }
+    },
+    "universal": {
+      "text-white": { "hex": "#ffffff", "rgb": [255, 255, 255] },
+      "base-black":  { "hex": "#151e1d", "rgb": [21, 30, 29], "role": "primary text on light" }
+    }
+  },
+
+  "color_roles": {
+    "primary_accent":    "teal.500 (#42deca)",
+    "cta_background":    "teal.500 (#42deca)",
+    "dark_bg":           "teal.900 (#174c45)",
+    "darker_bg":         "teal.1000 (#113833)",
+    "darkest_bg":        "neutral.1300 (#0f1514)",
+    "muted_text":        "neutral.600 (#96a3a1)",
+    "primary_text_dark": "universal.text-white (#ffffff)",
+    "primary_text_light":"universal.base-black (#151e1d)"
+  },
+
+  "figma_color_values": {
+    "_note": "Figma Plugin API RGB values (0–1 range)",
+    "teal500":     { "r": 0.255, "g": 0.871, "b": 0.792 },
+    "teal900":     { "r": 0.090, "g": 0.298, "b": 0.271 },
+    "teal1000":    { "r": 0.067, "g": 0.220, "b": 0.200 },
+    "neutral1300": { "r": 0.059, "g": 0.082, "b": 0.078 },
+    "neutral1200": { "r": 0.098, "g": 0.129, "b": 0.125 },
+    "neutral1100": { "r": 0.133, "g": 0.173, "b": 0.169 },
+    "muted":       { "r": 0.588, "g": 0.639, "b": 0.631 },
+    "white":       { "r": 1.000, "g": 1.000, "b": 1.000 },
+    "baseBlack":   { "r": 0.082, "g": 0.118, "b": 0.114 }
+  },
+
+  "typography": {
+    "primary_font": "Matter",
+    "fallback_font": "Inter",
+    "styles": ["Regular", "Medium", "SemiBold", "Bold"],
+    "figma_note": "Inter uses 'Semi Bold' with a space — not 'SemiBold'",
+    "ad_sizes": {
+      "9:16":  { "size_px": 104, "style": "SemiBold", "max_chars_per_line": 20 },
+      "1:1":   { "size_px": 72,  "style": "Bold",     "max_chars_per_line": 26 },
+      "4:5":   { "size_px": 80,  "style": "SemiBold", "max_chars_per_line": 23 },
+      "16:9":  { "size_px": 88,  "style": "Bold",     "max_chars_per_line": 22 }
+    }
+  }
+}

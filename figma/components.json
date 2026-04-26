@@ -1,0 +1,148 @@
+{
+  "_meta": {
+    "description": "AstroPay Figma component node IDs — semantic reference for the Claude production agent",
+    "last_updated": "2025-04-26",
+    "file_key": "6kHkKTxW1ygct6vTQsIGF1",
+    "sync": "Update manually after every design system publish. Future: auto-sync via GitHub Actions + Figma REST API.",
+    "url": "https://www.figma.com/design/6kHkKTxW1ygct6vTQsIGF1"
+  },
+
+  "pages": {
+    "creatives_examples": { "id": "1:2",       "name": "↪ Creatives examples", "active_frame": "145:23724" },
+    "images":             { "id": "145:5528",  "name": "↪ Images" },
+    "wip_multicurrency":  { "id": "516:16312", "name": "↪ Paid Media - Multicurrency exchange campaign (WIP)" }
+  },
+
+  "ad_templates": {
+    "_note": "Default variant is Design 1 unless brief specifies otherwise",
+    "16:9": {
+      "dimensions": "1920x1080",
+      "campaign_use": "YouTube / Display",
+      "set_node": "7:77762",
+      "design1_node": "7:77763",
+      "image_node": "7:77776",
+      "fullbg_node": "7:77803"
+    },
+    "1:1": {
+      "dimensions": "1080x1080",
+      "campaign_use": "Feed square",
+      "set_node": "7:77962",
+      "design1_node": "7:77963",
+      "image_node": "7:77969",
+      "image_parent": "7:77968",
+      "fullbg_node": "7:78009"
+    },
+    "4:5": {
+      "dimensions": "1080x1350",
+      "campaign_use": "Feed portrait",
+      "set_node": "7:78033",
+      "design1_node": "7:78034",
+      "image_node": "7:78041",
+      "image_parent": "7:78040",
+      "fullbg_node": "7:78075"
+    },
+    "9:16": {
+      "dimensions": "1080x1920",
+      "campaign_use": "Stories / Reels",
+      "set_node": "7:77842",
+      "design1_node": "7:77843",
+      "image_node": "7:77849",
+      "image_parent": "7:77848",
+      "fullbg_node": "7:77885"
+    }
+  },
+
+  "mockup_reference_frames": {
+    "_note": "Clone these — do NOT use createInstance()",
+    "1:1":  "534:45140",
+    "9:16": "594:28522",
+    "4:5":  "594:29147",
+    "16:9": "594:28604"
+  },
+
+  "components": {
+    "title": {
+      "set_node": "7:76536",
+      "variants": {
+        "semibold": "7:76537",
+        "bold":     "7:76539"
+      }
+    },
+    "subheadline": {
+      "set_node": "7:76541",
+      "variants": {
+        "semibold": "7:76542"
+      }
+    },
+    "cta": {
+      "set_node": "7:77012",
+      "default": "teal_rd",
+      "variants": {
+        "teal_rd":      { "node": "7:77013", "shape": "rounded", "color": "teal" },
+        "teal_sq":      { "node": "7:77015", "shape": "square",  "color": "teal" },
+        "alabaster_rd": { "node": "7:77017", "shape": "rounded", "color": "alabaster" },
+        "alabaster_sq": { "node": "7:77019", "shape": "square",  "color": "alabaster" },
+        "abyssal_rd":   { "node": "7:77021", "shape": "rounded", "color": "abyssal" },
+        "abyssal_sq":   { "node": "7:77023", "shape": "square",  "color": "abyssal" },
+        "blur_rd":      { "node": "7:77025", "shape": "rounded", "color": "blur" },
+        "blur_sq":      { "node": "7:77027", "shape": "square",  "color": "blur" }
+      }
+    },
+    "store_badges": {
+      "S": "7:76700",
+      "M": "7:76544",
+      "L": "7:76856",
+      "multicurrency": {
+        "M_brazil":   "7:76603",
+        "M_spanish":  "7:76669",
+        "S_brazil":   "7:76759",
+        "S_spanish":  "7:76825"
+      }
+    }
+  },
+
+  "image_library": {
+    "_note": "All images from page 145:5528 only. Never use external URLs. Use findOne() by exact name — never findAll().",
+    "sections": {
+      "traveler":      { "section_id": "145:23716", "default_node": "blake-wisz-tE6th1h6Bfk-unsplash 1" },
+      "digital_nomad": { "section_id": "145:23717", "default_node": "portrait-handsome-man-glasses-sits-cafe-with-laptop-smiles-while-reads-message-phone 1" },
+      "places":        { "section_id": "145:23718", "default_node": "GLOBAL_JAN 24_3" },
+      "freelancer":    { "section_id": "145:23719", "default_node": "pondering-female-freelancer-with-digital-laptop-co-2024-01-31-15-13-12-utc 2" }
+    }
+  },
+
+  "frame_layers": {
+    "_note": "Editable vs locked layers in every creative frame",
+    "editable":   ["#Image", "#title", "#copy"],
+    "locked":     ["Overlay top", "Overlay bottom", "Wordmark", "Teal bar"],
+    "layout_fix": {
+      "apply_to": ["Text section", "#title", "#copy"],
+      "property": "layoutSizingHorizontal = FILL"
+    }
+  },
+
+  "board_layout": {
+    "_note": "WIP page column X positions per variation",
+    "columns": {
+      "BR-USD": { "standard": -800,  "16:9": -800  },
+      "BR-EUR": { "standard": 1160,  "16:9": 2200  },
+      "BR-ARS": { "standard": 3120,  "16:9": 5200  },
+      "AR-USD": { "standard": 6457,  "16:9": 8200  },
+      "AR-EUR": { "standard": 8417,  "16:9": 11200 },
+      "AR-BRL": { "standard": 10377, "16:9": 14200 }
+    },
+    "rows": {
+      "1:1_fullbg":   0,
+      "1:1_mockup":   1160,
+      "9:16_fullbg":  2320,
+      "9:16_mockup":  4320,
+      "4:5_fullbg":   6320,
+      "4:5_mockup":   7750,
+      "16:9_fullbg":  9180,
+      "16:9_mockup":  10340
+    }
+  },
+
+  "frame_naming_convention": "{format}_{VARIATION}-{layout}",
+  "frame_naming_examples": ["9:16_AR-EUR-fullbg", "1:1_BR-USD-mockup", "4:5_AR-BRL-fullbg"]
+}
