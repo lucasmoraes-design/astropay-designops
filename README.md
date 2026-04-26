@@ -1,56 +1,57 @@
 # AstroPay Design Operations — Marketing AI
 
-Sistema centralizado de conhecimento para o Marketing AI da AstroPay. Este repositório é a fonte da verdade para produção de criativos de paid media, email marketing e operação do design system via Claude.
+Centralized knowledge base for AstroPay's Marketing AI. This repository is the source of truth for paid media creative production, email marketing, and design system operations via Claude.
 
 ---
 
-## Estrutura
+## Structure
 
 ```
 astropay-designops/
-├── CLAUDE.md                    ← System prompt (lido automaticamente pelo Claude)
-├── BRAND.md                     ← Voz, tom, produtos, campanhas, CTAs, disclaimers
-├── PAID-MEDIA-AGENTS.md         ← Agentes de paid media + regras de produção Figma
-├── EMAIL-AGENTS.md              ← Agentes de email + configuração Braze
+├── CLAUDE.md                    <- System prompt (auto-loaded by Claude)
+├── BRAND.md                     <- Voice, tone, products, campaigns, CTAs, disclaimers
+├── PAID-MEDIA-AGENTS.md         <- Paid media agents + Figma production rules
+├── EMAIL-AGENTS.md              <- Email agents + Braze configuration
 ├── tokens/
-│   └── brand.json               ← Tokens de cor e tipografia
+│   └── brand.json               <- Color and typography tokens
 └── figma/
-    └── components.json          ← Node IDs semânticos do Figma
+└── components.json          <- Semantic Figma node IDs
+```
+---
+
+## How to use with Claude
+
+1. Open a new Project in Claude
+2. Connect this repository via GitHub MCP
+3. Claude will read CLAUDE.md as the automatic system prompt
+4. Start prompting — agents activate by tag or automatically
+
+Examples:
+```
+"@all create exchange campaign for AR and BR, all formats"
+"@email-all re-engagement flow for inactive Infinite users"
+"@guardian review this copy before approval"
 ```
 
 ---
 
-## Como usar com Claude
-
-1. Abra um novo projeto no Claude
-2. Conecte este repositório via GitHub MCP
-3. O Claude lerá o `CLAUDE.md` como system prompt automático
-4. Comece a prompar — os agentes são ativados por tags ou automaticamente
-
-**Exemplos de uso:**
-```
-"@all cria campanha de câmbio para AR e BR, todos os formatos"
-"@email-all fluxo de reengajamento para usuários inativos do Infinite"
-"@guardian revisa esse copy antes de eu aprovar"
-```
-
 ---
 
-## Atualizar o design system
+## Updating the design system
 
-### Tokens de cor/tipografia (`tokens/brand.json`)
-Atualizar manualmente quando houver mudança no Figma Variables. Abrir PR com descrição da mudança.
+**Color and typography tokens** (tokens/brand.json): update manually when Figma Variables change. Open a PR with a description of the change.
 
-### Node IDs de componentes (`figma/components.json`)
-Atualizar manualmente após cada publish do design system. Futuramente: sync automático via GitHub Actions.
+**Component node IDs** (figma/components.json): update manually after each design system publish. Future: auto-sync via GitHub Actions.
 
-### Voz e agentes (`BRAND.md`, `*-AGENTS.md`)
-Atualizar via PR — qualquer mudança de posicionamento, tom ou campanha nova.
+**Voice and agents** (BRAND.md, *-AGENTS.md): update via PR for any positioning change, tone update, or new campaign.
 
 ---
 
 ## Roadmap
 
-- [ ] GitHub Actions para sync automático de tokens via Figma REST API
-- [ ] Transferir para organização AstroPay quando pronto para empresa
-- [ ] Adicionar skill de validação automática de node IDs
+- [ ] GitHub Actions for automatic token sync via Figma REST API
+- [ ] Transfer to AstroPay organization when ready for company-wide access
+- [ ] Add automatic node ID validation skill
+
+---
+
