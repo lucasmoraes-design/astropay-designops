@@ -1,0 +1,261 @@
+name: Design System Auto-Sync
+
+# Runs every day at 9am UTC
+# Also can be triggered manually anytime
+on:
+  schedule:
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+    inputs:
+      description:
+        description: 'Optional: describe what changed'
+        required: false
+        default: 'Manual sync triggered'
+
+jobs:
+  sync-design-system:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.CLAUDE_PAT }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch Figma pages and detect changes
+        id: figma_sync
+        env:
+          FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
+          FIGMA_FILE_KEY: 6kHkKTxW1ygct6vTQsIGF1
+        run: |
+          cat << 'SCRIPT' > /tmp/sync.mjs
+          import fetch from 'node-fetch';
+          import fs from 'fs';
+          import crypto from 'crypto';
+
+          const FILE_KEY = process.env.FIGMA_FILE_KEY;
+          const TOKEN = process.env.FIGMA_TOKEN;
+
+          // The 3 pages we care about
+          const WATCHED_PAGES = {
+            'id_visual':         '0:1',
+            'design_components': '7:44649',
+            'images':            '145:5528'
+          };
+
+          async function fetchFigmaPage(pageId) {
+            const res = await fetch(
+              `https://api.figma.com/v1/files/${FILE_KEY}/nodes?ids=${pageId}&depth=3`,
+              { headers: { 'X-Figma-Token': TOKEN } }
+            );
+            return res.json();
+          }
+
+          function hashContent(data) {
+            return crypto
+              .createHash('sha256')
+              .update(JSON.stringify(data))
+              .digest('hex')
+              .slice(0, 12);
+          }
+
+          async function main() {
+            // Load stored hashes
+            let storedHashes = {};
+            try {
+              const meta = JSON.parse(fs.readFileSync('figma/components.json', 'utf8'))._meta;
+              storedHashes = meta.page_hashes || {};
+            } catch(e) {
+              console.log('No stored hashes found — first run');
+            }
+
+            console.log('Stored hashes:', storedHashes);
+
+            const newHashes = {};
+            const changedPages = [];
+
+            for (const [pageName, pageId] of Object.entries(WATCHED_PAGES)) {
+              console.log(`Fetching page: ${pageName} (${pageId})...`);
+              const data = await fetchFigmaPage(pageId);
+
+              if (data.err) {
+                console.error(`Error fetching ${pageName}:`, data.err);
+                continue;
+              }
+
+              const hash = hashContent(data.nodes);
+              newHashes[pageName] = hash;
+              console.log(`  ${pageName}: ${hash} (stored: ${storedHashes[pageName] || 'none'})`);
+
+              if (hash !== storedHashes[pageName]) {
+                changedPages.push({
+                  name: pageName,
+                  id: pageId,
+                  oldHash: storedHashes[pageName] || 'none',
+                  newHash: hash
+                });
+              }
+            }
+
+            if (changedPages.length === 0) {
+              console.log('NO_CHANGES — all 3 pages are identical to last sync');
+              fs.writeFileSync('/tmp/sync_result.txt', 'NO_CHANGES');
+              return;
+            }
+
+            console.log(`CHANGES_DETECTED in: ${changedPages.map(p => p.name).join(', ')}`);
+            fs.writeFileSync('/tmp/sync_result.txt', 'CHANGES_DETECTED');
+            fs.writeFileSync('/tmp/changed_pages.json', JSON.stringify(changedPages, null, 2));
+            fs.writeFileSync('/tmp/new_hashes.json', JSON.stringify(newHashes, null, 2));
+          }
+
+          main().catch(e => {
+            console.error('Fatal error:', e);
+            fs.writeFileSync('/tmp/sync_result.txt', 'ERROR');
+          });
+          SCRIPT
+
+          npm install node-fetch --save-dev --silent
+          node /tmp/sync.mjs
+
+      - name: Check result
+        id: check
+        run: |
+          RESULT=$(cat /tmp/sync_result.txt)
+          echo "result=${RESULT}" >> $GITHUB_OUTPUT
+          echo "Sync result: ${RESULT}"
+
+      - name: Update hashes in components.json
+        if: steps.check.outputs.result == 'CHANGES_DETECTED'
+        run: |
+          TODAY=$(date +'%Y-%m-%d')
+          NEW_HASHES=$(cat /tmp/new_hashes.json)
+
+          node -e "
+            const fs = require('fs');
+            const data = JSON.parse(fs.readFileSync('figma/components.json', 'utf8'));
+            data._meta.last_updated = '${TODAY}';
+            data._meta.page_hashes = ${NEW_HASHES};
+            data._meta.sync_note = 'Auto-detected change on ${TODAY} — review node IDs and update manually if components changed';
+            fs.writeFileSync('figma/components.json', JSON.stringify(data, null, 2));
+            console.log('Updated components.json hashes');
+          "
+
+          node -e "
+            const fs = require('fs');
+            const data = JSON.parse(fs.readFileSync('figma/images.json', 'utf8'));
+            data._meta.last_updated = '${TODAY}';
+            data._meta.page_hashes = ${NEW_HASHES};
+            fs.writeFileSync('figma/images.json', JSON.stringify(data, null, 2));
+            console.log('Updated images.json hashes');
+          "
+
+      - name: Create PR branch
+        if: steps.check.outputs.result == 'CHANGES_DETECTED'
+        id: branch
+        run: |
+          DATE=$(date +'%Y%m%d-%H%M')
+          BRANCH="design-system/auto-sync-${DATE}"
+          echo "name=${BRANCH}" >> $GITHUB_OUTPUT
+
+          git config user.name "Claude DesignOps"
+          git config user.email "claude-designops@astropay.com"
+          git checkout -b ${BRANCH}
+          git add figma/components.json figma/images.json
+          git commit -m "chore: Figma page change detected — review required (${DATE})"
+          git push origin ${BRANCH}
+
+      - name: Open Pull Request
+        if: steps.check.outputs.result == 'CHANGES_DETECTED'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.CLAUDE_PAT }}
+          script: |
+            const fs = require('fs');
+            const changedPages = JSON.parse(fs.readFileSync('/tmp/changed_pages.json', 'utf8'));
+
+            const pageLinks = {
+              'id_visual':         'https://www.figma.com/design/6kHkKTxW1ygct6vTQsIGF1/Claude-lab?node-id=0-1',
+              'design_components': 'https://www.figma.com/design/6kHkKTxW1ygct6vTQsIGF1/Claude-lab?node-id=7-44649',
+              'images':            'https://www.figma.com/design/6kHkKTxW1ygct6vTQsIGF1/Claude-lab?node-id=145-5528'
+            };
+
+            const pageLabels = {
+              'id_visual':         'Visual Identity (0:1)',
+              'design_components': 'Design Components (7:44649)',
+              'images':            'Images Library (145:5528)'
+            };
+
+            const changedList = changedPages.map(p =>
+              `- **[${pageLabels[p.name]}](${pageLinks[p.name]})** — hash: \`${p.oldHash}\` -> \`${p.newHash}\``
+            ).join('\n');
+
+            const checklistByPage = changedPages.map(p => {
+              if (p.name === 'id_visual') return `
+            #### Visual Identity page changed
+            - [ ] Brand colors updated? Update \`tokens/brand.json\` -> \`color\`
+            - [ ] Typography updated? Update \`tokens/brand.json\` -> \`typography\`
+            - [ ] Logo or wordmark changed? Update \`BRAND.md\``;
+
+              if (p.name === 'design_components') return `
+            #### Design Components page changed
+            - [ ] New components added? Add node IDs to \`figma/components.json\`
+            - [ ] Existing components renamed or moved? Update node IDs
+            - [ ] New ad template layouts? Update \`figma/components.json\` -> \`ad_templates\`
+            - [ ] CTA variants changed? Update \`figma/components.json\` -> \`components.cta.variants\`
+            - [ ] Store badge variants changed? Update \`figma/components.json\` -> \`components.store_badges\``;
+
+              if (p.name === 'images') return `
+            #### Images Library page changed
+            - [ ] New images added? Add to correct category in \`figma/images.json\`
+            - [ ] Images removed? Remove from \`figma/images.json\`
+            - [ ] New exchange mockups? Update \`figma/images.json\` -> \`exchange_campaign\`
+            - [ ] Image names changed? Update exact names in \`figma/images.json\` (findOne uses exact name)`;
+
+              return '';
+            }).join('\n');
+
+            const { data: pr } = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `chore: Figma change detected in ${changedPages.length} page(s) — review required (${new Date().toISOString().split('T')[0]})`,
+              head: '${{ steps.branch.outputs.name }}',
+              base: 'master',
+              body: `## Figma Design System Change Detected
+
+The following watched pages have changed since the last sync:
+
+${changedList}
+
+---
+
+### What you need to do
+
+Open Figma and compare with the JSON files in this PR. Update whatever changed.
+${checklistByPage}
+
+---
+
+### Watched pages
+| Page | Figma Link |
+|---|---|
+| Visual Identity | [Open in Figma](${pageLinks.id_visual}) |
+| Design Components | [Open in Figma](${pageLinks.design_components}) |
+| Images Library | [Open in Figma](${pageLinks.images}) |
+
+---
+
+**Once you update the JSON files and check all boxes, merge this PR. Claude will use the updated data immediately.**`
+            });
+
+            console.log('PR created:', pr.html_url);
+
+      - name: No changes found
+        if: steps.check.outputs.result == 'NO_CHANGES'
+        run: |
+          echo "All 3 watched Figma pages are unchanged. No PR needed."
