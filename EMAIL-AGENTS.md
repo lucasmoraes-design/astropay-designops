@@ -1,7 +1,11 @@
 # AstroPay — Email Marketing Agents
 > Domain: Email Marketing (Lifecycle + Promotional) via Braze
 > Depends on: BRAND.md for identity, voice, products and disclaimers
+> Design tokens: tokens/brand.json
+> Figma components: figma/components.json
+> Figma images: figma/images.json
 > Do not duplicate BRAND.md content here
+> Do not hardcode colors, font names, or node IDs — always read from the JSON files above
 
 ---
 
