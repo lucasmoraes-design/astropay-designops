@@ -10,74 +10,223 @@
       "Use findOne() by exact name — never findAll()",
       "Image must match the campaign category (traveler, digital_nomad, places, freelancer)",
       "Exchange campaign images include app mockups — use for fullbg layouts"
-    ]
+    ],
+    "page_hashes": {
+      "id_visual": "1f14c0db35a3",
+      "design_components": "b42e8133af92",
+      "images": "fe5d30e8fdb2"
+    },
+    "sync_note": "Auto-detected change on 2026-04-27 — review and update manually if needed"
   },
-
   "categories": {
     "traveler": {
       "section_id": "145:23720",
       "description": "Lifestyle travel imagery — airports, beaches, global destinations",
       "images": [
-        { "name": "Instagram post - 39",        "id": "145:5532",  "type": "FRAME"     },
-        { "name": "Instagram post - 51",        "id": "145:5533",  "type": "FRAME"     },
-        { "name": "Playa 1",                    "id": "145:5539",  "type": "RECTANGLE" },
-        { "name": "sohrab-zia-BtmMiBd8688-unsplash 1", "id": "145:5547", "type": "RECTANGLE" },
-        { "name": "ASTROPAY-3508",              "id": "145:5548",  "type": "RECTANGLE" },
-        { "name": "ASTROPAY-3015",              "id": "145:5549",  "type": "RECTANGLE" },
-        { "name": "Oct 8- Instagram-Global",    "id": "145:5536",  "type": "FRAME"     }
+        {
+          "name": "Instagram post - 39",
+          "id": "145:5532",
+          "type": "FRAME"
+        },
+        {
+          "name": "Instagram post - 51",
+          "id": "145:5533",
+          "type": "FRAME"
+        },
+        {
+          "name": "Playa 1",
+          "id": "145:5539",
+          "type": "RECTANGLE"
+        },
+        {
+          "name": "sohrab-zia-BtmMiBd8688-unsplash 1",
+          "id": "145:5547",
+          "type": "RECTANGLE"
+        },
+        {
+          "name": "ASTROPAY-3508",
+          "id": "145:5548",
+          "type": "RECTANGLE"
+        },
+        {
+          "name": "ASTROPAY-3015",
+          "id": "145:5549",
+          "type": "RECTANGLE"
+        },
+        {
+          "name": "Oct 8- Instagram-Global",
+          "id": "145:5536",
+          "type": "FRAME"
+        }
       ]
     },
     "digital_nomad": {
       "section_id": "145:23723",
       "description": "Remote workers, laptops in cafes, professionals on the go",
       "images": [
-        { "name": "ASTROPAY-3136",              "id": "145:23693", "type": "RECTANGLE" },
-        { "name": "Tino Renato Photos (6)",     "id": "145:23695", "type": "RECTANGLE" },
-        { "name": "Tino Renato Photos (7)",     "id": "145:23699", "type": "RECTANGLE" },
-        { "name": "Tino Renato Photos (8)",     "id": "145:23702", "type": "RECTANGLE" },
-        { "name": "portrait-handsome-man-glasses-sits-cafe-with-laptop-smiles-while-reads-message-phone 1", "id": "145:23705", "type": "RECTANGLE" },
-        { "name": "Bellaa 1",                   "id": "145:23701", "type": "RECTANGLE" },
-        { "name": "img mujer paris",            "id": "145:23700", "type": "RECTANGLE" },
-        { "name": "image 1063",                 "id": "145:23704", "type": "RECTANGLE" },
-        { "name": "Oct - Instagram-Global",     "id": "145:23694", "type": "FRAME"     }
+        {
+          "name": "ASTROPAY-3136",
+          "id": "145:23693",
+          "type": "RECTANGLE"
+        },
+        {
+          "name": "Tino Renato Photos (6)",
+          "id": "145:23695",
+          "type": "RECTANGLE"
+        },
+        {
+          "name": "Tino Renato Photos (7)",
+          "id": "145:23699",
+          "type": "RECTANGLE"
+        },
+        {
+          "name": "Tino Renato Photos (8)",
+          "id": "145:23702",
+          "type": "RECTANGLE"
+        },
+        {
+          "name": "portrait-handsome-man-glasses-sits-cafe-with-laptop-smiles-while-reads-message-phone 1",
+          "id": "145:23705",
+          "type": "RECTANGLE"
+        },
+        {
+          "name": "Bellaa 1",
+          "id": "145:23701",
+          "type": "RECTANGLE"
+        },
+        {
+          "name": "img mujer paris",
+          "id": "145:23700",
+          "type": "RECTANGLE"
+        },
+        {
+          "name": "image 1063",
+          "id": "145:23704",
+          "type": "RECTANGLE"
+        },
+        {
+          "name": "Oct - Instagram-Global",
+          "id": "145:23694",
+          "type": "FRAME"
+        }
       ]
     },
     "places": {
       "section_id": "145:23722",
       "description": "Destinations, cities, venues, lifestyle locations",
       "images": [
-        { "name": "klara-kulikova-DUcVepObkXk-unsplash 1", "id": "145:23638", "type": "RECTANGLE" },
-        { "name": "tianshu-liu-aqZ3UAjs_M4-unsplash 1",    "id": "145:23642", "type": "RECTANGLE" },
-        { "name": "coffe 03 - El cafe de la esquina 1",    "id": "145:23640", "type": "RECTANGLE" },
-        { "name": "stumptown coffe roasters 1",            "id": "145:23641", "type": "RECTANGLE" },
-        { "name": "Another Planet by Daniel Faro",         "id": "145:23626", "type": "RECTANGLE" },
-        { "name": "GLOBAL_JAN 17_3",                       "id": "145:23634", "type": "FRAME"     },
-        { "name": "LATAM_JAN 13_1",                        "id": "145:23635", "type": "FRAME"     }
+        {
+          "name": "klara-kulikova-DUcVepObkXk-unsplash 1",
+          "id": "145:23638",
+          "type": "RECTANGLE"
+        },
+        {
+          "name": "tianshu-liu-aqZ3UAjs_M4-unsplash 1",
+          "id": "145:23642",
+          "type": "RECTANGLE"
+        },
+        {
+          "name": "coffe 03 - El cafe de la esquina 1",
+          "id": "145:23640",
+          "type": "RECTANGLE"
+        },
+        {
+          "name": "stumptown coffe roasters 1",
+          "id": "145:23641",
+          "type": "RECTANGLE"
+        },
+        {
+          "name": "Another Planet by Daniel Faro",
+          "id": "145:23626",
+          "type": "RECTANGLE"
+        },
+        {
+          "name": "GLOBAL_JAN 17_3",
+          "id": "145:23634",
+          "type": "FRAME"
+        },
+        {
+          "name": "LATAM_JAN 13_1",
+          "id": "145:23635",
+          "type": "FRAME"
+        }
       ]
     },
     "freelancer": {
       "section_id": "145:23721",
       "description": "Freelancers, entrepreneurs, SMB owners working independently",
       "images": [
-        { "name": "pondering-female-freelancer-with-digital-laptop-co-2024-01-31-15-13-12-utc 2", "id": "145:23603", "type": "RECTANGLE" },
-        { "name": "ASTROPAY-2820",              "id": "145:23602", "type": "RECTANGLE" },
-        { "name": "surface-X1GZqv-F7Tw-unsplash 1", "id": "145:23604", "type": "RECTANGLE" },
-        { "name": "DTS_Community_Agustin_Farias_Photos_ID6382", "id": "145:23595", "type": "RECTANGLE" },
-        { "name": "image 1103 1",              "id": "145:23601", "type": "RECTANGLE" },
-        { "name": "image 1106",                "id": "145:23592", "type": "RECTANGLE" },
-        { "name": "Instagram post - 124",      "id": "145:23598", "type": "FRAME"     }
+        {
+          "name": "pondering-female-freelancer-with-digital-laptop-co-2024-01-31-15-13-12-utc 2",
+          "id": "145:23603",
+          "type": "RECTANGLE"
+        },
+        {
+          "name": "ASTROPAY-2820",
+          "id": "145:23602",
+          "type": "RECTANGLE"
+        },
+        {
+          "name": "surface-X1GZqv-F7Tw-unsplash 1",
+          "id": "145:23604",
+          "type": "RECTANGLE"
+        },
+        {
+          "name": "DTS_Community_Agustin_Farias_Photos_ID6382",
+          "id": "145:23595",
+          "type": "RECTANGLE"
+        },
+        {
+          "name": "image 1103 1",
+          "id": "145:23601",
+          "type": "RECTANGLE"
+        },
+        {
+          "name": "image 1106",
+          "id": "145:23592",
+          "type": "RECTANGLE"
+        },
+        {
+          "name": "Instagram post - 124",
+          "id": "145:23598",
+          "type": "FRAME"
+        }
       ]
     },
     "exchange_campaign": {
       "section_id": "534:24171",
       "description": "App mockups and UI screens for multicurrency exchange campaign",
       "mockups": {
-        "brl_to_usd": { "image": "560:23288", "screen": "560:20194", "label": "BRL to USD (PT-BR)" },
-        "brl_to_eur": { "image": "560:23286", "screen": "560:20318", "label": "BRL to EUR (PT-BR)" },
-        "brl_to_ars": { "image": "560:23287", "screen": "560:20974", "label": "BRL to ARS (PT-BR)" },
-        "ars_to_usd": { "image": "564:25416", "screen": "560:21410", "label": "ARS to USD (ES)"    },
-        "ars_to_eur": { "image": "564:25415", "screen": "563:23397", "label": "ARS to EUR (ES)"    },
-        "ars_to_brl": { "image": "564:25414", "screen": "563:23754", "label": "ARS to BRL (ES)"    }
+        "brl_to_usd": {
+          "image": "560:23288",
+          "screen": "560:20194",
+          "label": "BRL to USD (PT-BR)"
+        },
+        "brl_to_eur": {
+          "image": "560:23286",
+          "screen": "560:20318",
+          "label": "BRL to EUR (PT-BR)"
+        },
+        "brl_to_ars": {
+          "image": "560:23287",
+          "screen": "560:20974",
+          "label": "BRL to ARS (PT-BR)"
+        },
+        "ars_to_usd": {
+          "image": "564:25416",
+          "screen": "560:21410",
+          "label": "ARS to USD (ES)"
+        },
+        "ars_to_eur": {
+          "image": "564:25415",
+          "screen": "563:23397",
+          "label": "ARS to EUR (ES)"
+        },
+        "ars_to_brl": {
+          "image": "564:25414",
+          "screen": "563:23754",
+          "label": "ARS to BRL (ES)"
+        }
       },
       "flat_images": {
         "brl_to_usd": "562:23315",
@@ -89,12 +238,11 @@
       }
     }
   },
-
   "selection_rules": {
-    "BR campaigns":  "digital_nomad or freelancer — warm, relatable, urban",
-    "AR campaigns":  "traveler or digital_nomad — aspirational, on-the-go",
-    "Exchange":      "exchange_campaign mockups — always use the correct currency pair",
-    "Infinite":      "places or traveler — premium, destination-driven",
+    "BR campaigns": "digital_nomad or freelancer — warm, relatable, urban",
+    "AR campaigns": "traveler or digital_nomad — aspirational, on-the-go",
+    "Exchange": "exchange_campaign mockups — always use the correct currency pair",
+    "Infinite": "places or traveler — premium, destination-driven",
     "Freelance SMB": "freelancer — specific, not generic fintech stock"
   }
 }

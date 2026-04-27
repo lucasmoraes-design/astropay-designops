@@ -5,46 +5,114 @@
     "file_key": "6kHkKTxW1ygct6vTQsIGF1",
     "file_url": "https://www.figma.com/design/6kHkKTxW1ygct6vTQsIGF1/Claude-lab",
     "source_pages": {
-      "id_visual":         { "id": "0:1",      "url": "https://www.figma.com/design/6kHkKTxW1ygct6vTQsIGF1/Claude-lab?node-id=0-1" },
-      "design_components": { "id": "7:44649",  "url": "https://www.figma.com/design/6kHkKTxW1ygct6vTQsIGF1/Claude-lab?node-id=7-44649" },
-      "images":            { "id": "145:5528", "url": "https://www.figma.com/design/6kHkKTxW1ygct6vTQsIGF1/Claude-lab?node-id=145-5528" }
+      "id_visual": {
+        "id": "0:1",
+        "url": "https://www.figma.com/design/6kHkKTxW1ygct6vTQsIGF1/Claude-lab?node-id=0-1"
+      },
+      "design_components": {
+        "id": "7:44649",
+        "url": "https://www.figma.com/design/6kHkKTxW1ygct6vTQsIGF1/Claude-lab?node-id=7-44649"
+      },
+      "images": {
+        "id": "145:5528",
+        "url": "https://www.figma.com/design/6kHkKTxW1ygct6vTQsIGF1/Claude-lab?node-id=145-5528"
+      }
     },
-    "sync": "Manual — re-extract via Figma MCP after every design system publish"
+    "sync": "Manual — re-extract via Figma MCP after every design system publish",
+    "page_hashes": {
+      "id_visual": "1f14c0db35a3",
+      "design_components": "b42e8133af92",
+      "images": "fe5d30e8fdb2"
+    },
+    "sync_note": "Auto-detected change on 2026-04-27 — review and update manually if needed"
   },
-
   "components": {
     "title": {
       "set_node": "7:76536",
       "variants": {
         "semibold": "7:76537",
-        "bold":     "7:76539"
+        "bold": "7:76539"
       }
     },
     "subheadline": {
       "set_node": "7:76541",
-      "variants": { "semibold": "7:76542" }
+      "variants": {
+        "semibold": "7:76542"
+      }
     },
     "cta": {
       "set_node": "7:77012",
       "default": "teal_rd",
       "variants": {
-        "teal_rd":      { "node": "7:77013", "shape": "rounded", "color": "teal"      },
-        "teal_sq":      { "node": "7:77015", "shape": "square",  "color": "teal"      },
-        "alabaster_rd": { "node": "7:77017", "shape": "rounded", "color": "alabaster" },
-        "alabaster_sq": { "node": "7:77019", "shape": "square",  "color": "alabaster" },
-        "abyssal_rd":   { "node": "7:77021", "shape": "rounded", "color": "abyssal"   },
-        "abyssal_sq":   { "node": "7:77023", "shape": "square",  "color": "abyssal"   },
-        "blur_rd":      { "node": "7:77025", "shape": "rounded", "color": "blur"      },
-        "blur_sq":      { "node": "7:77027", "shape": "square",  "color": "blur"      }
+        "teal_rd": {
+          "node": "7:77013",
+          "shape": "rounded",
+          "color": "teal"
+        },
+        "teal_sq": {
+          "node": "7:77015",
+          "shape": "square",
+          "color": "teal"
+        },
+        "alabaster_rd": {
+          "node": "7:77017",
+          "shape": "rounded",
+          "color": "alabaster"
+        },
+        "alabaster_sq": {
+          "node": "7:77019",
+          "shape": "square",
+          "color": "alabaster"
+        },
+        "abyssal_rd": {
+          "node": "7:77021",
+          "shape": "rounded",
+          "color": "abyssal"
+        },
+        "abyssal_sq": {
+          "node": "7:77023",
+          "shape": "square",
+          "color": "abyssal"
+        },
+        "blur_rd": {
+          "node": "7:77025",
+          "shape": "rounded",
+          "color": "blur"
+        },
+        "blur_sq": {
+          "node": "7:77027",
+          "shape": "square",
+          "color": "blur"
+        }
       }
     },
     "store_badges": {
-      "S": { "set_node": "7:76700", "variants": { "english": "7:76701", "brazil": "7:76759", "spanish": "7:76825" } },
-      "M": { "set_node": "7:76544", "variants": { "english": "7:76545", "brazil": "7:76603", "spanish": "7:76669" } },
-      "L": { "set_node": "7:76856", "variants": { "english": "7:76857", "brazil": "7:76915", "spanish": "7:76981" } }
+      "S": {
+        "set_node": "7:76700",
+        "variants": {
+          "english": "7:76701",
+          "brazil": "7:76759",
+          "spanish": "7:76825"
+        }
+      },
+      "M": {
+        "set_node": "7:76544",
+        "variants": {
+          "english": "7:76545",
+          "brazil": "7:76603",
+          "spanish": "7:76669"
+        }
+      },
+      "L": {
+        "set_node": "7:76856",
+        "variants": {
+          "english": "7:76857",
+          "brazil": "7:76915",
+          "spanish": "7:76981"
+        }
+      }
     }
   },
-
   "ad_templates": {
     "_note": "Default = Layout=Design 1. Design 4/5 = fullbg (image fills entire frame, no mockup).",
     "16:9": {
@@ -53,12 +121,36 @@
       "campaign_use": "YouTube / Display",
       "set_node": "7:77762",
       "layouts": {
-        "design_1": { "node": "7:77763", "image_node": "7:77776", "type": "standard" },
-        "design_2": { "node": "7:77777", "image_node": "7:77778", "type": "standard" },
-        "design_3": { "node": "7:77789", "image_node": "7:77790", "type": "standard" },
-        "design_4": { "node": "7:77803", "image_node": "7:77804", "type": "fullbg"   },
-        "design_5": { "node": "7:77817", "image_node": "7:77818", "type": "standard" },
-        "design_6": { "node": "7:77829", "image_node": "7:77830", "type": "standard" }
+        "design_1": {
+          "node": "7:77763",
+          "image_node": "7:77776",
+          "type": "standard"
+        },
+        "design_2": {
+          "node": "7:77777",
+          "image_node": "7:77778",
+          "type": "standard"
+        },
+        "design_3": {
+          "node": "7:77789",
+          "image_node": "7:77790",
+          "type": "standard"
+        },
+        "design_4": {
+          "node": "7:77803",
+          "image_node": "7:77804",
+          "type": "fullbg"
+        },
+        "design_5": {
+          "node": "7:77817",
+          "image_node": "7:77818",
+          "type": "standard"
+        },
+        "design_6": {
+          "node": "7:77829",
+          "image_node": "7:77830",
+          "type": "standard"
+        }
       }
     },
     "9:16": {
@@ -67,11 +159,30 @@
       "campaign_use": "Stories / Reels",
       "set_node": "7:77842",
       "layouts": {
-        "design_1": { "node": "7:77843", "image_parent": "7:77848", "type": "standard" },
-        "design_2": { "node": "7:77857", "type": "standard" },
-        "design_3": { "node": "7:77871", "image_node": "7:77872", "type": "standard"  },
-        "design_4": { "node": "7:77885", "image_node": "7:77886", "type": "fullbg"    },
-        "design_5": { "node": "7:77898", "image_node": "7:77899", "type": "fullbg"    }
+        "design_1": {
+          "node": "7:77843",
+          "image_parent": "7:77848",
+          "type": "standard"
+        },
+        "design_2": {
+          "node": "7:77857",
+          "type": "standard"
+        },
+        "design_3": {
+          "node": "7:77871",
+          "image_node": "7:77872",
+          "type": "standard"
+        },
+        "design_4": {
+          "node": "7:77885",
+          "image_node": "7:77886",
+          "type": "fullbg"
+        },
+        "design_5": {
+          "node": "7:77898",
+          "image_node": "7:77899",
+          "type": "fullbg"
+        }
       }
     },
     "1:1": {
@@ -80,12 +191,38 @@
       "campaign_use": "Feed square",
       "set_node": "7:77962",
       "layouts": {
-        "design_1":   { "node": "7:77963", "image_node": "7:77964", "image_parent": "7:77968", "type": "standard" },
-        "design_1_2": { "node": "7:77974", "image_node": "7:77975", "image_parent": "7:77984", "type": "standard" },
-        "design_2":   { "node": "7:77986", "image_node": "7:77987", "type": "standard" },
-        "design_3":   { "node": "7:77997", "image_node": "7:77998", "type": "standard" },
-        "design_4":   { "node": "7:78009", "image_node": "7:78010", "type": "fullbg"   },
-        "design_5":   { "node": "7:78021", "image_node": "7:78022", "type": "fullbg"   }
+        "design_1": {
+          "node": "7:77963",
+          "image_node": "7:77964",
+          "image_parent": "7:77968",
+          "type": "standard"
+        },
+        "design_1_2": {
+          "node": "7:77974",
+          "image_node": "7:77975",
+          "image_parent": "7:77984",
+          "type": "standard"
+        },
+        "design_2": {
+          "node": "7:77986",
+          "image_node": "7:77987",
+          "type": "standard"
+        },
+        "design_3": {
+          "node": "7:77997",
+          "image_node": "7:77998",
+          "type": "standard"
+        },
+        "design_4": {
+          "node": "7:78009",
+          "image_node": "7:78010",
+          "type": "fullbg"
+        },
+        "design_5": {
+          "node": "7:78021",
+          "image_node": "7:78022",
+          "type": "fullbg"
+        }
       }
     },
     "4:5": {
@@ -94,22 +231,65 @@
       "campaign_use": "Feed portrait",
       "set_node": "7:78033",
       "layouts": {
-        "design_1": { "node": "7:78034", "image_node": "7:78035", "image_parent": "7:78040", "type": "standard" },
-        "design_2": { "node": "7:78047", "image_node": "7:78048", "type": "standard" },
-        "design_3": { "node": "7:78060", "image_node": "7:78061", "type": "standard" },
-        "design_4": { "node": "7:78075", "image_node": "7:78076", "type": "fullbg"   }
+        "design_1": {
+          "node": "7:78034",
+          "image_node": "7:78035",
+          "image_parent": "7:78040",
+          "type": "standard"
+        },
+        "design_2": {
+          "node": "7:78047",
+          "image_node": "7:78048",
+          "type": "standard"
+        },
+        "design_3": {
+          "node": "7:78060",
+          "image_node": "7:78061",
+          "type": "standard"
+        },
+        "design_4": {
+          "node": "7:78075",
+          "image_node": "7:78076",
+          "type": "fullbg"
+        }
       }
     },
-    "inapp":                   { "label": "InApp",                    "set_node": "789:1690" },
-    "newsletter_illustration":  { "label": "Newsletters-Illustration", "set_node": "789:1786" }
+    "inapp": {
+      "label": "InApp",
+      "set_node": "789:1690"
+    },
+    "newsletter_illustration": {
+      "label": "Newsletters-Illustration",
+      "set_node": "789:1786"
+    }
   },
-
   "frame_layers": {
-    "editable": ["#Image", "#title", "#copy"],
-    "locked":   ["Overlay", "Gradient Top", "Gradient Bottom", "Gradient Left", "Wordmark", "Teal bar"],
-    "layout_fix": { "apply_to": ["Text section", "#title", "#copy"], "property": "layoutSizingHorizontal = FILL" }
+    "editable": [
+      "#Image",
+      "#title",
+      "#copy"
+    ],
+    "locked": [
+      "Overlay",
+      "Gradient Top",
+      "Gradient Bottom",
+      "Gradient Left",
+      "Wordmark",
+      "Teal bar"
+    ],
+    "layout_fix": {
+      "apply_to": [
+        "Text section",
+        "#title",
+        "#copy"
+      ],
+      "property": "layoutSizingHorizontal = FILL"
+    }
   },
-
   "frame_naming_convention": "{format}_{VARIATION}-{layout}",
-  "frame_naming_examples": ["9:16_AR-EUR-fullbg", "1:1_BR-USD-mockup", "4:5_AR-BRL-fullbg"]
+  "frame_naming_examples": [
+    "9:16_AR-EUR-fullbg",
+    "1:1_BR-USD-mockup",
+    "4:5_AR-BRL-fullbg"
+  ]
 }
