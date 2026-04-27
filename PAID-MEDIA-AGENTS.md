@@ -1,14 +1,17 @@
 # AstroPay — Paid Media Agents + Figma Production
 > Domain: Paid Media (Meta, Google, YouTube) + Figma Production
 > Depends on: BRAND.md for identity, voice, tokens and disclaimers
-> Do not duplicate BRAND.md content here
+> Design tokens: tokens/brand.json
+> Figma components: figma/components.json
+> Figma images: figma/images.json
+> Do not duplicate or hardcode node IDs here — always read from figma/components.json and figma/images.json
 
 ---
 
 ## AGENT SYSTEM
 
 ### Automatic activation
-| If the input is about… | Agents activated |
+| If the input is about... | Agents activated |
 |---|---|
 | Copy, headlines, CTAs | @copy + @cd |
 | Campaign angle, targeting, channels | @strategist |
@@ -23,7 +26,7 @@
 - `@cd` — Visual direction, creative concept, design system oversight, QA
 - `@ugc` — Short-form video scripts, creator briefs, platform-native content
 - `@guardian` — Brand compliance, consistency monitoring, brand evolution
-- `@all` — Full pipeline: strategist → cd → copy → ugc → guardian
+- `@all` — Full pipeline: strategist -> cd -> copy -> ugc -> guardian
 
 ---
 
@@ -52,6 +55,9 @@ Testing Framework: [what to isolate in round 1]
 **Identity**: Performance copywriter and tone of voice guardian. Precise, punchy, brand-obsessed, bilingual. The best copy sounds like a real person said it — not a marketing team.
 
 **Character limits per format (max 2 lines for #title AND #copy)**:
+
+Read font sizes from `tokens/brand.json` -> `typography.ad_sizes`.
+
 | Format | Font | Max chars/line |
 |---|---|---|
 | 9:16 | 104px SemiBold | ~20 |
@@ -78,7 +84,7 @@ Language: ES-AR or PT-BR
 Flags: [any line exceeding char limit]
 Messaging rationale: [why this structure works for this campaign]
 ```
-Rules: mark line breaks as ↵ — never use generic fintech language.
+Rules: mark line breaks as -> — never use generic fintech language.
 
 ---
 
@@ -89,11 +95,11 @@ Rules: mark line breaks as ↵ — never use generic fintech language.
 **Default output format**:
 ```
 Visual Concept: [what the image must communicate before the viewer reads anything]
-Image Category: [Traveler / Digital Nomad / Places / Freelancer + why]
-Layout: [fullbg or mockup + rationale]
+Image Category: [Traveler / Digital Nomad / Places / Freelancer + why] — read from figma/images.json
+Layout: [fullbg or mockup + rationale] — read layout types from figma/components.json
 Visual Tension: [how image and headline interact — contrast or reinforce?]
 Visual Brief: [one sentence for the designer]
-Design System Check: [any violations]
+Design System Check: [any violations against tokens/brand.json]
 Red Flags: [what to avoid]
 QA Sign-off: [yes / not yet — with specific blocker]
 ```
@@ -112,19 +118,19 @@ QA Sign-off: [yes / not yet — with specific blocker]
 
 **Script Structure (25s)**:
 ```
-[0–3s]   HOOK — pattern interrupt. On-screen visual + text/VO. One clear tension.
-[3–8s]   CONFLICT — the relatable pain. Specific, not generic. Show don't tell.
-[8–18s]  SOLUTION — AstroPay solves it. Describe specific UI moments.
-[18–25s] CTA — one action. Urgency or tangible benefit. No "learn more."
+[0-3s]   HOOK — pattern interrupt. On-screen visual + text/VO. One clear tension.
+[3-8s]   CONFLICT — the relatable pain. Specific, not generic. Show don't tell.
+[8-18s]  SOLUTION — AstroPay solves it. Describe specific UI moments.
+[18-25s] CTA — one action. Urgency or tangible benefit. No "learn more."
 ```
 
 **Default output format**:
 ```
 SCRIPT VAR A
-[0–3s]   HOOK: [visual description] / [VO or text] / [on-screen: "..."]
-[3–8s]   CONFLICT: [scene] / [VO] / [on-screen: "..."]
-[8–18s]  SOLUTION: [UI moment] / [VO] / [on-screen: "..."]
-[18–25s] CTA: [action] / [on-screen: "..."]
+[0-3s]   HOOK: [visual description] / [VO or text] / [on-screen: "..."]
+[3-8s]   CONFLICT: [scene] / [VO] / [on-screen: "..."]
+[8-18s]  SOLUTION: [UI moment] / [VO] / [on-screen: "..."]
+[18-25s] CTA: [action] / [on-screen: "..."]
 Platform: [TikTok / Reels / Shorts — with pacing note]
 Language: ES-AR or PT-BR
 Talent note: [who should film this and how]
@@ -142,7 +148,7 @@ Why these hooks work: [psychological rationale]
 
 **Default output format**:
 ```
-Brand Fit Score: [1–10]
+Brand Fit Score: [1-10]
 Reasoning: [specific, not generic]
 Voice Check: [exact quotes + what's wrong + why]
 Infinite vs Core: [separation status — clear / blurred / violated]
@@ -157,82 +163,88 @@ Brand Evolution note: [does this creative build or fragment the narrative?]
 
 ## SECTION 3 — FIGMA PRODUCTION
 
+### Source of truth
+
+Before any production task, read these three files:
+
+| What you need | Where to read |
+|---|---|
+| Colors, typography, font sizes | `tokens/brand.json` |
+| Ad templates, component node IDs, CTA variants, store badges | `figma/components.json` |
+| Image library, categories, selection rules by market | `figma/images.json` |
+
+Never hardcode node IDs in prompts or code. Always resolve them from `figma/components.json` at the start of each production task.
+
 ### File reference
-- **File Key**: `6kHkKTxW1ygct6vTQsIGF1`
-- **Creatives page**: `↪ Creatives examples` (ID: `1:2`) — active frames: `145:23724`
-- **Images page**: `↪ Images` (ID: `145:5528`)
-- **WIP page**: `↪ Paid Media - Multicurrency exchange campaign (WIP)` (ID: `516:16312`)
+- **File Key**: read from `figma/components.json` -> `_meta.file_key`
+- **File URL**: read from `figma/components.json` -> `_meta.file_url`
+- **Source pages**: read from `figma/components.json` -> `_meta.source_pages`
+- **WIP page**: `516:16312` (Paid Media - Multicurrency exchange campaign)
 - **Browser rule**: Always open Figma in the browser. Never interact via the desktop app.
 
 ---
 
-### Ad format templates
+### Template selection
 
-Default variant: `Layout=Design 1` unless the brief specifies otherwise.
+Read all template data from `figma/components.json` -> `ad_templates`.
 
-| Format | Set node | Dimensions | Design 1 node | Campaign use |
-|---|---|---|---|---|
-| 16:9 | `7:77762` | 1920×1080 | `7:77763` | YouTube / Display |
-| 1:1 | `7:77962` | 1080×1080 | `7:77963` | Feed square |
-| 4:5 | `7:78033` | 1080×1350 | `7:78034` | Feed portrait |
-| 9:16 | `7:77842` | 1080×1920 | `7:77843` | Stories / Reels |
+Default layout: `design_1` unless brief specifies otherwise.
+Fullbg layouts: `design_4` or `design_5` (image fills entire frame).
 
-**Multicurrency campaign (WIP) — fullbg templates (Design 4)**:
-| Format | Template node |
-|---|---|
-| 1:1 | `7:78009` |
-| 9:16 | `7:77885` |
-| 4:5 | `7:78075` |
-| 16:9 | `7:77803` |
-
-**Mockup reference frames (clone from these — do NOT use createInstance)**:
-| Format | Reference frame ID |
-|---|---|
-| 1:1 | `534:45140` |
-| 9:16 | `594:28522` |
-| 4:5 | `594:29147` |
-| 16:9 | `594:28604` |
+| Format | Dimensions | Campaign use |
+|---|---|---|
+| 16:9 | 1920x1080 | YouTube / Display |
+| 9:16 | 1080x1920 | Stories / Reels |
+| 1:1 | 1080x1080 | Feed square |
+| 4:5 | 1080x1350 | Feed portrait |
 
 ---
 
-### UI Components
+### Component selection
 
-**Title** (`7:76536`)
-| Variant | Node ID |
-|---|---|
-| Style=Semibold | `7:76537` |
-| Style=Bold | `7:76539` |
+Read all component data from `figma/components.json` -> `components`.
 
-**Subheadline** (`7:76541`) — Semibold: `7:76542`
+- **Title**: `components.title` — use `semibold` or `bold` variant
+- **Subheadline**: `components.subheadline`
+- **CTA**: `components.cta` — default variant is `teal_rd`
+- **Store badges**: `components.store_badges` — select size (S/M/L) and region (english/brazil/spanish)
 
-**CTA** (`7:77012`) — Default: `Color=Teal RD` (`7:77013`)
-| Variant | Node ID | Shape |
-|---|---|---|
-| Teal RD | `7:77013` | Rounded |
-| Teal Sq | `7:77015` | Square |
-| Alabaster RD | `7:77017` | Rounded |
-| Alabaster SQ | `7:77019` | Square |
-| Abyssal RD | `7:77021` | Rounded |
-| Abyssal SQ | `7:77023` | Square |
-| Blur RD | `7:77025` | Rounded |
-| Blur SQ | `7:77027` | Square |
+Swap store badges using `storesInst.swapComponent(comp)` — never recreate manually.
 
-**Store Badges**
-| Size | Node ID |
-|---|---|
-| Stores S | `7:76700` |
-| Stores M | `7:76544` |
-| Stores L | `7:76856` |
+---
 
-Swap using `storesInst.swapComponent(comp)` — never recreate manually.
+### Image selection
 
-**Stores for multicurrency campaign**:
-| Component | ID | Use |
-|---|---|---|
-| Stores M Brazil | `7:76603` | fullbg 16:9, 9:16; mockup 1:1, 4:5, 16:9 |
-| Stores M Spanish | `7:76669` | same formats, ES-AR frames |
-| Stores S Brazil | `7:76759` | fullbg 1:1, 4:5 |
-| Stores S Spanish | `7:76825` | fullbg 1:1, 4:5, ES-AR |
+Read all image data from `figma/images.json`.
+
+Selection rules by market (also in `figma/images.json` -> `selection_rules`):
+- BR campaigns: `digital_nomad` or `freelancer`
+- AR campaigns: `traveler` or `digital_nomad`
+- Exchange campaign: `exchange_campaign` mockups — always use the correct currency pair node
+- Infinite: `places` or `traveler`
+- Freelance SMB: `freelancer`
+
+**Critical rules**:
+- All images come exclusively from page `145:5528` — never use external URLs
+- Use `findOne()` by exact name — never `findAll()` on the Images page (170+ nodes = timeout)
+- Cache the image hash immediately after retrieval — never re-fetch
+
+---
+
+### Production workflow — every new creative request
+
+```
+1. Read brief — category, tone, campaign objective
+2. Read figma/components.json — resolve template and component node IDs
+3. Read figma/images.json — select correct image category and node name
+4. Read tokens/brand.json — confirm colors and font styles
+5. Inspect template — call get_design_context before creating any instance
+6. Get image hash — switch to page 145:5528, findOne by exact name, cache hash
+7. Create instances — switch to target page, createInstance() or clone ref frame
+8. Edit content — #title, #copy, CTA text, stores badge, disclaimer
+9. Fix layout — set Text section + #title + #copy to layoutSizingHorizontal = FILL
+10. Verify — get_design_context screenshot on at least 1 instance per format
+```
 
 ---
 
@@ -240,23 +252,21 @@ Swap using `storesInst.swapComponent(comp)` — never recreate manually.
 
 | Layer | Editable | Notes |
 |---|---|---|
-| `#Image` | ✅ | Background — apply imageHash here |
-| `Overlay top` | ❌ | Gradient — do not modify |
-| `Overlay bottom` | ❌ | Gradient — do not modify |
-| `Wordmark` | ❌ | AstroPay logo — do not modify |
-| `#title` | ✅ | Main headline |
-| `#copy` | ✅ | Subheadline — must be at y ≥ 600 |
-| `Teal bar` | ❌ | Brand accent bar — do not modify |
+| `#Image` | YES | Background — apply imageHash here |
+| `Overlay top` | NO | Gradient — do not modify |
+| `Overlay bottom` | NO | Gradient — do not modify |
+| `Wordmark` | NO | AstroPay logo — do not modify |
+| `#title` | YES | Main headline |
+| `#copy` | YES | Subheadline |
+| `Teal bar` | NO | Brand accent bar — do not modify |
 
-**9:16 layout zones**: `y 0–700` hero · `y 1048` divider · `y 1086` headline start · `y H-248` CTA · `y H-144` store badges · `y H-8` teal bar
-
-**Frame naming**: `{format}_{VARIATION}-{layout}` — e.g. `9:16_AR-EUR-fullbg`, `1:1_BR-USD-mockup`
+Read editable/locked layer list from `figma/components.json` -> `frame_layers`.
 
 ---
 
 ### Board layout (WIP page) — column X positions
 
-| Variation | X (standard) | X (16:9) |
+| Variation | X standard | X 16:9 |
 |---|---|---|
 | BR-USD | -800 | -800 |
 | BR-EUR | 1160 | 2200 |
@@ -265,7 +275,8 @@ Swap using `storesInst.swapComponent(comp)` — never recreate manually.
 | AR-EUR | 8417 | 11200 |
 | AR-BRL | 10377 | 14200 |
 
-**Row Y positions**:
+Row Y positions:
+
 | Format | Layout | Y |
 |---|---|---|
 | 1:1 | fullbg | 0 |
@@ -279,20 +290,12 @@ Swap using `storesInst.swapComponent(comp)` — never recreate manually.
 
 ---
 
-### Correct `#Image` node per template
+### Frame naming convention
 
-| Template | Correct `#Image` node | Size |
-|---|---|---|
-| 9:16 `7:77843` | `7:77849` inside `7:77848` | 984×826px |
-| 1:1 `7:77963` | `7:77969` inside `7:77968` | flex-1 |
-| 4:5 `7:78034` | `7:78041` inside `7:78040` | flex-1 |
-| 16:9 `7:77763` | `7:77776` | 862×952px |
+Read from `figma/components.json` -> `frame_naming_convention`.
 
-When in doubt, always select by area (largest `width × height`):
-```js
-const bgNode = frame.findAll(n => n.name === '#Image' && 'fills' in n)
-  .reduce((best, n) => (!best || n.width * n.height > best.width * best.height) ? n : best, null);
-```
+Pattern: `{format}_{VARIATION}-{layout}`
+Examples: `9:16_AR-EUR-fullbg`, `1:1_BR-USD-mockup`, `4:5_AR-BRL-fullbg`
 
 ---
 
@@ -304,7 +307,7 @@ const go = async () => { /* all logic */ return 'done'; };
 return go();
 ```
 
-**Always switch page before `findOne`/`findAll`**:
+**Always switch page before findOne/findAll**:
 ```js
 await figma.setCurrentPageAsync(targetPage);
 ```
@@ -325,13 +328,13 @@ try {
 **Split heavy calls to avoid timeout — always in this order**:
 1. Get image hash (Images page only)
 2. Create/clone instances (WIP page only)
-3. Edit content in batches of 4–6 frames max
+3. Edit content in batches of 4-6 frames max
 
 **Other critical rules**:
 - Node IDs from one `use_figma` call don't exist in the next — keep everything in a single call when IDs are needed across steps
-- URL IDs use hyphens (`45-27839`) → Plugin API uses colons (`45:27839`) — always convert
+- URL IDs use hyphens (`45-27839`) -> Plugin API uses colons (`45:27839`) — always convert
 - `figma.root.findOne()` does NOT work cross-page — always switch first
-- Never use `findAll` on the Images page (170+ nodes → timeout) — always `findOne` by exact name
+- Never use `findAll` on the Images page (170+ nodes = timeout) — always `findOne` by exact name
 - Never recreate gradients, overlays, badges, or CTA buttons — use `createInstance()` or `swapComponent()`
 - Never detach instances unless `appendChild` fails inside another instance
 - Always verify with `get_design_context` screenshot — never assume success from lack of error
@@ -360,7 +363,7 @@ const ctaText = frame.findAll(n => n.type === 'TEXT').find(n => {
 });
 ```
 
-**Image hash retrieval** — always `findOne` by exact name, cache the result:
+**Image hash retrieval** — always findOne by exact name, cache the result:
 ```js
 const imagesPage = figma.root.children.find(p => p.id === '145:5528');
 await figma.setCurrentPageAsync(imagesPage);
@@ -369,37 +372,9 @@ const imageHash = imgNode.fills.find(f => f.type === 'IMAGE').imageHash;
 // cache as const — never re-fetch
 ```
 
-**Image crop replication** — read `imageTransform` from designer's reference, apply to all frames:
+**Image crop replication** — read imageTransform from designer's reference, apply to all frames:
 ```js
 const fill = refNode.fills.find(f => f.type === 'IMAGE');
 const transform = fill.imageTransform;
 targetNode.fills = [{ type: 'IMAGE', imageHash, scaleMode: 'CROP', imageTransform: transform }];
 ```
-
----
-
-### Production workflow — every new creative request
-
-```
-1. Read brief → category, tone, campaign objective
-2. Select template → match campaign type to format + variant
-3. Inspect template → call get_design_context before creating any instance
-4. Get image hash → switch to 145:5528, findOne by exact name, cache hash
-5. Create instances → switch to target page, createInstance() or clone ref frame
-6. Edit content → #title, #copy, CTA text, stores badge, disclaimer
-7. Fix layout → set Text section + #title + #copy to layoutSizingHorizontal = 'FILL'
-8. Verify → get_design_context screenshot on at least 1 instance per format
-```
-
----
-
-### Image library
-
-All images come exclusively from page `145:5528`. Never use external URLs.
-
-| Section ID | Category | Default node name |
-|---|---|---|
-| `145:23716` | Traveler | `blake-wisz-tE6th1h6Bfk-unsplash 1` |
-| `145:23717` | Digital Nomad | `portrait-handsome-man-glasses-sits-cafe-with-laptop-smiles-while-reads-message-phone 1` |
-| `145:23718` | Places | `GLOBAL_JAN 24_3` |
-| `145:23719` | Freelancer | `pondering-female-freelancer-with-digital-laptop-co-2024-01-31-15-13-12-utc 2` |
