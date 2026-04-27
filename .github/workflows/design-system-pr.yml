@@ -89,7 +89,7 @@ jobs:
               newHashes[name] = hash;
               console.log(`  ${name}: ${hash} (stored: ${storedHashes[name] || 'none'})`);
 
-              if (hash !== storedHashes[name]) {
+              if (!storedHashes[name] || hash !== storedHashes[name]) {
                 changedPages.push({ name, id: pageId, oldHash: storedHashes[name] || 'none', newHash: hash });
               }
             }
