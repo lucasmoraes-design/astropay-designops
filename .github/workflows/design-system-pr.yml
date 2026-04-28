@@ -150,8 +150,36 @@ jobs:
           git commit -m "chore: Figma page change detected — review required (${DATE})"
           git push origin ${BRANCH}
 
+      - name: Close existing auto-sync PRs
+        if: steps.check.outputs.result == 'CHANGES_DETECTED'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.CLAUDE_PAT }}
+          script: |
+            const { data: openPRs } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              base: 'master'
+            });
+
+            const stale = openPRs.filter(pr =>
+              pr.head.ref.startsWith('design-system/auto-sync-')
+            );
+
+            for (const pr of stale) {
+              await github.rest.pulls.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: pr.number,
+                state: 'closed'
+              });
+              console.log(`Closed stale PR #${pr.number}: ${pr.title}`);
+            }
+
       - name: Open Pull Request
         if: steps.check.outputs.result == 'CHANGES_DETECTED'
+        id: pr
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.CLAUDE_PAT }}
@@ -241,6 +269,13 @@ jobs:
             });
 
             console.log('PR created:', pr.html_url);
+            core.setOutput('number', pr.number);
+
+      - name: Enable auto-merge
+        if: steps.check.outputs.result == 'CHANGES_DETECTED'
+        env:
+          GH_TOKEN: ${{ secrets.CLAUDE_PAT }}
+        run: gh pr merge --auto --squash "${{ steps.pr.outputs.number }}"
 
       - name: No changes found
         if: steps.check.outputs.result == 'NO_CHANGES'
