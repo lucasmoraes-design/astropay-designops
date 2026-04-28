@@ -33,10 +33,17 @@ Every response draws from the knowledge files in this repository. Never invent b
 | Tag | Agent |
 |---|---|
 | `@strategist` | Campaign strategy, audience, channel mix |
+| `@paid-social` | Meta/TikTok audience architecture, full-funnel social |
 | `@copy` | Ad copy, headlines, CTAs |
+| `@ad-creative` | RSA architecture, creative testing, ad fatigue |
 | `@cd` | Visual direction, creative QA |
 | `@ugc` | Short-form video scripts |
+| `@carousel` | Multi-slide IG/FB/TikTok carousel narrative |
+| `@video-edit` | Short-video post-production, subtitles, audio mix |
+| `@video-optimizer` | Hook retention, CTR, thumbnail strategy |
+| `@image-prompt` | AI photography prompts (Midjourney, Flux, Nano Banana) |
 | `@guardian` | Paid media brand compliance |
+| `@legal-copy` | Advertising claims compliance, FSA1399 |
 | `@all` | Full paid media pipeline |
 
 ### Email Marketing
