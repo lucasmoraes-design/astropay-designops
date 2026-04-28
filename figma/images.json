@@ -239,11 +239,9 @@
     }
   },
   "selection_rules": {
-    "BR campaigns": "digital_nomad or freelancer — warm, relatable, urban. Prefer 'with phone' shots for retargeting (e.g. 145:23705 portrait-handsome-man-glasses-cafe-phone)",
-    "AR campaigns": "freelancer or digital_nomad with phone in everyday/urban context. AVOID traveler imagery for currency exchange — suggests trip campaign, not conversion. Branded shots preferred (e.g. 145:23602 ASTROPAY-2820 sofá teal)",
-    "Exchange (retargeting)": "lifestyle people with phone — NOT exchange_campaign mockups (poor crop on horizontal slots) and NOT travel-themed (wrong context for users converting USD they already hold)",
-    "Exchange (awareness)": "exchange_campaign mockups (UI screens) acceptable for problem-solution / pain-first framing",
-    "PIX": "traveler imagery — campaign IS about traveling AR → BR",
+    "BR campaigns": "digital_nomad or freelancer — warm, relatable, urban",
+    "AR campaigns": "traveler or digital_nomad — aspirational, on-the-go",
+    "Exchange": "exchange_campaign mockups — always use the correct currency pair",
     "Infinite": "places or traveler — premium, destination-driven",
     "Freelance SMB": "freelancer — specific, not generic fintech stock"
   }
