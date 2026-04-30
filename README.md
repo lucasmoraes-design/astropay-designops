@@ -1,6 +1,6 @@
 # AstroPay Design Operations — Marketing AI
 
-Centralized knowledge base for AstroPay's Marketing AI. This repository is the source of truth for paid media creative production, email marketing, and design system operations via Claude.
+Centralized knowledge base for AstroPay's Marketing AI. This repository is the source of truth for paid media creative production, in-app banner production, and design system operations via Claude.
 
 ---
 
@@ -12,7 +12,7 @@ astropay-designops/
 ├── BRAND.md                        <- Voice, tone, products, campaigns, CTAs, disclaimers
 ├── AGENTS-SHARED.md                <- Cross-channel agents: @cd, @copy, @guardian, @legal-copy
 ├── PAID-MEDIA-AGENTS.md            <- Paid-media-only agents + Figma production rules
-├── EMAIL-AGENTS.md                 <- Email-only agents + Braze configuration
+├── INAPP-AGENTS.md                 <- In-app-only agents + Braze in-app rules
 ├── tokens/
 │   └── brand.json                  <- Color and typography tokens
 ├── figma/
@@ -27,8 +27,8 @@ astropay-designops/
 **Where do agent definitions live?**
 - Cross-channel agents (work in any context): `AGENTS-SHARED.md`. When updating image library rules, brand voice, forbidden words, or FSA1399 triggers — edit only this file.
 - Paid-media-only agents: `PAID-MEDIA-AGENTS.md`.
-- Email-only agents: `EMAIL-AGENTS.md`.
-- Tags like `@email-copy`, `@email-guardian`, `@email-legal` are aliases that route to the corresponding shared agent with the channel pre-set to email.
+- In-app-only agents: `INAPP-AGENTS.md`.
+- Tags like `@inapp-copy`, `@inapp-guardian`, `@inapp-legal` are aliases that route to the corresponding shared agent with the channel pre-set to in-app.
 
 ---
 
@@ -42,8 +42,9 @@ astropay-designops/
 Examples:
 ```
 "@all create exchange campaign for AR and BR, all formats"
-"@email-all re-engagement flow for inactive Infinite users"
-"@guardian review this copy before approval"
+"@inapp-all design a KYC-pending banner for AR users on app open"
+"@guardian QA this in-app banner copy before approval"
+"@cd review the hero image choice for this in-app onboarding screen"
 ```
 
 ---

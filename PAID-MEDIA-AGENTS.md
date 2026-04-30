@@ -354,7 +354,7 @@ Fullbg layouts: `design_4` (all formats) and `design_5` (9:16, 1:1, 4:5 — NOT 
 | 1:1 | 1080x1080 | Feed square | d1, d2, d3, d4 (fullbg), d5 (fullbg) |
 | 4:5 | 1080x1350 | Feed portrait | d1, d2, d3, d4 (fullbg), d5 (fullbg) |
 
-Beyond paid media, the `inapp` set (`789:1690`, 6 layouts: Illustration, Image, Full Image, Promo/Cobrand, Cashback Promo, Layout6) and `newsletter_illustration` set (`789:1786`, 8 use cases incl. Spin) are also exposed in `components.json` -> `ad_templates` for in-app messaging and email hero illustrations. Brand identity assets (App Icon, ISO, Logotype, Wordmark) live under `components.json` -> `brand_assets`.
+Beyond paid media, the `inapp` set (`789:1690`, 6 layouts: Illustration, Image, Full Image, Promo/Cobrand, Cashback Promo, Layout6) and `newsletter_illustration` set (`789:1786`, 8 use cases incl. Spin) are also exposed in `components.json` -> `ad_templates` for in-app banners and illustration-led in-app moments. Brand identity assets (App Icon, ISO, Logotype, Wordmark) live under `components.json` -> `brand_assets`.
 
 ---
 

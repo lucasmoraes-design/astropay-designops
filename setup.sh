@@ -46,8 +46,8 @@ git commit -m "chore: initial commit — AstroPay DesignOps knowledge base
 
 - CLAUDE.md: system prompt
 - BRAND.md: voice, tone, products, campaigns
+- AGENTS-SHARED.md: cross-channel agents (CD, copy, guardian, legal)
 - PAID-MEDIA-AGENTS.md: paid media agents + Figma production
-- EMAIL-AGENTS.md: email agents + Braze config
 - tokens/brand.json: color and typography tokens
 - figma/components.json: semantic Figma node IDs"
 
