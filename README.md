@@ -10,8 +10,9 @@ Centralized knowledge base for AstroPay's Marketing AI. This repository is the s
 astropay-designops/
 ├── CLAUDE.md                       <- System prompt (auto-loaded by Claude)
 ├── BRAND.md                        <- Voice, tone, products, campaigns, CTAs, disclaimers
-├── PAID-MEDIA-AGENTS.md            <- Paid media agents + Figma production rules
-├── EMAIL-AGENTS.md                 <- Email agents + Braze configuration
+├── AGENTS-SHARED.md                <- Cross-channel agents: @cd, @copy, @guardian, @legal-copy
+├── PAID-MEDIA-AGENTS.md            <- Paid-media-only agents + Figma production rules
+├── EMAIL-AGENTS.md                 <- Email-only agents + Braze configuration
 ├── tokens/
 │   └── brand.json                  <- Color and typography tokens
 ├── figma/
@@ -22,6 +23,12 @@ astropay-designops/
 │       └── design-system-pr.yml    <- Daily auto-sync from Figma to repo via PR
 └── setup.sh                        <- Local bootstrap script
 ```
+
+**Where do agent definitions live?**
+- Cross-channel agents (work in any context): `AGENTS-SHARED.md`. When updating image library rules, brand voice, forbidden words, or FSA1399 triggers — edit only this file.
+- Paid-media-only agents: `PAID-MEDIA-AGENTS.md`.
+- Email-only agents: `EMAIL-AGENTS.md`.
+- Tags like `@email-copy`, `@email-guardian`, `@email-legal` are aliases that route to the corresponding shared agent with the channel pre-set to email.
 
 ---
 
