@@ -6,7 +6,10 @@
       "Bash(python -c \"import json; json.load\\(open\\('c:/Users/lucas/OneDrive/Desktop/astropay-designops-github/tokens/brand.json', encoding='utf-8'\\)\\); print\\('tokens/brand.json OK'\\)\")",
       "PowerShell($ErrorActionPreference='Stop'; foreach \\($f in @\\('figma/components.json','figma/images.json','tokens/brand.json'\\)\\) { try { Get-Content $f -Raw | ConvertFrom-Json | Out-Null; Write-Output \"$f OK\" } catch { Write-Output \"$f FAILED: $_\" } })",
       "Bash(git -C \"c:/Users/lucas/OneDrive/Desktop/astropay-designops-github\" status --short)",
-      "Bash(git -C \"c:/Users/lucas/OneDrive/Desktop/astropay-designops-github\" diff --stat)"
+      "Bash(git -C \"c:/Users/lucas/OneDrive/Desktop/astropay-designops-github\" diff --stat)",
+      "mcp__claude_ai_Linear__save_comment",
+      "mcp__claude_ai_Linear__delete_comment",
+      "mcp__claude_ai_Linear__save_issue"
     ]
   }
 }
