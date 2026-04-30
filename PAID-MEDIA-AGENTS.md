@@ -336,14 +336,25 @@ QA Sign-off: [yes / not yet — with specific blocker]
 
 The Images page (`145:5528`) contains six named sections — these are the ONLY valid image sources for any agent. Free-floating canvas frames, external URLs, or images from any other Figma file are NOT permitted.
 
+The library splits into two pools:
+
+**Default lifestyle pool (~95% of briefs)** — pick from these four for any standard creative (PIX, Infinite, Freelance SMB, brand awareness, retention, lifecycle, social, generic exchange creatives that lead with people, etc.):
+
 | Category | Section ID | When to use |
 |---|---|---|
-| `traveler` | `939:42810` | PIX, Infinite-aspirational, on-the-go lifestyle. NEVER for exchange retargeting. |
+| `traveler` | `939:42810` | PIX, Infinite-aspirational, on-the-go lifestyle. |
 | `places` | `939:42955` | Infinite premium / destination-driven. Coffee shops, hotels, urban scenes. |
-| `freelancer` | `939:42882` | Freelance SMB campaigns — laptops, home offices, real workers. Never generic fintech stock. |
-| `digital_nomad` | `939:42984` | Bridges traveler + freelancer. Use for warm, relatable urban exchange retargeting. |
-| `product` | `939:43104` | Flat 1:1 product screens of the exchange flow. Use when the UI itself is the focal point. Variants: `_PTBR` (BR) / `_ES` (AR). |
-| `product_mockup` | `939:43135` | Phone-mockup previews of the exchange flow. Use as hero/fullbg image when a phone-shaped silhouette adds context. Same six currency pairs as `product`, in mockup form. |
+| `freelancer` | `939:42882` | Freelance SMB — laptops, home offices, real workers. Never generic fintech stock. |
+| `digital_nomad` | `939:42984` | Bridges traveler + freelancer. Default for relatable urban / lifestyle exchange retargeting. |
+
+**Exchange-gated pool (opt-in only)** — only use when the brief EXPLICITLY mentions currency exchange, FX, conversion, multicurrency, or names a currency pair (e.g., BRL→USD, ARS→EUR). If the brief does not name any of these triggers, do NOT pick from this pool, even if the format technically fits:
+
+| Category | Section ID | When to use |
+|---|---|---|
+| `product` | `939:43104` | Flat 1:1 product screens of the exchange flow. Variants: `_PTBR` (BR) / `_ES` (AR). |
+| `product_mockup` | `939:43135` | Phone-mockup previews of the exchange flow. Same six currency pairs as `product`, in mockup form. |
+
+If a brief is ambiguous (e.g., "create a retention ad for AR"), default to the lifestyle pool and ASK the user whether the creative should also include a Product or Product Mockup before reaching for those.
 
 **Red Flags (always call out)**:
 - Any image that could belong to any other fintech
@@ -351,6 +362,7 @@ The Images page (`145:5528`) contains six named sections — these are the ONLY 
 - CTA that doesn't close the promise of the headline
 - Infinite copy mixed with core AstroPay visuals (or vice versa)
 - Image not pulled from one of the six categories above (legacy `exchange_campaign` no longer exists)
+- **Product or Product Mockup used on a non-exchange brief** — these are opt-in only, gated behind explicit exchange / FX / multicurrency mentions. Default brief to lifestyle pool.
 - Exchange creative using the wrong language variant (`_PTBR` in an AR ad, or `_ES` in a BR ad)
 
 **Layout selection guide** (when to use which design template):
@@ -364,12 +376,20 @@ The Images page (`145:5528`) contains six named sections — these are the ONLY 
 | `design_6` | Standard variation (16:9 only) | A/B testing alternative |
 
 **Image strategy by campaign** (avoid context drift):
-- **Currency Exchange retargeting**: `digital_nomad` or `freelancer` for lifestyle context (cafe, couch, real people with phone), OR `product` for clean in-feed creatives where the UI is the focal point. NEVER travel-themed — that suggests a trip campaign, not currency conversion
+
+*Default lifestyle pool (use these unless the brief explicitly mentions exchange / FX / conversion / multicurrency):*
+- **PIX (AR → BR)**: `traveler` is correct — campaign IS about traveling to Brazil
+- **Infinite**: `places` or `traveler` — aspirational, premium
+- **Freelance SMB**: `freelancer` only — never generic fintech stock
+- **Brand awareness / retention / lifecycle / social**: pick from `traveler`, `places`, `freelancer`, `digital_nomad` — match to product (Core vs Infinite) and market (AR vs BR)
+
+*Exchange-gated (opt-in only, when the brief explicitly says exchange / FX / conversion / multicurrency / currency pair):*
+- **Currency Exchange retargeting (lifestyle-led)**: `digital_nomad` or `freelancer` for lifestyle context (cafe, couch, real people with phone). NEVER travel-themed — that suggests a trip campaign, not currency conversion
+- **Currency Exchange retargeting (UI-led)**: `product` (flat) — only when the brief specifically asks for the screen to be the focal point
 - **Currency Exchange awareness**: pain-first imagery from `digital_nomad`, OR `product_mockup` for problem-solution framing where the phone-shaped silhouette adds context
 - **Currency Exchange hero / fullbg**: `product_mockup` matched to the correct currency pair AND language variant (`_PTBR` for BR, `_ES` for AR — see `figma/images.json` -> `currency_pair_routing`)
-- **PIX (AR → BR)**: `traveler` imagery is correct — campaign IS about traveling to Brazil
-- **Infinite**: `places` or `traveler` — aspirational
-- **Freelance SMB**: `freelancer` only — never generic fintech stock
+
+> If a brief is ambiguous, ALWAYS default to the lifestyle pool and ask the user before using `product` or `product_mockup`. Never assume "exchange" because the product happens to support FX.
 
 **Text legibility on fullbg layouts** (mandatory):
 - Default title color is dark teal — works on light backgrounds, fails on lifestyle photos
@@ -612,30 +632,37 @@ Swap store badges using `storesInst.swapComponent(comp)` — never recreate manu
 
 Read all image data from `figma/images.json`.
 
-The Images page (`145:5528`) is organized into **six sections** — these are the only valid image sources for any agent:
+The Images page (`145:5528`) is organized into **six sections** split into two pools:
 
+**Default lifestyle pool — use these for any standard creative:**
 1. **Traveler** (`939:42810`) — lifestyle travel, airports, beaches, destinations
 2. **Places** (`939:42955`) — destinations, cities, venues, lifestyle locations
 3. **Freelancer** (`939:42882`) — freelancers, SMB owners, home offices
 4. **Digital nomad** (`939:42984`) — remote workers, laptops in cafes
+
+**Exchange-gated pool — opt-in only:**
 5. **Product Mockup** (`939:43135`) — phone-mockup previews of the exchange flow (6 currency pairs)
 6. **Product** (`939:43104`) — flat 1:1 product images of the exchange flow (6 currency pairs, `_PTBR` / `_ES` variants)
 
 > The legacy `exchange_campaign` section no longer exists. Exchange imagery now lives in `Product` (flat) and `Product Mockup` (phone-shaped). Free-floating editable mockup wrappers/screens that exist outside these sections must NOT be used.
 
-Selection rules by market (also in `figma/images.json` -> `selection_rules`):
-- BR campaigns: `digital_nomad` or `freelancer`
-- AR campaigns: `traveler` or `digital_nomad`
-- Exchange retargeting (in-feed): `product` (flat) — match the correct currency pair + language variant (`_PTBR` for BR, `_ES` for AR)
-- Exchange hero / fullbg: `product_mockup` — same six currency pairs, phone-frame artifact baked in
+**Exchange gate** — only pull from `product` or `product_mockup` when the brief EXPLICITLY mentions one of: currency exchange, FX, conversion, multicurrency, or names a currency pair (BRL→USD, ARS→EUR, etc.). For everything else (PIX, Infinite, Freelance SMB, brand awareness, retention, lifecycle, social, generic ads), use the lifestyle pool.
+
+Selection rules by campaign (also in `figma/images.json` -> `selection_rules`):
+- BR campaigns (default): `digital_nomad` or `freelancer`
+- AR campaigns (default): `traveler` or `digital_nomad`
+- PIX (AR → BR): `traveler`
 - Infinite: `places` or `traveler`
 - Freelance SMB: `freelancer`
-- PIX (AR → BR): `traveler`
+- Brand awareness / retention / lifestyle / social: any of the four lifestyle categories
+- Exchange retargeting (only when gate is open): default to `digital_nomad` or `freelancer` for lifestyle context. Use `product` (flat) ONLY if the brief explicitly asks the screen to be the hero. Match `_PTBR` for BR, `_ES` for AR.
+- Exchange hero / fullbg (only when gate is open): `product_mockup` matched to the currency pair and language variant. See `figma/images.json` -> `currency_pair_routing`.
 
-For exchange creatives, use `figma/images.json` -> `currency_pair_routing` to look up the exact image node by currency pair (e.g., BRL→USD flat = `560:23288`, mockup = `562:23315`).
+For exchange creatives, use `figma/images.json` -> `currency_pair_routing` to look up the exact image node by currency pair (e.g., BRL→USD flat = `560:23288`, mockup = `562:23315`). Do NOT consult this map for non-exchange briefs.
 
 **Critical rules**:
 - All images come exclusively from one of the six sections on page `145:5528` — never external URLs, never free-floating canvas frames
+- Default to the lifestyle pool. Product / Product Mockup are opt-in only. When in doubt, ask before using them.
 - Use `findOne()` by exact name — never `findAll()` on the Images page (200+ nodes = timeout)
 - Cache the image hash immediately after retrieval — never re-fetch in the same task
 - Match the language variant: `_PTBR` images go in BR creatives, `_ES` images go in AR creatives — never cross-pollinate
