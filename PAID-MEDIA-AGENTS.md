@@ -322,8 +322,9 @@ TESTING HYPOTHESIS: [what this set is designed to learn]
 **Default output format**:
 ```
 Visual Concept: [what the image must communicate before the viewer reads anything]
-Image Category: [Traveler / Digital Nomad / Places / Freelancer + why] — read from figma/images.json
+Image Category: [Traveler / Places / Freelancer / Digital nomad / Product / Product Mockup + why] — read from figma/images.json
 Layout: [fullbg or mockup + rationale] — read layout types from figma/components.json
+Currency Pair (if exchange): [BRL→USD / BRL→EUR / BRL→ARS / ARS→USD / ARS→EUR / ARS→BRL] — must match `figma/images.json` -> `currency_pair_routing` for correct language variant
 Visual Tension: [how image and headline interact — contrast or reinforce?]
 Visual Brief: [one sentence for the designer]
 Design System Check: [any violations against tokens/brand.json]
@@ -331,27 +332,44 @@ Red Flags: [what to avoid]
 QA Sign-off: [yes / not yet — with specific blocker]
 ```
 
+**Image library — six sources of truth (`figma/images.json`)**:
+
+The Images page (`145:5528`) contains six named sections — these are the ONLY valid image sources for any agent. Free-floating canvas frames, external URLs, or images from any other Figma file are NOT permitted.
+
+| Category | Section ID | When to use |
+|---|---|---|
+| `traveler` | `939:42810` | PIX, Infinite-aspirational, on-the-go lifestyle. NEVER for exchange retargeting. |
+| `places` | `939:42955` | Infinite premium / destination-driven. Coffee shops, hotels, urban scenes. |
+| `freelancer` | `939:42882` | Freelance SMB campaigns — laptops, home offices, real workers. Never generic fintech stock. |
+| `digital_nomad` | `939:42984` | Bridges traveler + freelancer. Use for warm, relatable urban exchange retargeting. |
+| `product` | `939:43104` | Flat 1:1 product screens of the exchange flow. Use when the UI itself is the focal point. Variants: `_PTBR` (BR) / `_ES` (AR). |
+| `product_mockup` | `939:43135` | Phone-mockup previews of the exchange flow. Use as hero/fullbg image when a phone-shaped silhouette adds context. Same six currency pairs as `product`, in mockup form. |
+
 **Red Flags (always call out)**:
 - Any image that could belong to any other fintech
 - Headlines that describe the app instead of the feeling
 - CTA that doesn't close the promise of the headline
 - Infinite copy mixed with core AstroPay visuals (or vice versa)
+- Image not pulled from one of the six categories above (legacy `exchange_campaign` no longer exists)
+- Exchange creative using the wrong language variant (`_PTBR` in an AR ad, or `_ES` in a BR ad)
 
 **Layout selection guide** (when to use which design template):
 | Design | Style | Best for |
 |---|---|---|
 | `design_1` | Mockup-style — image as centered card on teal background | Branded promotional, hierarchy text-first. NOTE: no CTA button + no disclaimer node by default |
-| `design_2` | Editorial split — image on top half, text/CTA on solid teal bottom | Feed-style, image-led storytelling |
+| `design_2` | Editorial split — image on top half, text/CTA on solid teal bottom | Feed-style, image-led storytelling. NOTE: 16:9 `design_2` was rebuilt 2026-04-30 — image_node must be discovered at runtime via `findOne(n => n.name === '#Image')` |
 | `design_3` | Standard variation | A/B testing alternative |
 | `design_4` | Fullbg — image fills entire canvas with gradients + overlays | **DEFAULT for currency exchange retargeting**. Performance ads with strong imagery, lifestyle immersion |
-| `design_5`, `design_6` | Additional fullbg/standard variations | A/B testing alternatives |
+| `design_5` | Fullbg variation | A/B testing alternative. 4:5 `design_5` was added 2026-04-30. NOTE: **16:9 has no `design_5`** — variants are 1, 2, 3, 4, 6 |
+| `design_6` | Standard variation (16:9 only) | A/B testing alternative |
 
 **Image strategy by campaign** (avoid context drift):
-- **Currency Exchange retargeting**: lifestyle people with phone in everyday context (cafe, couch). NEVER travel-themed (Paris cafe, airport, suitcase) — suggests trip campaign, not currency conversion
-- **Currency Exchange awareness**: pain-first, doubt-driven imagery. Mockups acceptable for problem-solution framing
-- **PIX (AR → BR)**: traveler imagery is correct — campaign IS about traveling to Brazil
-- **Infinite**: aspirational places or premium traveler
-- **Freelance SMB**: freelancer-specific shots — laptop, home office, never generic fintech stock
+- **Currency Exchange retargeting**: `digital_nomad` or `freelancer` for lifestyle context (cafe, couch, real people with phone), OR `product` for clean in-feed creatives where the UI is the focal point. NEVER travel-themed — that suggests a trip campaign, not currency conversion
+- **Currency Exchange awareness**: pain-first imagery from `digital_nomad`, OR `product_mockup` for problem-solution framing where the phone-shaped silhouette adds context
+- **Currency Exchange hero / fullbg**: `product_mockup` matched to the correct currency pair AND language variant (`_PTBR` for BR, `_ES` for AR — see `figma/images.json` -> `currency_pair_routing`)
+- **PIX (AR → BR)**: `traveler` imagery is correct — campaign IS about traveling to Brazil
+- **Infinite**: `places` or `traveler` — aspirational
+- **Freelance SMB**: `freelancer` only — never generic fintech stock
 
 **Text legibility on fullbg layouts** (mandatory):
 - Default title color is dark teal — works on light backgrounds, fails on lifestyle photos
@@ -564,14 +582,16 @@ Never hardcode node IDs in prompts or code. Always resolve them from `figma/comp
 Read all template data from `figma/components.json` -> `ad_templates`.
 
 Default layout: `design_1` unless brief specifies otherwise.
-Fullbg layouts: `design_4` or `design_5` (image fills entire frame).
+Fullbg layouts: `design_4` (all formats) and `design_5` (9:16, 1:1, 4:5 — NOT 16:9).
 
-| Format | Dimensions | Campaign use |
-|---|---|---|
-| 16:9 | 1920x1080 | YouTube / Display |
-| 9:16 | 1080x1920 | Stories / Reels |
-| 1:1 | 1080x1080 | Feed square |
-| 4:5 | 1080x1350 | Feed portrait |
+| Format | Dimensions | Campaign use | Available layouts |
+|---|---|---|---|
+| 16:9 | 1920x1080 | YouTube / Display | d1, d2, d3, d4 (fullbg), d6 |
+| 9:16 | 1080x1920 | Stories / Reels | d1, d2, d3, d4 (fullbg), d5 (fullbg) |
+| 1:1 | 1080x1080 | Feed square | d1, d2, d3, d4 (fullbg), d5 (fullbg) |
+| 4:5 | 1080x1350 | Feed portrait | d1, d2, d3, d4 (fullbg), d5 (fullbg) |
+
+Beyond paid media, the `inapp` set (`789:1690`, 6 layouts: Illustration, Image, Full Image, Promo/Cobrand, Cashback Promo, Layout6) and `newsletter_illustration` set (`789:1786`, 8 use cases incl. Spin) are also exposed in `components.json` -> `ad_templates` for in-app messaging and email hero illustrations. Brand identity assets (App Icon, ISO, Logotype, Wordmark) live under `components.json` -> `brand_assets`.
 
 ---
 
@@ -592,17 +612,33 @@ Swap store badges using `storesInst.swapComponent(comp)` — never recreate manu
 
 Read all image data from `figma/images.json`.
 
+The Images page (`145:5528`) is organized into **six sections** — these are the only valid image sources for any agent:
+
+1. **Traveler** (`939:42810`) — lifestyle travel, airports, beaches, destinations
+2. **Places** (`939:42955`) — destinations, cities, venues, lifestyle locations
+3. **Freelancer** (`939:42882`) — freelancers, SMB owners, home offices
+4. **Digital nomad** (`939:42984`) — remote workers, laptops in cafes
+5. **Product Mockup** (`939:43135`) — phone-mockup previews of the exchange flow (6 currency pairs)
+6. **Product** (`939:43104`) — flat 1:1 product images of the exchange flow (6 currency pairs, `_PTBR` / `_ES` variants)
+
+> The legacy `exchange_campaign` section no longer exists. Exchange imagery now lives in `Product` (flat) and `Product Mockup` (phone-shaped). Free-floating editable mockup wrappers/screens that exist outside these sections must NOT be used.
+
 Selection rules by market (also in `figma/images.json` -> `selection_rules`):
 - BR campaigns: `digital_nomad` or `freelancer`
 - AR campaigns: `traveler` or `digital_nomad`
-- Exchange campaign: `exchange_campaign` mockups — always use the correct currency pair node
+- Exchange retargeting (in-feed): `product` (flat) — match the correct currency pair + language variant (`_PTBR` for BR, `_ES` for AR)
+- Exchange hero / fullbg: `product_mockup` — same six currency pairs, phone-frame artifact baked in
 - Infinite: `places` or `traveler`
 - Freelance SMB: `freelancer`
+- PIX (AR → BR): `traveler`
+
+For exchange creatives, use `figma/images.json` -> `currency_pair_routing` to look up the exact image node by currency pair (e.g., BRL→USD flat = `560:23288`, mockup = `562:23315`).
 
 **Critical rules**:
-- All images come exclusively from page `145:5528` — never use external URLs
-- Use `findOne()` by exact name — never `findAll()` on the Images page (170+ nodes = timeout)
-- Cache the image hash immediately after retrieval — never re-fetch
+- All images come exclusively from one of the six sections on page `145:5528` — never external URLs, never free-floating canvas frames
+- Use `findOne()` by exact name — never `findAll()` on the Images page (200+ nodes = timeout)
+- Cache the image hash immediately after retrieval — never re-fetch in the same task
+- Match the language variant: `_PTBR` images go in BR creatives, `_ES` images go in AR creatives — never cross-pollinate
 
 ---
 
@@ -832,7 +868,9 @@ inst.x = positionX;
 inst.y = positionY;
 ```
 
-Layout convention inside each section: rows by format (1:1 → 4:5 → 9:16 → 16:9 top-to-bottom), columns by design number ascending (d1 → d1_2 → d2 → d3 → d4 → d5 → d6 left-to-right). Y per row: `0`, `1380`, `3030`, `5250`. X spacing: `1280` for 1:1/4:5/9:16, `2120` for 16:9.
+Layout convention inside each section: rows by format (1:1 → 4:5 → 9:16 → 16:9 top-to-bottom), columns by design number ascending (d1 → d2 → d3 → d4 → d5 → d6 left-to-right). Y per row: `0`, `1380`, `3030`, `5250`. X spacing: `1280` for 1:1/4:5/9:16, `2120` for 16:9.
+
+> Variant matrix per format (post 2026-04-30 redesign): 16:9 → d1, d2, d3, d4, d6 (no d5). 9:16 → d1–d5. 1:1 → d1–d5 (legacy `design_1_2` removed). 4:5 → d1–d5.
 
 **Layout-specific quirks** — handle gracefully, don't crash:
 
@@ -840,5 +878,8 @@ Layout convention inside each section: rows by format (1:1 → 4:5 → 9:16 → 
 - `design_1` has **no disclaimer node** — `findAll(t => t.characters.startsWith('AstroPay Global'))` returns nothing, skip silently
 - Default disclaimer text in templates is **ES-AR** — for BR campaigns, override to PT-BR (exact text from BRAND.md § 5)
 - `design_2` 9:16 has empty teal space at the bottom — known quirk of that template, not a bug
+- 16:9 `design_2` was rebuilt 2026-04-30 (new node `937:20679`) — `image_node` is not pre-mapped; always discover the image slot via `findOne(n => n.name === '#Image')`
+- 16:9 has **no `design_5`** — a brief asking for "16:9 design 5" should be redirected to `design_4` (fullbg) or `design_6` (standard)
+- 4:5 `design_5` was added 2026-04-30 — fullbg type, image_node discovered at runtime
 
 **Screenshot may be stale after writes** — Figma's render can lag the data layer. Verify success via `componentProperties` and `inst.findOne(...).characters` reads, not just visual screenshots.

@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "AstroPay Figma component node IDs — live-extracted from Figma source",
-    "last_updated": "2026-04-27",
+    "last_updated": "2026-04-30",
     "file_key": "6kHkKTxW1ygct6vTQsIGF1",
     "file_url": "https://www.figma.com/design/6kHkKTxW1ygct6vTQsIGF1/Claude-lab",
     "source_pages": {
@@ -21,10 +21,11 @@
     "sync": "Manual — re-extract via Figma MCP after every design system publish",
     "page_hashes": {
       "id_visual": "1f14c0db35a3",
-      "design_components": "38aa5148346c",
-      "images": "8b93ffe0b093"
+      "design_components": "stale",
+      "images": "stale"
     },
-    "sync_note": "Auto-detected change on 2026-04-27 — review and update manually if needed"
+    "sync_note": "Manual update on 2026-04-30 — Design Components page reorganized: 16:9 Design 5 removed and Design 2 replaced with new node; 4:5 Design 5 added; 1:1 design_1_2 removed; InApp expanded to 6 layouts (Layout6 added); Newsletters expanded with Spin variant; new brand_assets sections (App Icon, ISO, Logotype, Wordmark) and backgrounds section now exposed. Images page restructured into 6 categories (Traveler, Places, Freelancer, Digital nomad, Product, Product Mockup); legacy exchange_campaign section removed.",
+    "runtime_rule": "image_node values below are documentation only — at runtime, ALWAYS resolve image slots via findOne(n => n.name === '#Image') after creating or cloning the template instance. Property keys (Title#xxx, Subheadline#xxx, Gradient/Overlay BOOLEAN toggles) vary per format and must be discovered at runtime via Object.keys(inst.componentProperties)."
   },
   "components": {
     "title": {
@@ -113,10 +114,69 @@
       }
     }
   },
+  "backgrounds": {
+    "_note": "Backgrounds section on Design Components page — reference layers for #Image / solid color / image+gradient setups",
+    "section_node": "7:76529",
+    "variants": {
+      "image": {
+        "node": "7:76530",
+        "label": "#Image",
+        "use": "Editable image slot — placeholder reference"
+      },
+      "solid_color": {
+        "node": "7:76531",
+        "label": "Solid color",
+        "use": "Brand-color flat background"
+      },
+      "image_gradient": {
+        "node": "7:76533",
+        "label": "Image + Gradient",
+        "use": "Image with brand gradient overlay — fullbg ad starting point"
+      }
+    }
+  },
+  "brand_assets": {
+    "_note": "Brand identity assets (App Icon / ISO / Logotype / Wordmark). Use for newsletter illustration headers, onboarding emails, and brand-only creatives. Never modify fills inside these instances except for fullbg color overrides documented in PAID-MEDIA-AGENTS.md.",
+    "app_icon": {
+      "section_node": "876:29924",
+      "set_node": "876:29925",
+      "variants": {
+        "light": "876:29926",
+        "dark": "876:29930"
+      }
+    },
+    "iso": {
+      "section_node": "876:29934",
+      "set_node": "876:29935",
+      "variants": {
+        "color": "876:29936",
+        "black": "876:29940",
+        "alabaster": "876:29945"
+      }
+    },
+    "logotype": {
+      "section_node": "876:29949",
+      "set_node": "876:29950",
+      "variants": {
+        "color": "876:29951",
+        "black": "876:29956",
+        "white": "876:29961"
+      }
+    },
+    "wordmark": {
+      "section_node": "876:29966",
+      "set_node": "876:29967",
+      "variants": {
+        "color": "876:29968",
+        "black": "876:29970",
+        "alabaster": "876:29972"
+      }
+    }
+  },
   "ad_templates": {
-    "_note": "Default = Layout=Design 1. Design 4/5 = fullbg (image fills entire frame, no mockup).",
+    "_note": "Default = Layout=Design 1. Design 4/5 = fullbg (image fills entire frame, no mockup). 16:9 has no Design 5 — variants are 1, 2, 3, 4, 6.",
     "16:9": {
-      "label": "Google/1920x1080",
+      "label": "Paid-media/1920x1080",
       "dimensions": "1920x1080",
       "campaign_use": "YouTube / Display",
       "set_node": "7:77762",
@@ -127,24 +187,20 @@
           "type": "standard"
         },
         "design_2": {
+          "node": "937:20679",
+          "image_node": null,
+          "type": "standard",
+          "_note": "Replaced 2026-04-30 — new node ID. image_node must be discovered at runtime via findOne(n => n.name === '#Image')."
+        },
+        "design_3": {
           "node": "7:77777",
           "image_node": "7:77778",
           "type": "standard"
         },
-        "design_3": {
-          "node": "7:77789",
-          "image_node": "7:77790",
-          "type": "standard"
-        },
         "design_4": {
-          "node": "7:77803",
-          "image_node": "7:77804",
-          "type": "fullbg"
-        },
-        "design_5": {
           "node": "7:77817",
           "image_node": "7:77818",
-          "type": "standard"
+          "type": "fullbg"
         },
         "design_6": {
           "node": "7:77829",
@@ -154,7 +210,7 @@
       }
     },
     "9:16": {
-      "label": "Google/1080x1920",
+      "label": "Paid-media/1080x1920",
       "dimensions": "1080x1920",
       "campaign_use": "Stories / Reels",
       "set_node": "7:77842",
@@ -186,7 +242,7 @@
       }
     },
     "1:1": {
-      "label": "Google/1080x1080",
+      "label": "Paid-media/1080x1080",
       "dimensions": "1080x1080",
       "campaign_use": "Feed square",
       "set_node": "7:77962",
@@ -195,12 +251,6 @@
           "node": "7:77963",
           "image_node": "7:77964",
           "image_parent": "7:77968",
-          "type": "standard"
-        },
-        "design_1_2": {
-          "node": "7:77974",
-          "image_node": "7:77975",
-          "image_parent": "7:77984",
           "type": "standard"
         },
         "design_2": {
@@ -226,7 +276,7 @@
       }
     },
     "4:5": {
-      "label": "Google/1080x1350",
+      "label": "Paid-media/1080x1350",
       "dimensions": "1080x1350",
       "campaign_use": "Feed portrait",
       "set_node": "7:78033",
@@ -251,16 +301,84 @@
           "node": "7:78075",
           "image_node": "7:78076",
           "type": "fullbg"
+        },
+        "design_5": {
+          "node": "7:78090",
+          "image_node": null,
+          "type": "fullbg",
+          "_note": "Added 2026-04-30. image_node must be discovered at runtime via findOne(n => n.name === '#Image')."
         }
       }
     },
     "inapp": {
       "label": "InApp",
-      "set_node": "789:1690"
+      "set_node": "789:1690",
+      "_note": "Lifecycle in-app messages — 6 layouts. Use Promo/Cobrand and Cashback Promo for promo flows; Layout6 added 2026-04-30.",
+      "layouts": {
+        "illustration": {
+          "node": "789:1691",
+          "label": "Layout=Illustration"
+        },
+        "image": {
+          "node": "789:1700",
+          "label": "Layout=Image"
+        },
+        "full_image": {
+          "node": "789:1709",
+          "label": "Layout=Full Image"
+        },
+        "promo_cobrand": {
+          "node": "789:1716",
+          "label": "Layout=Promo / Cobrand"
+        },
+        "cashback_promo": {
+          "node": "789:1724",
+          "label": "Layout=Cashback Promo"
+        },
+        "layout6": {
+          "node": "937:29574",
+          "label": "Layout=Layout6"
+        }
+      }
     },
     "newsletter_illustration": {
-      "label": "Newsletters-Illustration",
-      "set_node": "789:1786"
+      "label": "Newsletters - Illustration",
+      "set_node": "789:1786",
+      "_note": "Newsletter hero illustration — 8 use cases. Spin variant added 2026-04-30. 'Astronaunt' is intentionally spelled this way in the source file.",
+      "use_cases": {
+        "identity": {
+          "node": "789:1787",
+          "label": "Use case=Identity"
+        },
+        "card": {
+          "node": "789:1790",
+          "label": "Use case=Card"
+        },
+        "email": {
+          "node": "789:1826",
+          "label": "Use case=Email"
+        },
+        "exchange": {
+          "node": "789:1829",
+          "label": "Use case=Exchange"
+        },
+        "kyc": {
+          "node": "789:1832",
+          "label": "Use case=KYC"
+        },
+        "completed": {
+          "node": "789:1835",
+          "label": "Use case=Completed"
+        },
+        "astronaut": {
+          "node": "789:1871",
+          "label": "Use case=Astronaunt"
+        },
+        "spin": {
+          "node": "789:1932",
+          "label": "Use case=Spin"
+        }
+      }
     }
   },
   "frame_layers": {
