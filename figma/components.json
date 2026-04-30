@@ -21,10 +21,10 @@
     "sync": "Manual — re-extract via Figma MCP after every design system publish",
     "page_hashes": {
       "id_visual": "1f14c0db35a3",
-      "design_components": "stale",
-      "images": "stale"
+      "design_components": "e2355a02cd63",
+      "images": "8ecadf0fe159"
     },
-    "sync_note": "Manual update on 2026-04-30 — Design Components page reorganized: 16:9 Design 5 removed and Design 2 replaced with new node; 4:5 Design 5 added; 1:1 design_1_2 removed; InApp expanded to 6 layouts (Layout6 added); Newsletters expanded with Spin variant; new brand_assets sections (App Icon, ISO, Logotype, Wordmark) and backgrounds section now exposed. Images page restructured into 6 categories (Traveler, Places, Freelancer, Digital nomad, Product, Product Mockup); legacy exchange_campaign section removed.",
+    "sync_note": "Auto-detected change on 2026-04-30 — review and update manually if needed",
     "runtime_rule": "image_node values below are documentation only — at runtime, ALWAYS resolve image slots via findOne(n => n.name === '#Image') after creating or cloning the template instance. Property keys (Title#xxx, Subheadline#xxx, Gradient/Overlay BOOLEAN toggles) vary per format and must be discovered at runtime via Object.keys(inst.componentProperties)."
   },
   "components": {
