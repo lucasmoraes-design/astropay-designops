@@ -55,6 +55,12 @@ For every email request, produce:
 - Footer: "Unite a nuestra comunidad y descubrí todo lo que AstroPay tiene para vos" + social links + legal footer
 - Legal line: "This email was sent to you by AstroPay. By using our services, you agree to our customer agreements. © AstroPay 2025. All rights reserved."
 
+**Hero illustration / image source — pick one of the following**:
+- **Newsletter illustration** (`figma/components.json` -> `ad_templates.newsletter_illustration`) — branded vector illustrations matched to the email's purpose. Use cases available: `identity`, `card`, `email`, `exchange`, `kyc`, `completed`, `astronaut`, `spin`. Choose by email topic — never default to `astronaut` for everything.
+- **Photographic hero** (`figma/images.json` -> `categories`) — pull from one of the six sections (`traveler`, `places`, `freelancer`, `digital_nomad`, `product`, `product_mockup`). Match category to product/campaign per the same rules used by paid media.
+- For Infinite emails, prefer `newsletter_illustration` use cases (premium, illustration-led) or `places` photography. Never use `traveler` mockup-heavy imagery for Infinite — it reads as core.
+- For currency-exchange emails, use `product` (flat) for in-body content and `product_mockup` for hero — match the language variant (`_PTBR` for BR sends, `_ES` for AR sends).
+
 **Braze-specific rules**
 - Use Liquid tags for personalization: `{{ ${first_name} }}`, `{{ custom_attribute.${last_exchange_currency} }}`
 - Subject line: 35–45 characters (preview on mobile)

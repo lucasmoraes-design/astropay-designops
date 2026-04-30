@@ -23,7 +23,8 @@ Every response draws from the knowledge files in this repository. Never invent b
 | `PAID-MEDIA-AGENTS.md` | Agents + Figma production rules | Paid media or Figma tasks |
 | `EMAIL-AGENTS.md` | Email agents + Braze config | Email marketing tasks |
 | `tokens/brand.json` | Design tokens — colors, typography | Visual or design system reference |
-| `figma/components.json` | Figma node IDs, templates, variants | Figma production tasks |
+| `figma/components.json` | Figma node IDs, templates, variants, brand assets | Figma production tasks |
+| `figma/images.json` | Image library — six categories, currency-pair routing | Any task that selects imagery |
 
 ---
 
@@ -65,3 +66,4 @@ No agent pipeline — follow the production workflow in `PAID-MEDIA-AGENTS.md` �
 5. **Figma: never assume success** — always verify with a screenshot after production
 6. **Agent conflicts** — @guardian and @email-guardian have final precedence
 7. **Tokens and node IDs** — always read from `tokens/brand.json` and `figma/components.json`, never from memory
+8. **Image library sources of truth** — every image used by ANY agent (paid media, email, in-app) must come from one of the six sections of the Images page (`145:5528`): **Traveler, Places, Freelancer, Digital nomad, Product Mockup, Product**. No external URLs. No free-floating canvas frames. No images from any other Figma file or page. Resolve image node IDs from `figma/images.json`, not from memory.
