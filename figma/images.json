@@ -7,10 +7,11 @@
     "page_url": "https://www.figma.com/design/6kHkKTxW1ygct6vTQsIGF1/Claude-lab?node-id=145-5528",
     "rules": [
       "ABSOLUTE RULE — every image used by any agent MUST come from one of the six sections on this page: Traveler, Places, Freelancer, Digital nomad, Product Mockup, Product. No external URLs. No free-floating canvas frames. No images from any other Figma file or page.",
+      "DEFAULT POOL — for any standard paid media creative, pick from the four lifestyle categories ONLY: Traveler, Places, Freelancer, Digital nomad. These cover ~95% of briefs (PIX, Infinite, Freelance SMB, brand awareness, retention, lifecycle, social, etc.).",
+      "EXCHANGE GATE — Product and Product Mockup are OPT-IN ONLY. Use them ONLY when the brief explicitly mentions currency exchange, FX, conversion, multicurrency, or names a currency pair (e.g., BRL→USD, ARS→EUR). If the brief does not mention any of these, do NOT pick from Product or Product Mockup, even if they technically fit the format. When in doubt, default to a lifestyle category and ask the user before reaching for Product/Product Mockup.",
       "Never use findAll() on this page (200+ nodes = timeout) — always findOne() by exact name.",
       "Image must match the campaign category — see selection_rules below.",
-      "Cache the imageHash immediately after retrieval — never re-fetch in the same task.",
-      "Product and Product Mockup are exchange-campaign sources only. Use Product (flat 1:1 product images) for in-feed creatives where the screen is shown clean; use Product Mockup (full mockup previews) for hero / fullbg layouts where a phone-like artifact is desired."
+      "Cache the imageHash immediately after retrieval — never re-fetch in the same task."
     ],
     "page_hashes": {
       "id_visual": "1f14c0db35a3",
@@ -105,9 +106,10 @@
     "product": {
       "section_id": "939:43104",
       "section_name": "Product",
-      "description": "Flat 1:1 product images of the AstroPay exchange flow per language pair. Use for in-feed creatives where the screen is the focal point and no phone mockup is desired. Variants: _PTBR (Brazilian Portuguese UI) and _ES (Spanish UI).",
+      "description": "EXCHANGE-ONLY. Flat 1:1 product images of the AstroPay exchange flow per language pair. Six images covering BRL→USD/EUR/ARS in PT-BR and ARS→USD/EUR/BRL in ES.",
       "image_count": 6,
-      "_use": "Use these instead of Product Mockup whenever the design calls for a clean, flat exchange screen as image content (e.g., 1:1 design_2, 4:5 design_3, in-app illustration headers).",
+      "_use_rule": "Opt-in only. Use ONLY when the brief explicitly mentions currency exchange, FX, conversion, multicurrency, or names a currency pair. Never use as a generic product shot for non-exchange briefs (PIX, Infinite GTM, brand awareness, Freelance SMB, lifecycle, etc.).",
+      "_use_when_triggered": "Once the exchange gate is open, use Product (flat) when the brief asks for a clean exchange screen as content with no phone silhouette (e.g., 1:1 design_2 in-feed retargeting, in-app illustration headers).",
       "by_currency_pair": {
         "brl_to_usd_ptbr": { "name": "exchange-brl-to-usd_PTBR", "id": "560:23288" },
         "brl_to_pesos_ptbr": { "name": "exchange-brl-to-pesos_PTBR", "id": "560:23287" },
@@ -120,9 +122,10 @@
     "product_mockup": {
       "section_id": "939:43135",
       "section_name": "Product Mockup",
-      "description": "Mockup-style previews of the AstroPay exchange flow — phone-frame artifact baked in. Use as image content for fullbg layouts (design_4 / design_5) where the mockup serves as the hero visual. Same six currency pairs as Product, in mockup form.",
+      "description": "EXCHANGE-ONLY. Phone-mockup previews of the AstroPay exchange flow. Same six currency pairs as Product, with the phone-frame artifact baked in.",
       "image_count": 6,
-      "_use": "Use for hero/fullbg layouts (design_4, design_5) and for Product Mockup retargeting creatives where the phone-shaped silhouette adds context. For clean in-feed flat images, use the Product section instead.",
+      "_use_rule": "Opt-in only. Use ONLY when the brief explicitly mentions currency exchange, FX, conversion, multicurrency, or names a currency pair. Never use as generic mockup imagery for non-exchange briefs.",
+      "_use_when_triggered": "Once the exchange gate is open, use Product Mockup for hero / fullbg layouts (design_4, design_5) where the phone-shaped silhouette adds context. For clean in-feed flat images, use Product instead.",
       "by_currency_pair": {
         "brl_to_usd": { "name": "exchange-brl-to-usd 1", "id": "562:23315" },
         "brl_to_pesos": { "name": "exchange-brl-to-pesos 1", "id": "562:23314" },
@@ -134,16 +137,19 @@
     }
   },
   "selection_rules": {
+    "_default_pool": "Unless the brief explicitly asks for an exchange / FX / multicurrency creative, pick from these four lifestyle categories ONLY: traveler, places, freelancer, digital_nomad. Product and Product Mockup are OFF-LIMITS by default.",
     "BR campaigns": "digital_nomad or freelancer — warm, relatable, urban",
     "AR campaigns": "traveler or digital_nomad — aspirational, on-the-go",
-    "Exchange (retargeting)": "product (flat) for in-feed creatives where the UI is the focal point, OR digital_nomad / freelancer lifestyle imagery for context-led layouts. NEVER travel-themed (Paris cafe, airport, suitcase) — that suggests a trip campaign, not currency conversion.",
-    "Exchange (awareness / hero)": "product_mockup — match the correct currency pair (brl_to_usd, ars_to_eur, etc.) and language variant (_PTBR for BR, _ES for AR)",
     "Infinite": "places or traveler — premium, destination-driven",
     "Freelance SMB": "freelancer — specific, not generic fintech stock",
-    "PIX (AR → BR)": "traveler imagery is correct — campaign IS about traveling to Brazil"
+    "PIX (AR → BR)": "traveler imagery is correct — campaign IS about traveling to Brazil",
+    "Brand awareness / lifestyle / retention / social": "pick from any of the four lifestyle categories that matches market and product. Never reach for Product or Product Mockup just because the format is square or vertical.",
+    "_exchange_gate": "The two rules below ONLY apply when the brief mentions currency exchange, FX, conversion, multicurrency, or names a currency pair (BRL→USD, ARS→EUR, etc.). If none of those triggers are present, ignore the exchange rules and use the lifestyle pool above.",
+    "Exchange (retargeting, in-feed)": "ONLY when triggered by the gate above. First choice: digital_nomad or freelancer for lifestyle context. Use product (flat) only if the brief specifically asks for the UI to be the hero. NEVER travel-themed (Paris cafe, airport, suitcase) — that suggests a trip campaign.",
+    "Exchange (awareness / hero / fullbg)": "ONLY when triggered by the gate above. Use product_mockup matched to the correct currency pair (brl_to_usd, ars_to_eur, etc.) and language variant (_PTBR for BR, _ES for AR)."
   },
   "currency_pair_routing": {
-    "_note": "When the brief specifies a currency pair, use this map to pick the correct image from product or product_mockup.",
+    "_note": "USE ONLY when the brief explicitly mentions currency exchange, FX, conversion, or names a currency pair. Do not consult this map for non-exchange briefs.",
     "BR market (PT-BR)": {
       "BRL → USD": { "flat": "560:23288", "mockup": "562:23315" },
       "BRL → EUR": { "flat": "560:23286", "mockup": "562:23313" },
