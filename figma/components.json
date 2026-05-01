@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "AstroPay Figma component node IDs — live-extracted from Figma source",
-    "last_updated": "2026-04-30",
+    "last_updated": "2026-05-01",
     "file_key": "6kHkKTxW1ygct6vTQsIGF1",
     "file_url": "https://www.figma.com/design/6kHkKTxW1ygct6vTQsIGF1/Claude-lab",
     "source_pages": {
@@ -21,10 +21,10 @@
     "sync": "Manual — re-extract via Figma MCP after every design system publish",
     "page_hashes": {
       "id_visual": "1f14c0db35a3",
-      "design_components": "e2355a02cd63",
+      "design_components": "0ee7cc98236e",
       "images": "8ecadf0fe159"
     },
-    "sync_note": "Auto-detected change on 2026-04-30 — review and update manually if needed",
+    "sync_note": "Auto-detected change on 2026-05-01 — review and update manually if needed",
     "runtime_rule": "image_node values below are documentation only — at runtime, ALWAYS resolve image slots via findOne(n => n.name === '#Image') after creating or cloning the template instance. Property keys (Title#xxx, Subheadline#xxx, Gradient/Overlay BOOLEAN toggles) vary per format and must be discovered at runtime via Object.keys(inst.componentProperties)."
   },
   "components": {
