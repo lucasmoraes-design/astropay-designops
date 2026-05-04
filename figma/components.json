@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "AstroPay Figma component node IDs — live-extracted from Figma source",
-    "last_updated": "2026-05-01",
+    "last_updated": "2026-05-04",
     "file_key": "6kHkKTxW1ygct6vTQsIGF1",
     "file_url": "https://www.figma.com/design/6kHkKTxW1ygct6vTQsIGF1/Claude-lab",
     "source_pages": {
@@ -24,7 +24,7 @@
       "design_components": "0ee7cc98236e",
       "images": "8ecadf0fe159"
     },
-    "sync_note": "Auto-detected change on 2026-05-01 — review and update manually if needed",
+    "sync_note": "2026-05-04 — Email marketing component library added (section 950:1972). New top-level key: email_templates. Twelve component groups: promo_email (6 sizes), headers (11 variants), text_layouts (8), cobranding_logos (22 partners), illustrations (8 use cases — distinct from in-app newsletter_illustration set 789:1786), ctas, menus, onboarding_cta, content_blocks, onboarding_headers, onboarding_horizontal, footers (3 languages × 2 styles).",
     "runtime_rule": "image_node values below are documentation only — at runtime, ALWAYS resolve image slots via findOne(n => n.name === '#Image') after creating or cloning the template instance. Property keys (Title#xxx, Subheadline#xxx, Gradient/Overlay BOOLEAN toggles) vary per format and must be discovered at runtime via Object.keys(inst.componentProperties)."
   },
   "components": {
@@ -136,7 +136,7 @@
     }
   },
   "brand_assets": {
-    "_note": "Brand identity assets (App Icon / ISO / Logotype / Wordmark). Use for newsletter illustration headers, onboarding emails, and brand-only creatives. Never modify fills inside these instances except for fullbg color overrides documented in PAID-MEDIA-AGENTS.md.",
+    "_note": "Brand identity assets (App Icon / ISO / Logotype / Wordmark). Cross-channel — used by paid media (fullbg layouts), in-app (illustration / promo_cobrand), and email (footers, onboarding headers). Never modify fills inside these instances except for fullbg color overrides documented in PAID-MEDIA-AGENTS.md or for white-on-dark fills in email dark-mode footers.",
     "app_icon": {
       "section_node": "876:29924",
       "set_node": "876:29925",
@@ -342,9 +342,9 @@
       }
     },
     "newsletter_illustration": {
-      "label": "Newsletters - Illustration",
+      "label": "Newsletters - Illustration (In-App)",
       "set_node": "789:1786",
-      "_note": "Newsletter hero illustration — 8 use cases. Spin variant added 2026-04-30. 'Astronaunt' is intentionally spelled this way in the source file.",
+      "_note": "IN-APP illustration set — 8 use cases. Used by the in-app `illustration` layout. For EMAIL illustrations, use `email_templates.illustrations` (950:2716) — DO NOT cross-reference. Spin variant added 2026-04-30. 'Astronaunt' is intentionally spelled this way in the source file.",
       "use_cases": {
         "identity": {
           "node": "789:1787",
@@ -381,6 +381,175 @@
       }
     }
   },
+  "email_templates": {
+    "_section_node": "950:1972",
+    "_section_label": "Email marketing",
+    "_note": "Email marketing component library — added 2026-05-04. Source of truth for ALL email work (lifecycle, promo, transactional, onboarding). NEVER reference the in-app `newsletter_illustration` set (789:1786) for email — use `email_templates.illustrations` (950:2716) instead. All subkeys below are independent component sets that compose into a full email.",
+    "promo_email": {
+      "set_node": "950:2162",
+      "label": "Newsletters - Promo email",
+      "_note": "Full promo email frame — 6 content sizes. Pick by total content density: XS (announcement / single CTA) → XXL (multi-section campaign). Default for cobrand and cashback campaigns is M or L.",
+      "content_sizes": {
+        "xxl": { "node": "950:2163", "height": 3991, "use": "Multi-section campaign — hero + 3-4 content blocks + footer" },
+        "xl":  { "node": "950:2196", "height": 3397, "use": "Multi-section — hero + 2-3 content blocks + footer" },
+        "l":   { "node": "950:2228", "height": 2890, "use": "Standard promo — hero + 2 content blocks + footer" },
+        "m":   { "node": "950:2260", "height": 2296, "use": "Single-purpose — hero + 1 content block + footer (default for most promos)" },
+        "s":   { "node": "950:2291", "height": 1747, "use": "Short promo — hero + CTA + footer" },
+        "xs":  { "node": "950:2321", "height": 1098, "use": "Announcement / micro-update — minimal hero + CTA + footer" }
+      }
+    },
+    "headers": {
+      "set_node": "950:2351",
+      "label": "Newsletters - Header",
+      "_note": "Email hero/header variants. Cobrand-named headers (Rappi, Uber) are partner-specific — only use with an active cobrand agreement (see @email-legal). Big 30% OFF / Big 30 CB / Repetition CB are promo-percentage headers — promo % must be a real, current value (no placeholders).",
+      "variants": {
+        "rappi":           { "node": "950:2352", "type": "cobrand",   "partner": "Rappi" },
+        "header7":         { "node": "950:2359", "type": "generic" },
+        "uber":            { "node": "950:2365", "type": "cobrand",   "partner": "Uber" },
+        "big_30_off":      { "node": "950:2369", "type": "promo_pct", "use": "Discount-led promo" },
+        "big_30_cb":       { "node": "950:2373", "type": "promo_pct", "use": "Cashback %-led promo" },
+        "repetition_cb":   { "node": "950:2378", "type": "promo_pct", "use": "Repeated cashback emphasis (visual rhythm)" },
+        "header_cta":      { "node": "950:2389", "type": "generic",   "use": "Header with embedded CTA" },
+        "cobrand_bottom":  { "node": "950:2402", "type": "cobrand",   "use": "Cobrand logo positioned at the bottom of header" },
+        "1_1":             { "node": "950:2407", "type": "generic",   "use": "Square 1:1 hero — for cropped or social-shared emails" },
+        "xs":              { "node": "950:2420", "type": "generic",   "use": "Minimal/short header — pair with promo_email content size XS" },
+        "cobrand_logos":   { "node": "950:2424", "type": "cobrand",   "use": "Multi-cobrand logo strip header" }
+      }
+    },
+    "text_layouts": {
+      "set_node": "950:2426",
+      "label": "Newsletters - Text Layout",
+      "_note": "Body text composition variants. Cobrand-named (Rappi, Uber) are partner-specific. Cashback / Big 30 CB / Big 30 OFF are promo-specific. `single_text` is the default body layout for non-promo emails.",
+      "variants": {
+        "rappi":           { "node": "950:2427", "type": "cobrand" },
+        "uber":            { "node": "950:2435", "type": "cobrand" },
+        "big_30_off":      { "node": "950:2443", "type": "promo_pct" },
+        "big_30_cb":       { "node": "950:2447", "type": "promo_pct" },
+        "single_text":     { "node": "950:2456", "type": "generic", "use": "Single column text — default body layout" },
+        "text_layout7":    { "node": "950:2459", "type": "generic" },
+        "cashback":        { "node": "950:2462", "type": "promo_pct", "use": "Cashback offer text block" },
+        "top_left_text":   { "node": "950:2467", "type": "generic", "use": "Left-aligned text block — pairs with right-aligned hero" }
+      }
+    },
+    "cobranding_logos": {
+      "set_node": "950:2470",
+      "label": "Newsletters - Cobranding",
+      "_note": "Partner brand logos. Listing here = the design system carries the asset; it does NOT mean AstroPay has permission to send a campaign with it. Every cobrand send requires an ACTIVE agreement covering AstroPay's use of the partner's brand assets — confirm via @email-legal before launch. Firing a stale cobrand creates legal exposure.",
+      "partners": {
+        "rappi":       "950:2471",
+        "uber":        "950:2477",
+        "ifood":       "950:2483",
+        "netflix":     "950:2487",
+        "wavee":       "950:2491",
+        "bonoxs":      "950:2495",
+        "wework":      "950:2499",
+        "livelo":      "950:2503",
+        "localiza":    "950:2515",
+        "1xbet":       "950:2519",
+        "arbet":       "950:2530",
+        "pedidosya":   "950:2536",
+        "tiendamia":   "950:2541",
+        "hypegames":   "950:2547",
+        "azul":        "950:2556",
+        "latam":       "950:2593",
+        "cabify":      "950:2607",
+        "turismocity": "950:2618",
+        "despegar":    "950:2623",
+        "decolar":     "950:2642",
+        "deel":        "950:2661",
+        "atendium":    "950:2668"
+      }
+    },
+    "ctas": {
+      "set_node": "950:2706",
+      "label": "Newsletters - Call to Action",
+      "_note": "Email-specific CTA component — alignment variants only. CTA color and shape inherit from `components.cta` (default `teal_rd`).",
+      "variants": {
+        "center": "950:2707",
+        "left":   "950:2710",
+        "right":  "950:2713"
+      }
+    },
+    "illustrations": {
+      "set_node": "950:2716",
+      "label": "Newsletters - Illustration (Email)",
+      "_note": "Email-specific illustration set — 8 use cases. Distinct component instances from the in-app `newsletter_illustration` set (789:1786) — DO NOT cross-reference. 'Astronaunt' is intentionally spelled this way in the source file.",
+      "use_cases": {
+        "identity":  "950:2717",
+        "card":      "950:2720",
+        "email":     "950:2756",
+        "exchange":  "950:2759",
+        "kyc":       "950:2762",
+        "completed": "950:2765",
+        "astronaut": "950:2801",
+        "spin":      "950:2862"
+      }
+    },
+    "menus": {
+      "set_node": "950:2914",
+      "label": "Newsletters - Menu",
+      "_note": "Top-of-email navigation — 4 styles (dark/light × with/without logo). Pair Dark with promo emails on dark hero variants; Light with onboarding/transactional emails. Logo variant adds the AstroPay wordmark inline.",
+      "variants": {
+        "menu_dark":      "950:2915",
+        "menu_logo_dark": "950:2920",
+        "menu_light":     "950:2923",
+        "menu_logo_light":"950:2928"
+      }
+    },
+    "onboarding_cta": {
+      "set_node": "950:2931",
+      "label": "Newsletters - Onboarding CTA",
+      "_note": "Onboarding email CTA blocks — 3 sizes. Use S for follow-up nudges (KYC reminder), M for default activation, L for hero CTA in welcome emails.",
+      "variants": {
+        "s": "950:2932",
+        "m": "950:2938",
+        "l": "950:2944"
+      }
+    },
+    "content_blocks": {
+      "set_node": "950:2681",
+      "label": "Content",
+      "_note": "Modular content blocks for assembling email body sections inside `promo_email` frames. Mix freely.",
+      "variants": {
+        "h1_body_cta":    { "node": "950:2682", "use": "Headline + paragraph + CTA — text-only block" },
+        "copy_cta":       { "node": "950:2687", "use": "Body copy + CTA — no headline" },
+        "img_h1_body_cta":{ "node": "950:2692", "use": "Image hero + headline + body + CTA — image leads" },
+        "h1_img_copy_cta":{ "node": "950:2699", "use": "Headline + image + body + CTA — headline leads" }
+      }
+    },
+    "onboarding_headers": {
+      "set_node": "950:2953",
+      "label": "Onboarding - header",
+      "_note": "Onboarding email header layouts — 3 layouts (all named 'Layout=1' in the source — distinguish by node ID).",
+      "variants": {
+        "layout1_a": { "node": "950:2954", "use": "Layout 1 / variant A" },
+        "layout1_b": { "node": "950:2957", "use": "Layout 1 / variant B" },
+        "layout1_c": { "node": "950:2960", "use": "Layout 1 / variant C" }
+      }
+    },
+    "onboarding_horizontal": {
+      "set_node": "950:2963",
+      "label": "Onboarding Horizontal",
+      "_note": "Horizontal-layout onboarding components (sidebar / row format).",
+      "variants": {
+        "default":  "950:2964",
+        "variant2": "950:2975"
+      }
+    },
+    "footers": {
+      "_note": "Mandatory footer at the bottom of every marketing and lifecycle email. 'rounded' variants have rounded top corners — pair with rounded-corner hero. Match language to audience: `eng` default, `esp` for AR market (ES-AR), `pr` for BR market (PT-BR). The footer carries the unsubscribe link and FSA1399 disclaimer placeholder — never rebuild manually, always swap by language.",
+      "standard": {
+        "esp": "950:1444",
+        "eng": "950:1470",
+        "pr":  "950:1496"
+      },
+      "rounded": {
+        "esp": "950:1522",
+        "eng": "950:1548",
+        "pr":  "950:1574"
+      }
+    }
+  },
   "frame_layers": {
     "editable": [
       "#Image",
@@ -409,5 +578,15 @@
     "9:16_AR-EUR-fullbg",
     "1:1_BR-USD-mockup",
     "4:5_AR-BRL-fullbg"
-  ]
+  ],
+  "email_frame_naming_convention": {
+    "promo": "email_{LANG}_{CAMPAIGN}_{SIZE}",
+    "promo_examples": ["email_AR_FX_M", "email_BR_INFINITE_L", "email_AR_PIX_S"],
+    "transactional": "email_{LANG}_TX_{TYPE}",
+    "transactional_examples": ["email_AR_TX_KYC", "email_BR_TX_RECEIPT", "email_AR_TX_SECURITY"],
+    "lifecycle": "email_{LANG}_LC_{STAGE}",
+    "lifecycle_examples": ["email_AR_LC_WELCOME", "email_BR_LC_REACTIVATION", "email_AR_LC_TRIAL_END"],
+    "cobrand": "email_{LANG}_CB_{PARTNER}_{SIZE}",
+    "cobrand_examples": ["email_AR_CB_RAPPI_M", "email_BR_CB_UBER_L"]
+  }
 }
