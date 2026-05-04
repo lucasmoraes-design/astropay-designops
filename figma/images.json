@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "AstroPay image library — extracted from Figma Images page. Source of truth for ALL imagery used by paid media, email, and in-app creatives.",
-    "last_updated": "2026-05-01",
+    "last_updated": "2026-05-04",
     "file_key": "6kHkKTxW1ygct6vTQsIGF1",
     "page_id": "145:5528",
     "page_url": "https://www.figma.com/design/6kHkKTxW1ygct6vTQsIGF1/Claude-lab?node-id=145-5528",
@@ -15,10 +15,10 @@
     ],
     "page_hashes": {
       "id_visual": "1f14c0db35a3",
-      "design_components": "0ee7cc98236e",
+      "design_components": "c177693df916",
       "images": "8ecadf0fe159"
     },
-    "sync_note": "Auto-detected change on 2026-05-01 — review and update manually if needed"
+    "sync_note": "Auto-detected change on 2026-05-04 — review and update manually if needed"
   },
   "categories": {
     "traveler": {
