@@ -120,16 +120,27 @@ jobs:
 
       - name: Update hashes in JSON files
         if: steps.check.outputs.result == 'CHANGES_DETECTED'
+        # IMPORTANT: this step only updates the auto-sync's own bookkeeping
+        # fields (last_updated, page_hashes, _auto_sync_log). It does NOT touch
+        # _meta.sync_note — that field is human-curated and overwriting it
+        # creates merge conflicts when local edits happen between syncs.
+        # The PR body already carries the human-readable change description.
         run: |
           TODAY=$(date +'%Y-%m-%d')
           node -e "
             const fs = require('fs');
             const hashes = JSON.parse(fs.readFileSync('/tmp/new_hashes.json', 'utf8'));
+            const changed = JSON.parse(fs.readFileSync('/tmp/changed_pages.json', 'utf8'));
+            const changedNames = changed.map(p => p.name).join(', ');
             ['figma/components.json', 'figma/images.json'].forEach(path => {
               const data = JSON.parse(fs.readFileSync(path, 'utf8'));
               data._meta.last_updated = '${TODAY}';
               data._meta.page_hashes = hashes;
-              data._meta.sync_note = 'Auto-detected change on ${TODAY} — review and update manually if needed';
+              // Append to _auto_sync_log (keep last 5 entries, drop older).
+              data._meta._auto_sync_log = data._meta._auto_sync_log || [];
+              data._meta._auto_sync_log.unshift({ date: '${TODAY}', changed: changedNames });
+              data._meta._auto_sync_log = data._meta._auto_sync_log.slice(0, 5);
+              // sync_note is deliberately NOT modified — see step comment above.
               fs.writeFileSync(path, JSON.stringify(data, null, 2));
               console.log('Updated', path);
             });
