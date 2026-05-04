@@ -21,7 +21,7 @@
     "sync": "Manual — re-extract via Figma MCP after every design system publish",
     "page_hashes": {
       "id_visual": "1f14c0db35a3",
-      "design_components": "0ee7cc98236e",
+      "design_components": "c177693df916",
       "images": "8ecadf0fe159"
     },
     "sync_note": "2026-05-04 (re-sync) — Email marketing component library reconciled against live Figma. Two changes detected: (1) Promo email content_sizes shrunk ~169px on XXL/XL/L/M/S (XS unchanged) — likely the community-CTA section was removed from the inline footer area; rerun an M template inspection before the next email build to confirm. (2) Two text_layouts removed: Text Layout=Rappi (950:2427) and Text Layout=Uber (950:2435). Library now exposes 6 text layouts instead of 8 — cobrand-specific text compositions consolidated; use single_text or top_left_text paired with the cobrand header variants. 2026-05-04 (initial) — Email marketing component library added (section 950:1972). New top-level key: email_templates. Twelve component groups: promo_email (6 sizes), headers (11 variants), text_layouts, cobranding_logos (22 partners), illustrations (8 use cases — distinct from in-app newsletter_illustration set 789:1786), ctas, menus, onboarding_cta, content_blocks, onboarding_headers, onboarding_horizontal, footers (3 languages × 2 styles).",
@@ -442,28 +442,28 @@
       "label": "Newsletters - Cobranding",
       "_note": "Partner brand logos. Listing here = the design system carries the asset; it does NOT mean AstroPay has permission to send a campaign with it. Every cobrand send requires an ACTIVE agreement covering AstroPay's use of the partner's brand assets — confirm via @email-legal before launch. Firing a stale cobrand creates legal exposure.",
       "partners": {
-        "rappi":       "950:2471",
-        "uber":        "950:2477",
-        "ifood":       "950:2483",
-        "netflix":     "950:2487",
-        "wavee":       "950:2491",
-        "bonoxs":      "950:2495",
-        "wework":      "950:2499",
-        "livelo":      "950:2503",
-        "localiza":    "950:2515",
-        "1xbet":       "950:2519",
-        "arbet":       "950:2530",
-        "pedidosya":   "950:2536",
-        "tiendamia":   "950:2541",
-        "hypegames":   "950:2547",
-        "azul":        "950:2556",
-        "latam":       "950:2593",
-        "cabify":      "950:2607",
+        "rappi": "950:2471",
+        "uber": "950:2477",
+        "ifood": "950:2483",
+        "netflix": "950:2487",
+        "wavee": "950:2491",
+        "bonoxs": "950:2495",
+        "wework": "950:2499",
+        "livelo": "950:2503",
+        "localiza": "950:2515",
+        "1xbet": "950:2519",
+        "arbet": "950:2530",
+        "pedidosya": "950:2536",
+        "tiendamia": "950:2541",
+        "hypegames": "950:2547",
+        "azul": "950:2556",
+        "latam": "950:2593",
+        "cabify": "950:2607",
         "turismocity": "950:2618",
-        "despegar":    "950:2623",
-        "decolar":     "950:2642",
-        "deel":        "950:2661",
-        "atendium":    "950:2668"
+        "despegar": "950:2623",
+        "decolar": "950:2642",
+        "deel": "950:2661",
+        "atendium": "950:2668"
       }
     },
     "ctas": {
@@ -472,8 +472,8 @@
       "_note": "Email-specific CTA component — alignment variants only. CTA color and shape inherit from `components.cta` (default `teal_rd`).",
       "variants": {
         "center": "950:2707",
-        "left":   "950:2710",
-        "right":  "950:2713"
+        "left": "950:2710",
+        "right": "950:2713"
       }
     },
     "illustrations": {
@@ -481,14 +481,14 @@
       "label": "Newsletters - Illustration (Email)",
       "_note": "Email-specific illustration set — 8 use cases. Distinct component instances from the in-app `newsletter_illustration` set (789:1786) — DO NOT cross-reference. 'Astronaunt' is intentionally spelled this way in the source file.",
       "use_cases": {
-        "identity":  "950:2717",
-        "card":      "950:2720",
-        "email":     "950:2756",
-        "exchange":  "950:2759",
-        "kyc":       "950:2762",
+        "identity": "950:2717",
+        "card": "950:2720",
+        "email": "950:2756",
+        "exchange": "950:2759",
+        "kyc": "950:2762",
         "completed": "950:2765",
         "astronaut": "950:2801",
-        "spin":      "950:2862"
+        "spin": "950:2862"
       }
     },
     "menus": {
@@ -496,10 +496,10 @@
       "label": "Newsletters - Menu",
       "_note": "Top-of-email navigation — 4 styles (dark/light × with/without logo). Pair Dark with promo emails on dark hero variants; Light with onboarding/transactional emails. Logo variant adds the AstroPay wordmark inline.",
       "variants": {
-        "menu_dark":      "950:2915",
+        "menu_dark": "950:2915",
         "menu_logo_dark": "950:2920",
-        "menu_light":     "950:2923",
-        "menu_logo_light":"950:2928"
+        "menu_light": "950:2923",
+        "menu_logo_light": "950:2928"
       }
     },
     "onboarding_cta": {
@@ -517,10 +517,22 @@
       "label": "Content",
       "_note": "Modular content blocks for assembling email body sections inside `promo_email` frames. Mix freely.",
       "variants": {
-        "h1_body_cta":    { "node": "950:2682", "use": "Headline + paragraph + CTA — text-only block" },
-        "copy_cta":       { "node": "950:2687", "use": "Body copy + CTA — no headline" },
-        "img_h1_body_cta":{ "node": "950:2692", "use": "Image hero + headline + body + CTA — image leads" },
-        "h1_img_copy_cta":{ "node": "950:2699", "use": "Headline + image + body + CTA — headline leads" }
+        "h1_body_cta": {
+          "node": "950:2682",
+          "use": "Headline + paragraph + CTA — text-only block"
+        },
+        "copy_cta": {
+          "node": "950:2687",
+          "use": "Body copy + CTA — no headline"
+        },
+        "img_h1_body_cta": {
+          "node": "950:2692",
+          "use": "Image hero + headline + body + CTA — image leads"
+        },
+        "h1_img_copy_cta": {
+          "node": "950:2699",
+          "use": "Headline + image + body + CTA — headline leads"
+        }
       }
     },
     "onboarding_headers": {
@@ -528,9 +540,18 @@
       "label": "Onboarding - header",
       "_note": "Onboarding email header layouts — 3 layouts (all named 'Layout=1' in the source — distinguish by node ID).",
       "variants": {
-        "layout1_a": { "node": "950:2954", "use": "Layout 1 / variant A" },
-        "layout1_b": { "node": "950:2957", "use": "Layout 1 / variant B" },
-        "layout1_c": { "node": "950:2960", "use": "Layout 1 / variant C" }
+        "layout1_a": {
+          "node": "950:2954",
+          "use": "Layout 1 / variant A"
+        },
+        "layout1_b": {
+          "node": "950:2957",
+          "use": "Layout 1 / variant B"
+        },
+        "layout1_c": {
+          "node": "950:2960",
+          "use": "Layout 1 / variant C"
+        }
       }
     },
     "onboarding_horizontal": {
@@ -538,7 +559,7 @@
       "label": "Onboarding Horizontal",
       "_note": "Horizontal-layout onboarding components (sidebar / row format).",
       "variants": {
-        "default":  "950:2964",
+        "default": "950:2964",
         "variant2": "950:2975"
       }
     },
@@ -547,12 +568,12 @@
       "standard": {
         "esp": "950:1444",
         "eng": "950:1470",
-        "pr":  "950:1496"
+        "pr": "950:1496"
       },
       "rounded": {
         "esp": "950:1522",
         "eng": "950:1548",
-        "pr":  "950:1574"
+        "pr": "950:1574"
       }
     }
   },
@@ -587,12 +608,27 @@
   ],
   "email_frame_naming_convention": {
     "promo": "email_{LANG}_{CAMPAIGN}_{SIZE}",
-    "promo_examples": ["email_AR_FX_M", "email_BR_INFINITE_L", "email_AR_PIX_S"],
+    "promo_examples": [
+      "email_AR_FX_M",
+      "email_BR_INFINITE_L",
+      "email_AR_PIX_S"
+    ],
     "transactional": "email_{LANG}_TX_{TYPE}",
-    "transactional_examples": ["email_AR_TX_KYC", "email_BR_TX_RECEIPT", "email_AR_TX_SECURITY"],
+    "transactional_examples": [
+      "email_AR_TX_KYC",
+      "email_BR_TX_RECEIPT",
+      "email_AR_TX_SECURITY"
+    ],
     "lifecycle": "email_{LANG}_LC_{STAGE}",
-    "lifecycle_examples": ["email_AR_LC_WELCOME", "email_BR_LC_REACTIVATION", "email_AR_LC_TRIAL_END"],
+    "lifecycle_examples": [
+      "email_AR_LC_WELCOME",
+      "email_BR_LC_REACTIVATION",
+      "email_AR_LC_TRIAL_END"
+    ],
     "cobrand": "email_{LANG}_CB_{PARTNER}_{SIZE}",
-    "cobrand_examples": ["email_AR_CB_RAPPI_M", "email_BR_CB_UBER_L"]
+    "cobrand_examples": [
+      "email_AR_CB_RAPPI_M",
+      "email_BR_CB_UBER_L"
+    ]
   }
 }
