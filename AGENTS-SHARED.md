@@ -192,18 +192,20 @@ Read all node IDs from `figma/components.json` → `email_templates`.
 | Size | Frame height | Best for |
 |---|---|---|
 | `xs` | 1098px | Single-announcement micro-update — one CTA, no body sections. E.g. "Your card is ready." |
-| `s`  | 1747px | Short promo — hero + one CTA, no content blocks. E.g. transactional confirmation, password reset. |
-| `m`  | 2296px | **Default for most promos** — hero + one content block + footer. PIX nudge, FX retargeting, single-feature announcement. |
-| `l`  | 2890px | Standard cobrand or multi-benefit promo — hero + two content blocks + footer. |
-| `xl` | 3397px | Multi-section campaign — hero + 2-3 content blocks. Infinite GTM education emails, lifecycle journey re-engagement. |
-| `xxl`| 3991px | Newsletter / multi-feature roundup — hero + 3-4 content blocks. Use sparingly: scroll length is high. |
+| `s`  | 1578px | Short promo — hero + one CTA, no content blocks. E.g. transactional confirmation, password reset. |
+| `m`  | 2127px | **Default for most promos** — hero + one content block + footer. PIX nudge, FX retargeting, single-feature announcement. |
+| `l`  | 2721px | Standard cobrand or multi-benefit promo — hero + two content blocks + footer. |
+| `xl` | 3228px | Multi-section campaign — hero + 2-3 content blocks. Infinite GTM education emails, lifecycle journey re-engagement. |
+| `xxl`| 3822px | Newsletter / multi-feature roundup — hero + 3-4 content blocks. Use sparingly: scroll length is high. |
+
+> Templates resized 2026-05-04 (each shrunk ~169px on XXL/XL/L/M/S; XS unchanged). Likely the community-CTA inline footer block was removed; structurally verify on first edit before relying on inline-footer assumptions.
 
 **Header selection guide**:
 
 | Header | Type | Best for |
 |---|---|---|
 | `header7` | generic | Default promo header — neutral, works for most campaigns. |
-| `header_cta` | generic | Header with embedded CTA — for short emails (XS/S) where the body doesn't need a separate CTA. |
+| `header_cta` | promo % | Big number/% + embedded CTA. Variant NAMED "Header + CTA" but DEFAULT visual treatment is cobrand-promo (`Cobrand?=true`, %-led with partner logo). For non-cobrand use: toggle `Cobrand?=false`, toggle `CTA?=true`, AND hide the nested `Logo Section` INSTANCE manually. Big-number slot works well for rate-trigger FX campaigns (e.g. '2,4%' / 'caiu'). |
 | `1_1` | generic | Square 1:1 hero — for emails likely to be screenshotted/shared on social. |
 | `xs` | generic | Minimal short header — pair with content size XS. |
 | `big_30_off` | promo % | Discount-led campaigns. % must be a real, current value. |
@@ -213,6 +215,14 @@ Read all node IDs from `figma/components.json` → `email_templates`.
 | `cobrand_bottom` | cobrand | Cobrand logo at bottom of header — for subtle integration. |
 | `cobrand_logos` | cobrand | Multi-cobrand logo strip — for partnership roundup or marketplace emails. |
 
+**Runtime caveats** — known production gotchas (full list in `figma/components.json` → `email_templates._runtime_caveats`):
+- **Matter font usually missing** in working files — swap `fontName` Matter→Inter before any TEXT edit. Style mapping: `SemiBold` → `'Semi Bold'` (with a space). Same rule as paid media; documented in `PAID-MEDIA-AGENTS.md`.
+- **No Gradient/Overlay BOOLEAN** on email header variants — text-on-busy-photo contrast is suboptimal. Prefer cleaner heroes (less-busy `traveler`/`places` shots, or illustrated heroes from `email_templates.illustrations`) when white text must read against the photo.
+- **Cobrand asset can leak** even with `Cobrand?=false` — hide the nested `Logo Section` INSTANCE (`node.visible = false`) to fully remove the partner asset.
+- **Promo % big-number slots are sized for short numbers** (3 chars). For overrides like `'2,4%'` or `'12.5%'`, set `textAutoResize = 'WIDTH_AND_HEIGHT'` on the TEXT node to avoid wrap.
+- **M template footer is INLINE**, not a swappable footer instance. Default to overriding the 3 inline TEXT nodes (community CTA + disclaimer + links) with PT-BR / ES-AR / EN content + injected FSA1399 — preserves spacing.
+- **M template defaults to cobrand**: default header variant is `Header=Rappi`, default menu is `Menu Logo Dark`. For a non-cobrand promo, expect to swap BOTH variants before text edits.
+
 **Text layout selection** — body composition style:
 
 | Layout | Best for |
@@ -221,7 +231,8 @@ Read all node IDs from `figma/components.json` → `email_templates`.
 | `text_layout7` | Generic alternative composition. |
 | `top_left_text` | Left-aligned text with right-aligned hero — editorial feel. |
 | `cashback`, `big_30_cb`, `big_30_off` | Promo-specific compositions matched to their corresponding header. |
-| `rappi`, `uber` | Partner-specific text composition — pair with the matching cobrand header. |
+
+> Cobrand-specific text layouts (`Text Layout=Rappi`, `Text Layout=Uber`) were removed from the design system on 2026-05-04. For cobrand emails, pair `single_text` or `top_left_text` with the cobrand `headers` variants.
 
 **Content block selection** — modular body sections (combine freely inside the frame):
 

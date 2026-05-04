@@ -24,7 +24,7 @@
       "design_components": "0ee7cc98236e",
       "images": "8ecadf0fe159"
     },
-    "sync_note": "2026-05-04 — Email marketing component library added (section 950:1972). New top-level key: email_templates. Twelve component groups: promo_email (6 sizes), headers (11 variants), text_layouts (8), cobranding_logos (22 partners), illustrations (8 use cases — distinct from in-app newsletter_illustration set 789:1786), ctas, menus, onboarding_cta, content_blocks, onboarding_headers, onboarding_horizontal, footers (3 languages × 2 styles).",
+    "sync_note": "2026-05-04 (re-sync) — Email marketing component library reconciled against live Figma. Two changes detected: (1) Promo email content_sizes shrunk ~169px on XXL/XL/L/M/S (XS unchanged) — likely the community-CTA section was removed from the inline footer area; rerun an M template inspection before the next email build to confirm. (2) Two text_layouts removed: Text Layout=Rappi (950:2427) and Text Layout=Uber (950:2435). Library now exposes 6 text layouts instead of 8 — cobrand-specific text compositions consolidated; use single_text or top_left_text paired with the cobrand header variants. 2026-05-04 (initial) — Email marketing component library added (section 950:1972). New top-level key: email_templates. Twelve component groups: promo_email (6 sizes), headers (11 variants), text_layouts, cobranding_logos (22 partners), illustrations (8 use cases — distinct from in-app newsletter_illustration set 789:1786), ctas, menus, onboarding_cta, content_blocks, onboarding_headers, onboarding_horizontal, footers (3 languages × 2 styles).",
     "runtime_rule": "image_node values below are documentation only — at runtime, ALWAYS resolve image slots via findOne(n => n.name === '#Image') after creating or cloning the template instance. Property keys (Title#xxx, Subheadline#xxx, Gradient/Overlay BOOLEAN toggles) vary per format and must be discovered at runtime via Object.keys(inst.componentProperties)."
   },
   "components": {
@@ -385,17 +385,25 @@
     "_section_node": "950:1972",
     "_section_label": "Email marketing",
     "_note": "Email marketing component library — added 2026-05-04. Source of truth for ALL email work (lifecycle, promo, transactional, onboarding). NEVER reference the in-app `newsletter_illustration` set (789:1786) for email — use `email_templates.illustrations` (950:2716) instead. All subkeys below are independent component sets that compose into a full email.",
+    "_runtime_caveats": [
+      "Matter font is typically NOT installed in working files. Before any TEXT edit, swap fontName Matter → Inter. Style mapping: Matter SemiBold → Inter 'Semi Bold' (with a space, not 'SemiBold'). Same rule documented in PAID-MEDIA-AGENTS.md § Plugin API rules — applies to email work without modification.",
+      "Email header variants (under `headers`) do NOT expose Gradient/Overlay BOOLEAN properties like paid-media fullbg layouts (design_4 / design_5). When using white text over a photographic hero, contrast against busy lifestyle photos is suboptimal — prefer less-busy heroes (e.g. cleaner `traveler` or `places` close-ups, or illustrated heroes from `email_templates.illustrations`) when text legibility matters.",
+      "When swapping a header variant on an existing email instance, nested cobrand assets (Logo Section > Logo=<partner> instance) MAY persist visible even after toggling `Cobrand?=false`. To fully remove the cobrand asset for a non-cobrand send: set `node.visible = false` on the nested `Logo Section` INSTANCE inside the header (not the outer Logo Section FRAME).",
+      "Promo % header text slots (the big number + small word in `header_cta`, `big_30_off`, `big_30_cb`, `repetition_cb`) are sized for SHORT numbers (e.g. '20%' = 3 chars). For longer overrides like '2,4%' or '12.5%', set `textAutoResize = 'WIDTH_AND_HEIGHT'` on the TEXT node to prevent line wrap.",
+      "Promo email frames historically carried an INLINE footer block (3 TEXT nodes: community CTA + disclaimer + links). On 2026-05-04 the templates shrunk ~169px each (XXL/XL/L/M/S — XS unchanged), suggesting the community-CTA inline section was removed and the templates may now compose with the standalone `footers` instances (950:1444 / 950:1470 / 950:1496 / rounded variants). VERIFY structurally on first edit: walk the cloned template's children, check if a footer-like Frame still exists inline, OR if the bottom is empty and an instance of `footers.standard.<lang>` should be appended. Update this caveat after the next M template inspection.",
+      "Default header variant of M template (950:2260) is `Header=Rappi` — a cobrand-default. The default menu variant is `Property 1=Menu Logo Dark`. For a non-cobrand BR or AR FX promo, expect to swap BOTH variants (menu → `Menu Logo Light`, header → a non-cobrand variant) before any text edits."
+    ],
     "promo_email": {
       "set_node": "950:2162",
       "label": "Newsletters - Promo email",
       "_note": "Full promo email frame — 6 content sizes. Pick by total content density: XS (announcement / single CTA) → XXL (multi-section campaign). Default for cobrand and cashback campaigns is M or L.",
       "content_sizes": {
-        "xxl": { "node": "950:2163", "height": 3991, "use": "Multi-section campaign — hero + 3-4 content blocks + footer" },
-        "xl":  { "node": "950:2196", "height": 3397, "use": "Multi-section — hero + 2-3 content blocks + footer" },
-        "l":   { "node": "950:2228", "height": 2890, "use": "Standard promo — hero + 2 content blocks + footer" },
-        "m":   { "node": "950:2260", "height": 2296, "use": "Single-purpose — hero + 1 content block + footer (default for most promos)" },
-        "s":   { "node": "950:2291", "height": 1747, "use": "Short promo — hero + CTA + footer" },
-        "xs":  { "node": "950:2321", "height": 1098, "use": "Announcement / micro-update — minimal hero + CTA + footer" }
+        "xxl": { "node": "950:2163", "height": 3822, "use": "Multi-section campaign — hero + 3-4 content blocks + footer. Resized 2026-05-04 (was 3991)." },
+        "xl":  { "node": "950:2196", "height": 3228, "use": "Multi-section — hero + 2-3 content blocks + footer. Resized 2026-05-04 (was 3397)." },
+        "l":   { "node": "950:2228", "height": 2721, "use": "Standard promo — hero + 2 content blocks + footer. Resized 2026-05-04 (was 2890)." },
+        "m":   { "node": "950:2260", "height": 2127, "use": "Single-purpose — hero + 1 content block + footer (default for most promos). Resized 2026-05-04 (was 2296)." },
+        "s":   { "node": "950:2291", "height": 1578, "use": "Short promo — hero + CTA + footer. Resized 2026-05-04 (was 1747)." },
+        "xs":  { "node": "950:2321", "height": 1098, "use": "Announcement / micro-update — minimal hero + CTA + footer. Unchanged 2026-05-04." }
       }
     },
     "headers": {
@@ -409,7 +417,7 @@
         "big_30_off":      { "node": "950:2369", "type": "promo_pct", "use": "Discount-led promo" },
         "big_30_cb":       { "node": "950:2373", "type": "promo_pct", "use": "Cashback %-led promo" },
         "repetition_cb":   { "node": "950:2378", "type": "promo_pct", "use": "Repeated cashback emphasis (visual rhythm)" },
-        "header_cta":      { "node": "950:2389", "type": "generic",   "use": "Header with embedded CTA" },
+        "header_cta":      { "node": "950:2389", "type": "promo_pct", "use": "Big number/% + embedded CTA. The variant's NAME suggests a generic header with CTA, but the DEFAULT visual treatment is cobrand-promo (Cobrand?=true, big-percentage + partner logo). For non-cobrand use: (1) toggle `Cobrand?=false` on the header instance, (2) toggle `CTA?=true` to make the embedded CTA visible, (3) hide the nested `Logo Section` INSTANCE (the partner logo placeholder remains visible otherwise). Validated 2026-05-04 by adapting it to FX rate-trigger emails — the big-number slot works well for percentage rate movements (e.g. '2,4%' / 'caiu')." },
         "cobrand_bottom":  { "node": "950:2402", "type": "cobrand",   "use": "Cobrand logo positioned at the bottom of header" },
         "1_1":             { "node": "950:2407", "type": "generic",   "use": "Square 1:1 hero — for cropped or social-shared emails" },
         "xs":              { "node": "950:2420", "type": "generic",   "use": "Minimal/short header — pair with promo_email content size XS" },
@@ -419,10 +427,8 @@
     "text_layouts": {
       "set_node": "950:2426",
       "label": "Newsletters - Text Layout",
-      "_note": "Body text composition variants. Cobrand-named (Rappi, Uber) are partner-specific. Cashback / Big 30 CB / Big 30 OFF are promo-specific. `single_text` is the default body layout for non-promo emails.",
+      "_note": "Body text composition variants. Cashback / Big 30 CB / Big 30 OFF are promo-specific compositions. `single_text` is the default body layout for non-promo emails. `top_left_text` pairs with right-aligned hero. For cobrand emails (Rappi, Uber, etc.), use `single_text` or `top_left_text` paired with the cobrand header variants under `headers` — cobrand-named text layouts (`Text Layout=Rappi` 950:2427 and `Text Layout=Uber` 950:2435) were removed from the design system on 2026-05-04.",
       "variants": {
-        "rappi":           { "node": "950:2427", "type": "cobrand" },
-        "uber":            { "node": "950:2435", "type": "cobrand" },
         "big_30_off":      { "node": "950:2443", "type": "promo_pct" },
         "big_30_cb":       { "node": "950:2447", "type": "promo_pct" },
         "single_text":     { "node": "950:2456", "type": "generic", "use": "Single column text — default body layout" },
