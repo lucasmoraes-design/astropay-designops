@@ -22,7 +22,7 @@ Each shared agent has a **shared core** (always applies) followed by **channel-s
 
 1. **Aliased tag**: `@inapp-copy`, `@inapp-guardian`, `@inapp-legal` are aliases with the channel pre-set to in-app. `@email-copy`, `@email-guardian`, `@email-legal` are aliases with the channel pre-set to email. They route to the same underlying agents (`@copy`, `@guardian`, `@legal-copy`) and load the corresponding sub-block.
 2. **Explicit channel**: `@cd review this 1:1 paid media frame` or `@guardian QA this in-app banner` or `@legal-copy review this welcome email` — channel inferred from the noun.
-3. **Inferred from context**: file paths (`figma/...` → paid media or in-app), format dimensions (1080x1920 → paid social), Braze in-app references → in-app, Braze email / subject line / preheader / unsubscribe references → email, references to `email_templates` / `promo_email` content sizes → email.
+3. **Inferred from context**: file paths (`figma/...` → paid media or in-app), format dimensions (1080x1920 → paid social), Braze in-app references → in-app, Braze email / subject line / preheader / unsubscribe references → email, references to `email_templates` / `simple_template` / content_blocks → email.
 
 If channel is ambiguous, ask the user before producing output.
 
@@ -175,73 +175,52 @@ Cobrand asset (if promo_cobrand): [brand_assets slot + node ID]
 
 ### Channel: Email
 
-Adds promo email frame composition, header / text-layout / content-block selection, footer + dark-mode rules, and cobrand integrity rules on top of the shared core. Image library rules above apply unchanged for photographic heroes; for illustrated heroes use the email-specific illustration set.
+Adds simple-template composition, content-block selection, footer rules, and channel-scoped tokens on top of the shared core. Image library rules above apply unchanged for photographic heroes; for illustrated heroes use the email-specific illustration set.
 
-**Email is composed, not picked.** Unlike paid media (single frame, single layout) or in-app (single banner template), an email is assembled from independent component sets. Pick:
-1. A **content size** (frame container — `promo_email.content_sizes`)
-2. A **header** (hero section — `headers`)
-3. One or more **text_layouts** + **content_blocks** (body sections)
-4. A **CTA alignment** (`ctas`)
-5. A **menu** style (`menus`)
-6. A **footer** language variant (`footers`)
+**Library state — simplified 2026-05-07, semantic-renamed 2026-05-07.** The email library is now organized around a single canonical template (`simple_template`, instance `1020:1951`, 1080×2591, white frame) with a vertical stack of content_blocks. The `headers` set, `text_layouts` set, and `cobranding_logos` set were genuinely removed. The multi-size `promo_email` SET (now renamed `Email / Template`, node 950:2162) still exists with content-size variants, but the simplified library only canonically exposes the XXL-resized instance — agents should compose by picking content_blocks, not alternate content sizes.
+
+**Email is assembled, not picked.** Pick:
+1. A **menu** at top (only `menus.logo_dark` exists — `950:2920`, "Email / Menu / Logo Dark")
+2. Optional **hero modal** (`hero_modals.layout_1/2/3` — gradient bg + H1 + illustration) for image-led emails — when used, it carries the H1
+3. **1–4 content_blocks** stacked (`h1_body_cta` / `body_cta` / `image_h1_body_cta` / `h1_image_body_cta`). When a hero modal is at top, use `body_cta` underneath to avoid duplicate H1
+4. A **CTA alignment** for each block (`cta_inline.center` / `left` / `right`)
+5. An optional **illustration** from `email_templates.illustrations` (8 use cases — variant property `Use case`)
+6. A **footer** language variant (`footers.es_ar` for AR, `footers.pt_br` for BR, `footers.en` default)
 
 Read all node IDs from `figma/components.json` → `email_templates`.
 
-**Content size selection guide** — pick the smallest frame that fits the message:
+**Content density guide** — pick the smallest set of blocks that delivers the message:
 
-| Size | Frame height | Best for |
-|---|---|---|
-| `xs` | 1098px | Single-announcement micro-update — one CTA, no body sections. E.g. "Your card is ready." |
-| `s`  | 1578px | Short promo — hero + one CTA, no content blocks. E.g. transactional confirmation, password reset. |
-| `m`  | 2127px | **Default for most promos** — hero + one content block + footer. PIX nudge, FX retargeting, single-feature announcement. |
-| `l`  | 2721px | Standard cobrand or multi-benefit promo — hero + two content blocks + footer. |
-| `xl` | 3228px | Multi-section campaign — hero + 2-3 content blocks. Infinite GTM education emails, lifecycle journey re-engagement. |
-| `xxl`| 3822px | Newsletter / multi-feature roundup — hero + 3-4 content blocks. Use sparingly: scroll length is high. |
+| Blocks | Best for |
+|---|---|
+| 1 block | Single-announcement / micro-update / transactional confirmation. E.g. "Your card is ready." |
+| 2 blocks | **Default for most comms** — hero + supporting context. PIX nudge, FX retargeting, single-feature announcement with rationale. |
+| 3 blocks | Multi-section nudge — intro + supporting evidence + recap. Lifecycle journey emails, education-led sends. |
+| 4 blocks | Newsletter / multi-feature roundup. Use sparingly — scroll length is high and total weight risks the Gmail 102 KB clip. |
 
-> Templates resized 2026-05-04 (each shrunk ~169px on XXL/XL/L/M/S; XS unchanged). Likely the community-CTA inline footer block was removed; structurally verify on first edit before relying on inline-footer assumptions.
-
-**Header selection guide**:
-
-| Header | Type | Best for |
-|---|---|---|
-| `header7` | generic | Default promo header — neutral, works for most campaigns. |
-| `header_cta` | promo % | Big number/% + embedded CTA. Variant NAMED "Header + CTA" but DEFAULT visual treatment is cobrand-promo (`Cobrand?=true`, %-led with partner logo). For non-cobrand use: toggle `Cobrand?=false`, toggle `CTA?=true`, AND hide the nested `Logo Section` INSTANCE manually. Big-number slot works well for rate-trigger FX campaigns (e.g. '2,4%' / 'caiu'). |
-| `1_1` | generic | Square 1:1 hero — for emails likely to be screenshotted/shared on social. |
-| `xs` | generic | Minimal short header — pair with content size XS. |
-| `big_30_off` | promo % | Discount-led campaigns. % must be a real, current value. |
-| `big_30_cb` | promo % | Cashback %-led campaigns. Cashback value must be real. |
-| `repetition_cb` | promo % | Repeated cashback emphasis (visual rhythm — premium feel). |
-| `rappi`, `uber` | cobrand | Partner-specific headers — only valid with active cobrand agreement. |
-| `cobrand_bottom` | cobrand | Cobrand logo at bottom of header — for subtle integration. |
-| `cobrand_logos` | cobrand | Multi-cobrand logo strip — for partnership roundup or marketplace emails. |
+**Channel tokens** (NOT the paid-media / in-app palette — `BRAND.md § 6.1`):
+- Text color: `--gunmetal #1c2b29` (H1 + body)
+- Secondary text: `--silver #bdbfb8` (image captions, supporting copy)
+- CTA background: `--teal-2025 #00dbbf`
+- CTA text color: `#1c2b29` (gunmetal on teal-2025)
+- H1 font: `Matter SemiBold` 64px (fallback `Inter Semi Bold`)
+- Body font: `Matter Regular` 32px (fallback `Inter Regular`)
+- CTA font: `DM Sans Bold` 32px (fallback `Inter Bold`) — only place DM Sans appears in the system
+- CTA radius: 48px / image radius: 30px
 
 **Runtime caveats** — known production gotchas (full list in `figma/components.json` → `email_templates._runtime_caveats`):
 - **Matter font usually missing** in working files — swap `fontName` Matter→Inter before any TEXT edit. Style mapping: `SemiBold` → `'Semi Bold'` (with a space). Same rule as paid media; documented in `PAID-MEDIA-AGENTS.md`.
-- **No Gradient/Overlay BOOLEAN** on email header variants — text-on-busy-photo contrast is suboptimal. Prefer cleaner heroes (less-busy `traveler`/`places` shots, or illustrated heroes from `email_templates.illustrations`) when white text must read against the photo.
-- **Cobrand asset can leak** even with `Cobrand?=false` — hide the nested `Logo Section` INSTANCE (`node.visible = false`) to fully remove the partner asset.
-- **Promo % big-number slots are sized for short numbers** (3 chars). For overrides like `'2,4%'` or `'12.5%'`, set `textAutoResize = 'WIDTH_AND_HEIGHT'` on the TEXT node to avoid wrap.
-- **M template footer is INLINE**, not a swappable footer instance. Default to overriding the 3 inline TEXT nodes (community CTA + disclaimer + links) with PT-BR / ES-AR / EN content + injected FSA1399 — preserves spacing.
-- **M template defaults to cobrand**: default header variant is `Header=Rappi`, default menu is `Menu Logo Dark`. For a non-cobrand promo, expect to swap BOTH variants before text edits.
-
-**Text layout selection** — body composition style:
-
-| Layout | Best for |
-|---|---|
-| `single_text` | **Default body layout** — single column text. Use for non-promo emails (lifecycle, transactional, onboarding). |
-| `text_layout7` | Generic alternative composition. |
-| `top_left_text` | Left-aligned text with right-aligned hero — editorial feel. |
-| `cashback`, `big_30_cb`, `big_30_off` | Promo-specific compositions matched to their corresponding header. |
-
-> Cobrand-specific text layouts (`Text Layout=Rappi`, `Text Layout=Uber`) were removed from the design system on 2026-05-04. For cobrand emails, pair `single_text` or `top_left_text` with the cobrand `headers` variants.
+- **DM Sans may also be missing** — swap CTA `fontName` DM Sans→Inter Bold if the working file lacks DM Sans.
+- **Stale node IDs from prior library** (REMOVED 2026-05-07): any reference to `950:2162` (promo_email set), `950:2351` (headers set), `950:2426` (text_layouts), `950:2470` (cobranding_logos), `950:2915` / `950:2923` / `950:2928` (other menu variants), or `950:1522` / `950:1548` / `950:1574` (rounded footers) will fail at runtime. Reject briefs that reference them.
 
 **Content block selection** — modular body sections (combine freely inside the frame):
 
 | Block | Best for |
 |---|---|
-| `h1_body_cta` | Headline + paragraph + CTA — text-only, fastest to read. |
-| `copy_cta` | Body copy + CTA, no headline — for follow-up sections after the hero already set context. |
-| `img_h1_body_cta` | Image hero + headline + body + CTA — image leads (visual entry point). |
-| `h1_img_copy_cta` | Headline + image + body + CTA — headline leads, image supports (text-led with visual reinforcement). |
+| `h1_body_cta` | Headline + paragraph + CTA — text-only, fastest to read. **Default for announcements and lifecycle nudges WITHOUT a hero modal.** |
+| `body_cta` | Two body paragraphs + CTA, no headline — for follow-up sections after a hero modal or block already set context. **Has 2 body paragraphs by default — override 1st and hide 2nd if only one is needed.** |
+| `image_h1_body_cta` | Image rectangle (850×479) + headline + body + secondary body + CTA — image leads. The image is a RECTANGLE with IMAGE fill — replace by exporting an illustration to PNG and setting fill via `figma.createImage`. |
+| `h1_image_body_cta` | Headline + image + body + CTA — headline leads, image supports. |
 
 **Image strategy by email type** — hero image rules:
 
@@ -267,46 +246,43 @@ Read all node IDs from `figma/components.json` → `email_templates`.
 - `astronaut`: brand / hero moments — anchor brand identity
 - `spin`: gamified moments (spin-the-wheel promos, lottery-mechanic campaigns)
 
-**Cobrand integrity rules** — non-negotiable:
-- A cobrand-named header (Rappi, Uber, etc.), text layout, or logo IS NOT permission to send. Permission lives in the partnership agreement, not the design system.
-- Before approving a cobrand email: confirm with `@email-legal` that the agreement is active AND covers the planned send (period, market, channel).
-- If the brief mentions a cobrand partner not in `email_templates.cobranding_logos.partners`: STOP. The asset doesn't exist in the system — escalate to design before producing copy.
-- Cobrand campaigns must use `promo_email` size M or larger — XS/S do not have room for both AstroPay and partner brand identity to coexist.
-
 **Footer rules** — mandatory on every marketing and lifecycle email (transactional follows the same rule unless legal carves an exception):
-- Match language to audience: `eng` default, `esp` for AR (ES-AR market), `pr` for BR (PT-BR market). Mismatched footer language is a hard block — see `@email-guardian`.
-- Use `rounded` variants when the hero/header has rounded corners; `standard` otherwise.
-- The footer carries unsubscribe link + FSA1399 placeholder — never rebuild manually.
+- Match language to audience: `footers.en` default (`950:1470` "Email / Footer / EN"), `footers.es_ar` for AR / ES-AR market (`950:1444`), `footers.pt_br` for BR / PT-BR market (`950:1496`). Mismatched footer language is a hard block — see `@email-guardian`.
+- The footer carries the unsubscribe link + a disclaimer slot — swap by language. **Known design-system bug**: the disclaimer in all 3 footers currently defaults to English boilerplate ("This email was sent to you by AstroPay…") instead of the FSA1399 ES-AR / PT-BR text. For any FX-touching send, manually override the disclaimer TEXT node with the BRAND.md § 5 exact text in the matching language.
+- Rounded footer variants were removed 2026-05-07 — if a brief asks for rounded, escalate to design.
 
 **Menu rules**:
-- Pair `menu_dark` / `menu_logo_dark` with dark-hero promo emails.
-- Pair `menu_light` / `menu_logo_light` with onboarding, transactional, and light-hero emails.
-- Logo variant adds the AstroPay wordmark inline — use for top-of-funnel sends where brand recall matters; omit for transactional / lifecycle where the user already knows who's sending.
+- Only `menus.logo_dark` (`950:2920` "Email / Menu / Logo Dark") is available in the simplified library. Use it for every email — top-of-funnel and transactional alike. The other menu variants were removed.
 
-**Dark mode** — Gmail and Apple Mail render dark mode by inverting backgrounds. Logos with transparent backgrounds need a fill that survives inversion. Use `wordmark.alabaster` (white) for dark-mode-safe footers. The `menu_dark` variant is dark-mode-native; the `menu_light` variant survives inversion if the AstroPay logo uses the alabaster variant.
+**Hero modal rules**:
+- 3 hero modal layouts available (`hero_modals.layout_1/2/3` — node IDs `950:2954/2957/2960`, named `Email / Hero / Layout 1/2/3`). 1080×1229, gradient dark teal background, H1 96px Matter Bold, embedded `Illustration` instance.
+- **When using a hero modal at top, do NOT pair with `h1_body_cta` or `image_h1_body_cta` underneath** — that creates a duplicate H1. Use `body_cta` for body+CTA below the hero.
+- To swap the inner illustration: find the `Illustration` instance inside the hero modal and call `swapComponent(targetUseCase)` where `targetUseCase` is from `email_templates.illustrations`.
+
+**Dark mode** — Gmail and Apple Mail render dark mode by inverting backgrounds. Logos with transparent backgrounds need a fill that survives inversion. Use `wordmark.alabaster` (white) for dark-mode-safe footers. The simple_template uses a light (white) background — verify CTA contrast against `--teal-2025` survives inversion before approving.
 
 **Email-specific Red Flags (always call out)**:
-- Cobrand asset used with no confirmation of an active agreement
-- Promo % header (`big_30_off`, `big_30_cb`, `repetition_cb`) with placeholder values, not real % from the offer
-- Footer language mismatched with audience market (`esp` footer in a BR send is a hard block)
-- In-app `newsletter_illustration` set (`789:1786`) used in an email — must use email illustration set (`950:2716`)
-- Hero photo from outside the six approved image sections (same image library rule as paid media and in-app)
-- `promo_email` content size larger than the message needs — long emails get scrolled past and trigger Gmail's "clipped at X KB" warning
-- Infinite copy mixed with Core lifestyle imagery in any module of the email
-- Missing menu, missing footer, missing unsubscribe link
+- Brief references components from the prior library (cobrand asset, promo % header, multi-size promo_email, headers set, text_layouts set, rounded footer, menu_dark / menu_light / menu_logo_light) — those no longer exist. Reject the brief or escalate to design.
+- Wrong-channel tokens — paid-media / in-app `teal500 #42DECA` applied to email instead of `--teal-2025 #00dbbf`.
+- Footer language mismatched with audience market (`es_ar` footer in a BR send is a hard block).
+- In-app `newsletter_illustration` set (`789:1786`) used in an email — must use email illustration set (`950:2716`).
+- Hero photo from outside the six approved image sections (same image library rule as paid media and in-app).
+- Email exceeds 4 content_blocks — risks Gmail 102 KB clip and dilutes the message.
+- Infinite copy mixed with Core lifestyle imagery in any module of the email.
+- Missing menu, missing footer, missing unsubscribe link.
 
 **Channel-specific output extension** — add these rows to the default output format:
 ```
-Email Type: [Promo / Lifecycle / Transactional / Onboarding / Cobrand]
-Content Size: [xs / s / m / l / xl / xxl + rationale] — read from figma/components.json -> email_templates.promo_email
-Header: [variant + node ID + rationale] — read from email_templates.headers
-Text Layout: [variant + node ID] — read from email_templates.text_layouts
-Content Blocks: [list of blocks used + node IDs] — read from email_templates.content_blocks
-Hero Source: [photographic: image library category + node | illustrated: email_templates.illustrations use case + node]
-Menu: [menu_dark / menu_logo_dark / menu_light / menu_logo_light + rationale]
-Footer: [standard / rounded × eng / esp / pr — must match audience market]
-Cobrand asset (if cobrand email): [partner + logo node ID + agreement status: ACTIVE / UNCONFIRMED]
-Dark mode safety: [logos use alabaster variant for dark-mode preservation? Y/N]
+Email Type: [Promo / Lifecycle / Transactional / Onboarding]
+Template: simple_template (1020:1951) — single canonical email frame
+Content Blocks: [list of blocks used + node IDs + rationale per block] — read from email_templates.content_blocks
+CTA Alignment: [center / left / right per block] — read from email_templates.ctas
+Hero Source (per image-led block): [photographic: image library category + node | illustrated: email_templates.illustrations use case + node]
+Hero (optional): [hero_modals.layout_1/2/3 + node ID + selected illustration use_case OR none]
+Menu: menus.logo_dark (950:2920) — only variant available
+Footer: [footers.en (950:1470) / es_ar (950:1444) / pt_br (950:1496) — must match audience market]
+Tokens used: [confirm gunmetal / teal-2025 / silver / DM Sans Bold per BRAND.md § 6.1]
+Dark mode safety: [CTA contrast preserved under inversion? logo uses alabaster variant? Y/N]
 ```
 
 ---
@@ -432,8 +408,8 @@ For every email request, produce in this order — subject and preheader are the
 1. **Subject line** — the open-rate lever. Match length to client truncation. Match angle to body promise. Never click-bait.
 2. **Preheader** — extends the subject. Closes the gap between "should I open?" and "what's inside?" Never repeat the subject verbatim.
 3. **Header copy** — H1 inside the email hero. Lands the promise made by the subject. Maximum 8 words.
-4. **Body copy** — one or more sections, depending on `promo_email` content size selected by `@cd`.
-5. **CTA(s)** — primary always; secondary only when content size is L+ and there's a real second action.
+4. **Body copy** — one or more sections, one paragraph per `content_block` selected by `@cd` (1–4 blocks total).
+5. **CTA(s)** — one CTA per `content_block` (each block carries its own CTA in the simplified library).
 6. **Footer disclaimer** — FSA1399 if FX trigger keywords present (handled by `@email-legal`, but copy here must leave room).
 
 **Character limits per element**:
@@ -461,19 +437,18 @@ For every email request, produce in this order — subject and preheader are the
 - "[Last chance]" / "[Final hours]" without a real deadline (false urgency)
 - Subject ≠ body promise — if the subject says "20% cashback" and the body buries it, the bounce-back rate punishes the sender domain
 
-**Body copy by email type**:
+**Body copy by email type** — density expressed in number of content_blocks (the simplified library has no multi-size frame):
 
-| Email type | Length | Tone anchor (BRAND.md § 1) |
+| Email type | Density | Tone anchor (BRAND.md § 1) |
 |---|---|---|
-| Welcome / onboarding | XS-S, focused | Memorable introduction — curious, exciting, simple |
-| Education / activation | M, structured | Education — informative, confident |
-| Lifecycle nudge / re-engagement | S-M, single-purpose | Engagement — inspiring, delightful |
-| Promo (single offer) | M, with one strong CTA | Use — focused, guiding |
-| Cobrand promo | L, hero + 1-2 partner-context blocks | Use — focused; partner brand voice does NOT replace AstroPay voice |
-| Newsletter / multi-feature | XL-XXL, scannable | Engagement — varied per section, but no shift between Core and Infinite within the same email |
-| Transactional (KYC, receipts, security) | S, factual | Support — empathetic, fast, clear. Less marketing voice; more clarity. |
-| Trial-end / renewal (Infinite) | M, ROI-led | Use — focused, guiding. Numbers > feeling. |
-| Win-back / inactive | S-M, one-question hook | Engagement — inspiring; never guilt-trip. |
+| Welcome / onboarding | 1–2 blocks, focused | Memorable introduction — curious, exciting, simple |
+| Education / activation | 2–3 blocks, structured | Education — informative, confident |
+| Lifecycle nudge / re-engagement | 1–2 blocks, single-purpose | Engagement — inspiring, delightful |
+| Promo (single offer) | 1–2 blocks, with one strong CTA | Use — focused, guiding |
+| Newsletter / multi-feature | 3–4 blocks, scannable | Engagement — varied per section, but no shift between Core and Infinite within the same email |
+| Transactional (KYC, receipts, security) | 1 block, factual | Support — empathetic, fast, clear. Less marketing voice; more clarity. |
+| Trial-end / renewal (Infinite) | 1–2 blocks, ROI-led | Use — focused, guiding. Numbers > feeling. |
+| Win-back / inactive | 1–2 blocks, one-question hook | Engagement — inspiring; never guilt-trip. |
 
 **Braze email rules**:
 - Liquid personalization: `{{ ${first_name} }}`, `{{ custom_attribute.${last_exchange_currency} | default: 'tu moneda' }}` — always provide a `default` for nullable attributes. Same syntax as in-app, same fallback discipline. **Missing default = renders empty (or `liquid` literal) in inbox = brand damage**.
@@ -488,28 +463,26 @@ For every email request, produce in this order — subject and preheader are the
 
 **Default output format**:
 ```
-EMAIL TYPE: [Promo / Lifecycle / Transactional / Onboarding / Cobrand / Win-back]
+EMAIL TYPE: [Promo / Lifecycle / Transactional / Onboarding / Win-back]
 CAMPAIGN: [name]
 MARKET: [AR (ES-AR voseo) / BR (PT-BR colloquial) / EN fallback]
 PRODUCT: [Core / Infinite — never both]
-CONTENT SIZE: [xs / s / m / l / xl / xxl] — set by @cd
+DENSITY: [N content_blocks — set by @cd]
 
 SUBJECT VAR_A: [≤50 mobile / ≤70 desktop, target ≤30 for Apple Mail iOS list view]
 PREHEADER VAR_A: [≤90 chars — extends, never repeats subject]
 HEADER H1 VAR_A: [≤50 chars, ≤8 words]
 BODY VAR_A:
-  [Paragraph 1 — ≤280 chars]
-  [Paragraph 2 if content size ≥ M — ≤280 chars]
+  [Block 1 paragraph — ≤280 chars]
+  [Block 2 paragraph if density ≥ 2 — ≤280 chars]
   [...one paragraph per content_block]
-PRIMARY CTA VAR_A: [≤22 chars]
-SECONDARY CTA VAR_A (only if size ≥ L): [≤22 chars]
+PRIMARY CTA VAR_A: [≤22 chars — one per content_block]
 
 SUBJECT VAR_B: [different angle, not just tone variant]
 PREHEADER VAR_B: [...]
 HEADER H1 VAR_B: [...]
 BODY VAR_B: [...]
 PRIMARY CTA VAR_B: [...]
-SECONDARY CTA VAR_B: [...]
 
 FORMATTING NOTES:
   Bold/italic uses: [where, and why — e.g., "bold the FX rate, italic the time-window"]
@@ -621,21 +594,20 @@ BLOCKERS: [if not SHIP, list exact blockers]
   - Header H1 > 50 chars or > 8 words: flag (will wrap to 3+ lines on mobile, dilutes hero)
   - Body paragraph > 280 chars: flag (split into multiple `content_blocks`)
   - CTA button > 22 chars: flag (button wraps awkwardly)
-- **Voice consistency across long content**: emails (especially XL/XXL) have multiple sections — every section must hold the same product voice. Section 1 in Core lifestyle voice + Section 3 in Infinite ROI voice = firewall violation.
+- **Voice consistency across multi-block emails**: emails with 3+ content_blocks have multiple sections — every section must hold the same product voice. Block 1 in Core lifestyle voice + Block 3 in Infinite ROI voice = firewall violation.
 - **Footer language match**: footer language must match audience market. ES-AR footer in a BR send (or vice versa) = hard block. EN footer in an AR/BR send = hard block (would have used the wrong sender identity / unsubscribe URL).
-- **Cobrand integrity**: cobrand-named header / text layout / logo present? confirm `@email-legal` has signed off on the active agreement BEFORE this banner ships. If unconfirmed, hold.
-- **Promo % truthfulness**: any `big_30_off` / `big_30_cb` / `repetition_cb` header (or cashback text layout) shows a real, current % from the actual offer. Placeholders like "20% CASHBACK" with no real offer behind it = hard block.
+- **Channel token integrity**: email uses scoped tokens (`gunmetal #1c2b29`, `teal-2025 #00dbbf`, `silver #bdbfb8`, DM Sans Bold for CTA — see `BRAND.md § 6.1`). Paid-media `teal500 #42DECA` or Matter on a CTA = wrong-channel-token violation, hard block.
+- **Stale library reference**: any brief mentioning cobrand assets, promo % headers (`big_30_off` / `big_30_cb` / `repetition_cb` / `header_cta`), the `headers` set, the `text_layouts` set, rounded footers, or non-logo-dark menu variants references components removed 2026-05-07. The multi-size promo_email SET still exists (renamed `Email / Template`, 950:2162) but agents should not pick alternate sizes — use the canonical `simple_template` instance composition. Reject any brief asking for cobrand or removed components.
 - **Liquid safety**: every personalization tag has a `default` fallback (same rule as in-app). Subject-line personalization requires ≥95% segment coverage of the attribute — flag if coverage unverified.
-- **Dark mode**: emails preview in both light and dark mode. Light-mode-only logos invert badly; CTA buttons with hardcoded backgrounds may invert into low-contrast states. Confirm logos use the alabaster variant where dark-mode preservation matters. Check the Inbox preview before approving.
+- **Dark mode**: emails preview in both light and dark mode. The simple_template uses a white background — verify CTA contrast against `--teal-2025` survives inversion. Logos with transparent backgrounds need a fill that survives inversion; use `wordmark.alabaster` (white) where preservation matters. Check the Inbox preview before approving.
 - **Image-block resilience**: many users disable images by default. Body copy must communicate the offer without the hero image. Test: hide all images mentally — does the email still convert?
-- **Total email size**: under 102 KB to avoid Gmail's "Message clipped" — beyond which Gmail truncates and the unsubscribe link / FSA1399 disclaimer may be hidden = hard block. XXL content size is the most at-risk; reduce content size if total weight is over budget.
+- **Total email size**: under 102 KB to avoid Gmail's "Message clipped" — beyond which Gmail truncates and the unsubscribe link / FSA1399 disclaimer may be hidden = hard block. 4-block emails are the most at-risk; reduce content blocks if total weight is over budget.
 - **Unsubscribe presence**: marketing emails MUST carry an unsubscribe link in the footer. Transactional emails are exempt by law but still inherit the footer with a "manage preferences" link unless legal explicitly excludes. Missing unsubscribe in a marketing email = hard block.
 - **Link tracking integrity**: every CTA URL has a UTM (`utm_source=braze`, `utm_medium=email`, `utm_campaign={campaign_name}`). Missing UTM = analytics blind spot, flag for `@email-dist`.
 - **Banner-vs-inbox redundancy** (the email-specific version of the in-app banner-vs-screen rule): subject does NOT duplicate the sender name (Gmail already shows it). E.g. `From: AstroPay` + `Subject: AstroPay news` = wasted attention. The subject must add information beyond the sender name.
 
 **Email-specific Infinite-vs-Core firewall** (extends shared rule):
-- A single email cannot pivot from Core lifestyle framing to Infinite ROI framing in a later section. If the funnel demands both, that's two emails — different sends, different segments.
-- Cobrand emails default to Core voice unless the user is `subscription_tier = "infinite"`, in which case shift to Infinite voice (premium framing, ROI-led benefit articulation, no childlike hooks).
+- A single email cannot pivot from Core lifestyle framing to Infinite ROI framing in a later block. If the funnel demands both, that's two emails — different sends, different segments.
 
 **Default output format**:
 ```
@@ -660,9 +632,8 @@ SUBJECT + PREHEADER:
   Preheader unique vs subject: [PASS / FAIL — flag if duplicates]
 
 LAYOUT FIT:
-  Content size matches message length? [PASS / FAIL — e.g., XXL for a 1-CTA promo = FAIL]
-  Header type matches campaign type? [generic / promo % / cobrand]
-  Cobrand header used: [partner + agreement status — UNCONFIRMED is a blocker]
+  Number of content_blocks matches message density? [PASS / FAIL — e.g., 4 blocks for a 1-CTA announcement = FAIL]
+  Stale library references (cobrand / promo % header / multi-size frame / etc.): [NONE / FLAG: list]
 
 TRUNCATION RISK:
   Header H1 chars: [X / 50]
@@ -676,14 +647,13 @@ UNSUBSCRIBE PRESENCE: [PASS / FAIL — required for marketing, optional for tran
 LIQUID SAFETY: [all tags have defaults? Y/N — list missing]
 SUBJECT PERSONALIZATION COVERAGE: [first_name ≥95% verified? Y/N/N/A]
 
-DARK MODE: [logos use alabaster variant where needed? PASS / FAIL]
+CHANNEL TOKEN INTEGRITY: [gunmetal / teal-2025 / silver / DM Sans Bold per BRAND.md § 6.1? PASS / FAIL — flag any teal500 #42DECA or Matter-on-CTA usage]
+DARK MODE: [logos use alabaster variant where needed? CTA contrast preserved under inversion? PASS / FAIL]
 IMAGE-BLOCKING RESILIENCE: [body works without images? PASS / FAIL]
 EMAIL WEIGHT: [estimated KB / 102 KB Gmail clip threshold]
 
 LINK TRACKING: [all CTAs UTM-tagged? PASS / FAIL]
 SUBJECT-VS-SENDER REDUNDANCY: [PASS / FAIL — subject parrots "AstroPay"?]
-
-PROMO TRUTHFULNESS: [if promo header used: % is real, current, and substantiated? PASS / FAIL]
 
 FINAL VERDICT: [SHIP / SHIP WITH FIXES / REWRITE / REJECT]
 BLOCKERS: [if not SHIP, list exact blockers]
@@ -859,7 +829,7 @@ Email stacks anti-spam / data-protection law on top of the shared advertising-cl
 
 **Transactional vs marketing classification — the carve-out rule**:
 - **Transactional** (carve-outs apply, but cautiously): KYC pending, KYC approved, password reset, login from new device, transfer initiated/completed, receipt, security alert, trial-end notice (without upsell), card delivery status, account closure confirmation
-- **Marketing** (full requirements apply): every promo, every cobrand send, every newsletter, every win-back, every Infinite GTM nudge, every cashback offer, lifecycle nudges that contain a CTA to purchase/upgrade
+- **Marketing** (full requirements apply): every promo, every newsletter, every win-back, every Infinite GTM nudge, every cashback offer, lifecycle nudges that contain a CTA to purchase/upgrade
 - **Border cases — treat as marketing if any of these are true**:
   - Email contains a CTA to upgrade, buy, or convert (even alongside transactional content)
   - Email mentions a promo, discount, cashback, or partner
@@ -871,16 +841,9 @@ Email stacks anti-spam / data-protection law on top of the shared advertising-cl
 - Subject, preheader, header, OR any body section mentions: exchange, FX, conversion, rate, transfer cost, financial returns, câmbio, cambio, taxa, cotação, currency pair (BRL→USD, etc.)
 - Cashback / ROI claims with specific numbers ("Get $X back this month")
 - Infinite emails citing specific rates, spreads, or return percentages
-- Cobrand emails citing the AstroPay rate, spread, or transfer cost as part of the partner offer
 - **Exact text only** (BRAND.md § 5) — the standard footer carries the disclaimer placeholder. The disclaimer must be in the user's market language: PT-BR for BR sends, ES-AR for AR sends. Cross-language mismatch = both an FSA expectation issue AND an LGPD/Ley 25.326 transparency issue.
 
-**Cobrand legal review** — before any cobrand email ships, verify:
-- [ ] Active written agreement covers AstroPay's use of the partner's brand assets (logo, name)
-- [ ] Agreement covers the planned send window and market
-- [ ] Cashback %, discount %, or any benefit value cited in the email matches the agreement (placeholder values are NOT just a brand issue, they're a misrepresentation under CDC Art. 37 / Ley 24.240)
-- [ ] If the partner is regulated (gambling — `1xbet`, `arbet`, `hypegames`; airline — `azul`, `latam`; financial — `deel`): additional category review required, because their regulatory exposure stacks on AstroPay's
-- [ ] User segment has consented to cobrand / partner communications specifically (LGPD granular consent — a generic "marketing emails" consent does NOT cover partner identity sharing)
-- A cobrand email failing any of these = HOLD, do not launch. Cobrand legal exposure is multiplicative — both AstroPay and the partner take liability.
+> **Cobrand carve-out (note for context)**: the simplified email library (2026-05-07) removed all cobrand assets. If a cobrand email becomes possible again, the prior cobrand legal review checklist (active agreement, send window/market coverage, cited values matching agreement, partner regulatory-category review, granular partner consent under LGPD) needs to be reinstated here.
 
 **Promo % truthfulness — claim risk classification adapts to email**:
 
@@ -920,8 +883,7 @@ Email preheader:  [exact preheader]
 Email body:       [exact body submitted]
 Market:           [BR / AR / US / EU / multi]
 Product:          [Core / Infinite]
-Email type:       [Promo / Lifecycle / Transactional / Onboarding / Cobrand]
-Cobrand partner (if any): [name]
+Email type:       [Promo / Lifecycle / Transactional / Onboarding]
 
 CLASSIFICATION CHECK
 Marketing or transactional: [MARKETING / TRANSACTIONAL / BORDER — flag misclassification risk]
@@ -930,7 +892,6 @@ If border case: [reasoning + which jurisdiction is most exposed]
 CONSENT REQUIREMENT
 Consent regime: [BR LGPD opt-in / AR Ley 25.326 opt-in / US CAN-SPAM opt-out / EU GDPR opt-in]
 Consent verified for this segment: [YES / UNCONFIRMED — escalate to @email-dist]
-Cobrand-specific consent (if cobrand email): [YES / UNCONFIRMED — granular partner consent required under LGPD]
 
 CLAIM ANALYSIS
 🔴 HIGH RISK
@@ -963,13 +924,6 @@ Unsubscribe link present: [YES / NO — REQUIRED for marketing]
 Unsubscribe one-click and working: [VERIFIED / UNCONFIRMED]
 Physical postal address present: [YES / NO]
 Authentication (SPF/DKIM/DMARC): [confirmed by @email-deliverability? Y/N]
-
-COBRAND LEGAL CHECK (if applicable)
-Active agreement: [CONFIRMED / UNCONFIRMED — UNCONFIRMED is a HARD BLOCK]
-Send window covered by agreement: [YES / NO]
-Market covered by agreement: [YES / NO]
-Cited values match agreement: [YES / NO — placeholder values = misrepresentation]
-Partner regulatory category review (if regulated partner): [DONE / NEEDED]
 
 PROMO TRUTHFULNESS (if promo email)
 Cashback / discount % real and current: [YES / NO]

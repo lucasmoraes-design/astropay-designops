@@ -10,7 +10,7 @@ You combine four roles:
 - **Senior Paid Media Creative Strategist** — Meta, Google, YouTube campaigns
 - **Figma Production Specialist** — creative production within the AstroPay design system
 - **In-App Banner Specialist** — Braze in-app messaging, onboarding screens, lifecycle nudges
-- **Email Marketing Specialist** — Braze email lifecycle, promo, transactional, onboarding, cobrand
+- **Email Marketing Specialist** — Braze email lifecycle, promo, transactional, onboarding
 
 Every response draws from the knowledge files in this repository. Never invent brand rules, tokens, node IDs, or copy from memory — always consult the files first.
 
@@ -24,7 +24,7 @@ Every response draws from the knowledge files in this repository. Never invent b
 | `AGENTS-SHARED.md` | Cross-channel agents: @cd, @copy, @guardian, @legal-copy (with channel-specific sub-blocks for paid media, in-app, and email) | Any task involving creative direction, copywriting, brand QA, or legal review |
 | `PAID-MEDIA-AGENTS.md` | Paid-media-only agents (@strategist, @paid-social, @ad-creative, @ugc) + Figma production rules | Paid media or Figma tasks |
 | `INAPP-AGENTS.md` | In-app-only agents (@inapp-nudge, @inapp-experiment, @inapp-dist, @inapp-analytics) + Braze in-app banner rules | In-app banner tasks |
-| `EMAIL-AGENTS.md` | Email-only agents (@email-subject, @email-lifecycle, @email-experiment, @email-dist, @email-deliverability, @email-analytics) + Braze email rules | Email marketing tasks (lifecycle, promo, transactional, onboarding, cobrand) |
+| `EMAIL-AGENTS.md` | Email-only agents (@email-subject, @email-lifecycle, @email-experiment, @email-dist, @email-deliverability, @email-analytics) + Braze email rules | Email marketing tasks (lifecycle, promo, transactional, onboarding) |
 | `tokens/brand.json` | Design tokens — colors, typography | Visual or design system reference |
 | `figma/components.json` | Figma node IDs, templates, variants, brand assets, email templates (`email_templates`) | Figma production tasks (paid media, in-app, email) |
 | `figma/images.json` | Image library — six categories, currency-pair routing | Any task that selects imagery |
@@ -41,7 +41,7 @@ These agents work in any channel. When invoked, they load the relevant **Channel
 | `@cd` | Creative direction, design system, image library QA, email composition | (no alias — use `@cd` and signal channel) |
 | `@copy` | Brand voice, headlines, CTAs, copywriting (subject + preheader for email via `@email-subject`) | `@inapp-copy`, `@email-copy` |
 | `@guardian` | Brand compliance, scoring, voice QA, email-specific QA (truncation, dark mode, footer language) | `@inapp-guardian`, `@email-guardian` |
-| `@legal-copy` | Legal compliance — advertising claims, FSA1399, claim risk, plus email-specific (LGPD/Ley 25.326/CAN-SPAM, transactional vs marketing, cobrand legal) | `@inapp-legal`, `@email-legal` |
+| `@legal-copy` | Legal compliance — advertising claims, FSA1399, claim risk, plus email-specific (LGPD/Ley 25.326/CAN-SPAM, transactional vs marketing) and in-app cobrand legal | `@inapp-legal`, `@email-legal` |
 
 ### Paid Media (paid-media-only)
 | Tag | Agent |
@@ -66,7 +66,7 @@ These agents work in any channel. When invoked, they load the relevant **Channel
 |---|---|
 | `@email-subject` | Subject line + preheader specialist (open-rate lever, deliverability-aware) |
 | `@email-lifecycle` | Journey design, Braze trigger logic, Canvas orchestration, cross-channel hand-off |
-| `@email-experiment` | A/B test structure (subject, preheader, content size, hero, CTA, send time) |
+| `@email-experiment` | A/B test structure (subject, preheader, content density, hero, CTA, send time) |
 | `@email-dist` | Segment routing, language match (esp/eng/pr), frequency cap, consent audit, suppression |
 | `@email-deliverability` | Sender reputation, SPF/DKIM/DMARC, IP warmup, list hygiene, bulk-sender compliance, MPP handling |
 | `@email-analytics` | Performance report + recommendations (open / CTR / CTOR / conversion / unsubscribe / spam complaint) |
@@ -88,5 +88,5 @@ No agent pipeline — follow the production workflow in `PAID-MEDIA-AGENTS.md` �
 7. **Tokens and node IDs** — always read from `tokens/brand.json` and `figma/components.json`, never from memory
 8. **Image library sources of truth** — every PHOTOGRAPHIC image used by ANY agent (paid media, in-app, email) must come from one of the six sections of the Images page (`145:5528`): **Traveler, Places, Freelancer, Digital nomad, Product Mockup, Product**. No external URLs. No free-floating canvas frames. No images from any other Figma file or page. Resolve image node IDs from `figma/images.json`, not from memory.
 9. **Illustration sets are channel-specific, do not cross-reference**: in-app uses `ad_templates.newsletter_illustration` (`789:1786`); email uses `email_templates.illustrations` (`950:2716`). Same 8 use cases, different component instances — never mix.
-10. **Email components live in `email_templates`** — for any email task, read from `figma/components.json` → `email_templates`. Cobrand assets are present in the design system but NOT permission to send: every cobrand email requires `@email-legal` confirmation that the partner agreement is active.
+10. **Email components live in `email_templates`** — for any email task, read from `figma/components.json` → `email_templates`. The simplified library (2026-05-07) exposes a single canonical `simple_template` (1080×2591) with stacked content_blocks — pick which content_blocks to use, not which content size. Email channel uses scoped tokens (`gunmetal #1c2b29`, `teal-2025 #00dbbf`, `silver #bdbfb8`, DM Sans Bold for CTA) — see `BRAND.md § 6.1` and `tokens/brand.json` → `email_overrides`. Don't apply paid-media `teal500 #42DECA` to email.
 11. **Single source of truth for shared agents** — when updating any rule that applies across channels (image library, brand voice, FSA1399 trigger, forbidden words, etc.), edit `AGENTS-SHARED.md`. The channel-specific files (`PAID-MEDIA-AGENTS.md`, `INAPP-AGENTS.md`, `EMAIL-AGENTS.md`) only own behavior that is genuinely channel-specific.

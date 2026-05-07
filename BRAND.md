@@ -124,6 +124,27 @@ Fallback: `Inter` — note `"Semi Bold"` with a space (not `"SemiBold"`).
 
 ---
 
+## 6.1 EMAIL TOKENS (CHANNEL-SCOPED)
+
+> Tokens scoped to the email channel only. Paid media and in-app continue using the § 6 palette and Matter/Inter for all text. Source of truth: `tokens/brand.json` → `email_overrides`. Figma reference: `figma/components.json` → `email_templates.simple_template.tokens_used`.
+
+**Color**:
+
+| Token | Hex | Role |
+|---|---|---|
+| `gunmetal` | `#1c2b29` | Primary text (H1 + body) on light email background |
+| `teal-2025` | `#00dbbf` | CTA background |
+| `silver` | `#bdbfb8` | Secondary text (image captions, supporting copy) |
+
+**Typography**:
+- **H1**: `Matter SemiBold` 64px (fallback `Inter Semi Bold`)
+- **Body**: `Matter Regular` 32px (fallback `Inter Regular`)
+- **CTA button**: `DM Sans Bold` 32px (fallback `Inter Bold`) — only place DM Sans appears in the system
+
+**Why scoped, not unified**: the email library was redesigned 2026-05-07 around a single template with a brighter, lighter visual register than the paid-media / in-app dark teal palette. Cross-applying email tokens to other channels (or vice versa) breaks the design system contract — `@cd` and `@guardian` flag this as a wrong-channel-token violation.
+
+---
+
 ## 7. LANGUAGE RULES
 
 **ES-AR native**: voseo consistent throughout — Aprovechá, Conocé, Descubrí, Usá. Never tuteo. Never "usted."

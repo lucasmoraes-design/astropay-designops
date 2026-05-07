@@ -78,5 +78,26 @@
       "4:5":   { "size_px": 80,  "style": "SemiBold", "max_chars_per_line": 23 },
       "16:9":  { "size_px": 88,  "style": "Bold",     "max_chars_per_line": 22 }
     }
+  },
+
+  "email_overrides": {
+    "_note": "Channel-scoped tokens for the email templates only. Paid media + in-app continue reading from `color`, `color_roles`, `figma_color_values`, and `typography` above. See BRAND.md § 6.1 and figma/components.json -> email_templates.simple_template.tokens_used.",
+    "color": {
+      "gunmetal":  { "hex": "#1c2b29", "rgb": [28, 43, 41],    "role": "primary text (H1 + body) on light email background" },
+      "teal_2025": { "hex": "#00dbbf", "rgb": [0, 219, 191],   "role": "CTA background" },
+      "silver":    { "hex": "#bdbfb8", "rgb": [189, 191, 184], "role": "secondary text (image captions, supporting copy)" }
+    },
+    "figma_color_values": {
+      "_note": "Figma Plugin API RGB values (0–1 range) for the email-scoped tokens.",
+      "gunmetal":  { "r": 0.110, "g": 0.169, "b": 0.161 },
+      "teal_2025": { "r": 0.000, "g": 0.859, "b": 0.749 },
+      "silver":    { "r": 0.741, "g": 0.749, "b": 0.722 }
+    },
+    "typography": {
+      "_note": "H1 and body in email continue using Matter (SemiBold / Regular). Only the CTA uses DM Sans Bold. DM Sans may not be installed in working files — fallback to Inter Bold if missing.",
+      "h1_font":  { "family": "Matter",  "style": "SemiBold", "size_px": 64, "fallback": "Inter Semi Bold" },
+      "body_font":{ "family": "Matter",  "style": "Regular",  "size_px": 32, "fallback": "Inter Regular" },
+      "cta_font": { "family": "DM Sans", "style": "Bold",     "size_px": 32, "fallback": "Inter Bold" }
+    }
   }
 }
