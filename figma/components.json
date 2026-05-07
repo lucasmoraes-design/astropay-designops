@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "AstroPay Figma component node IDs — live-extracted from Figma source",
-    "last_updated": "2026-05-04",
+    "last_updated": "2026-05-06",
     "file_key": "6kHkKTxW1ygct6vTQsIGF1",
     "file_url": "https://www.figma.com/design/6kHkKTxW1ygct6vTQsIGF1/Claude-lab",
     "source_pages": {
@@ -21,11 +21,17 @@
     "sync": "Manual — re-extract via Figma MCP after every design system publish",
     "page_hashes": {
       "id_visual": "1f14c0db35a3",
-      "design_components": "c177693df916",
+      "design_components": "ecdf117e022f",
       "images": "8ecadf0fe159"
     },
     "sync_note": "2026-05-04 (re-sync) — Email marketing component library reconciled against live Figma. Two changes detected: (1) Promo email content_sizes shrunk ~169px on XXL/XL/L/M/S (XS unchanged) — likely the community-CTA section was removed from the inline footer area; rerun an M template inspection before the next email build to confirm. (2) Two text_layouts removed: Text Layout=Rappi (950:2427) and Text Layout=Uber (950:2435). Library now exposes 6 text layouts instead of 8 — cobrand-specific text compositions consolidated; use single_text or top_left_text paired with the cobrand header variants. 2026-05-04 (initial) — Email marketing component library added (section 950:1972). New top-level key: email_templates. Twelve component groups: promo_email (6 sizes), headers (11 variants), text_layouts, cobranding_logos (22 partners), illustrations (8 use cases — distinct from in-app newsletter_illustration set 789:1786), ctas, menus, onboarding_cta, content_blocks, onboarding_headers, onboarding_horizontal, footers (3 languages × 2 styles).",
-    "runtime_rule": "image_node values below are documentation only — at runtime, ALWAYS resolve image slots via findOne(n => n.name === '#Image') after creating or cloning the template instance. Property keys (Title#xxx, Subheadline#xxx, Gradient/Overlay BOOLEAN toggles) vary per format and must be discovered at runtime via Object.keys(inst.componentProperties)."
+    "runtime_rule": "image_node values below are documentation only — at runtime, ALWAYS resolve image slots via findOne(n => n.name === '#Image') after creating or cloning the template instance. Property keys (Title#xxx, Subheadline#xxx, Gradient/Overlay BOOLEAN toggles) vary per format and must be discovered at runtime via Object.keys(inst.componentProperties).",
+    "_auto_sync_log": [
+      {
+        "date": "2026-05-06",
+        "changed": "design_components"
+      }
+    ]
   },
   "components": {
     "title": {
