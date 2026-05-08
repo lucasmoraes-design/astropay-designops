@@ -81,17 +81,28 @@
   },
 
   "email_overrides": {
-    "_note": "Channel-scoped tokens for the email templates only. Paid media + in-app continue reading from `color`, `color_roles`, `figma_color_values`, and `typography` above. See BRAND.md § 6.1 and figma/components.json -> email_templates.simple_template.tokens_used.",
+    "_note": "Channel-scoped tokens for the email templates only. Paid media + in-app continue reading from `color`, `color_roles`, `figma_color_values`, and `typography` above. See BRAND.md § 6.1 and figma/components.json -> email_templates.chassis.tokens_used.",
     "color": {
-      "gunmetal":  { "hex": "#1c2b29", "rgb": [28, 43, 41],    "role": "primary text (H1 + body) on light email background" },
-      "teal_2025": { "hex": "#00dbbf", "rgb": [0, 219, 191],   "role": "CTA background" },
-      "silver":    { "hex": "#bdbfb8", "rgb": [189, 191, 184], "role": "secondary text (image captions, supporting copy)" }
+      "gunmetal":            { "hex": "#1c2b29", "rgb": [28, 43, 41],    "role": "primary text (H1 + body) on light email background" },
+      "teal_2025":           { "hex": "#00dbbf", "rgb": [0, 219, 191],   "role": "CTA background (the button surface)" },
+      "teal_2025_over_light":{ "hex": "#00c5ac", "rgb": [0, 197, 172],   "role": "foreground variant of teal_2025 tuned for use as TEXT or HIGHLIGHT on light surfaces. Used by phrase highlights inside hero H1 / body copy. Figma variable: `Teal 2025 > over Light` in AstroTheme collection." },
+      "silver":              { "hex": "#bdbfb8", "rgb": [189, 191, 184], "role": "secondary text (image captions, supporting copy)" }
     },
     "figma_color_values": {
-      "_note": "Figma Plugin API RGB values (0–1 range) for the email-scoped tokens.",
-      "gunmetal":  { "r": 0.110, "g": 0.169, "b": 0.161 },
-      "teal_2025": { "r": 0.000, "g": 0.859, "b": 0.749 },
-      "silver":    { "r": 0.741, "g": 0.749, "b": 0.722 }
+      "_note": "Figma Plugin API RGB values (0-1 range) for the email-scoped tokens.",
+      "gunmetal":             { "r": 0.110, "g": 0.169, "b": 0.161 },
+      "teal_2025":            { "r": 0.000, "g": 0.859, "b": 0.749 },
+      "teal_2025_over_light": { "r": 0.000, "g": 0.773, "b": 0.675 },
+      "silver":               { "r": 0.741, "g": 0.749, "b": 0.722 }
+    },
+    "figma_variables": {
+      "_note": "Bind to these Figma variables when applying tokens via Plugin API. Prefer variable binding (setBoundVariableForPaint) over hardcoded hex/RGB so theme switches and library updates propagate.",
+      "teal_2025_over_light": {
+        "figma_name": "Teal 2025 > over Light",
+        "collection": "AstroTheme",
+        "variable_id": "VariableID:d889c6c1274987deda8b7d6e055e3b5253ac4ac3/1483:4",
+        "use": "Phrase highlight color on body and H1 text (light email surfaces)"
+      }
     },
     "typography": {
       "_note": "H1 and body in email continue using Matter (SemiBold / Regular). Only the CTA uses DM Sans Bold. DM Sans may not be installed in working files — fallback to Inter Bold if missing.",

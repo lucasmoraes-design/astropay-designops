@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "AstroPay Figma component node IDs — live-extracted from Figma source",
-    "last_updated": "2026-05-06",
+    "last_updated": "2026-05-08",
     "file_key": "6kHkKTxW1ygct6vTQsIGF1",
     "file_url": "https://www.figma.com/design/6kHkKTxW1ygct6vTQsIGF1/Claude-lab",
     "source_pages": {
@@ -24,7 +24,7 @@
       "design_components": "ecdf117e022f",
       "images": "8ecadf0fe159"
     },
-    "sync_note": "2026-05-04 (re-sync) — Email marketing component library reconciled against live Figma. Two changes detected: (1) Promo email content_sizes shrunk ~169px on XXL/XL/L/M/S (XS unchanged) — likely the community-CTA section was removed from the inline footer area; rerun an M template inspection before the next email build to confirm. (2) Two text_layouts removed: Text Layout=Rappi (950:2427) and Text Layout=Uber (950:2435). Library now exposes 6 text layouts instead of 8 — cobrand-specific text compositions consolidated; use single_text or top_left_text paired with the cobrand header variants. 2026-05-04 (initial) — Email marketing component library added (section 950:1972). New top-level key: email_templates. Twelve component groups: promo_email (6 sizes), headers (11 variants), text_layouts, cobranding_logos (22 partners), illustrations (8 use cases — distinct from in-app newsletter_illustration set 789:1786), ctas, menus, onboarding_cta, content_blocks, onboarding_headers, onboarding_horizontal, footers (3 languages × 2 styles).",
+    "sync_note": "2026-05-08 (renames applied) — All email sets and variants renamed semantically in Figma via use_figma plugin API: Hero set (Style property, 8 variants), Block set (Block property, 12 variants now Block=Steps Pills/Feature Grid Compact/etc instead of Block5..12), Footer (Language), Menu (Style), CTA Block (Size), CTA Inline (Alignment, arrow glyphs stripped), Icon (Icon property, 82 variants after removing garbage `Group 48097257` and duplicate `Icon-locker`; `check` renamed to `Icon-check-3`). Set masters all renamed to `Email / X / Y` convention. Chassis component renamed `Email / Chassis`. 2026-05-08 (rebuild) — Email library rebuilt: chassis (1051:57000) replaces simple_template; heroes set (1051:6473) with 8 variants replaces hero_modals; blocks set (950:2681) extended from 4 → 12 variants; cta_inline migrated to 1051:6441; cta_block now a set (1051:35957); menus a set (1051:6451) with 2 variants; footers a set (1051:6406); new icons set (1051:55882). 2026-05-04 (re-sync) — Email marketing library reconciled against live Figma (promo_email content_sizes shrunk ~169px; text_layouts Rappi/Uber removed). 2026-05-04 (initial) — Email marketing component library added (section 950:1972).",
     "runtime_rule": "image_node values below are documentation only — at runtime, ALWAYS resolve image slots via findOne(n => n.name === '#Image') after creating or cloning the template instance. Property keys (Title#xxx, Subheadline#xxx, Gradient/Overlay BOOLEAN toggles) vary per format and must be discovered at runtime via Object.keys(inst.componentProperties).",
     "_auto_sync_log": [
       {
@@ -390,51 +390,46 @@
   "email_templates": {
     "_section_node": "950:1972",
     "_section_label": "Email marketing",
-    "_note": "Email component library — restructured 2026-05-07 (simplification) and renamed 2026-05-07 (semantic naming). All masters now use the `Email / X / Y` namespace for scale. The library is composed of: 1 template frame + N content_blocks stacked + optional hero modal at top + standard footer + scoped illustration set. NEVER reference the in-app `newsletter_illustration` set (789:1786) for email — use `email_templates.illustrations` (950:2716) instead.",
+    "_note": "Email component library — rebuilt 2026-05-08. Now organized as: 1 chassis (sample assembled email) + 8 hero variants + 12 block variants + 8 illustration use cases + 2 menu variants + 3 footer language variants + ~80 decorative icons + CTA inline (3 alignments) + CTA Block (3 sizes). Live-extracted from Figma. NEVER reference the in-app `newsletter_illustration` set (789:1786) for email — use `email_templates.illustrations` (950:2716) instead.",
     "_runtime_caveats": [
+      "**ALL master content is PLACEHOLDER, never campaign-locked.** Every TEXT node (hero H1, block H1, body paragraphs, CTA labels, footer disclaimers) and every IMAGE/ILLUSTRATION inside hero and block masters is sample content for visual reference only. The agent MUST: (1) override every visible TEXT node with copy from the brief; (2) for heroes/blocks with photo image fills (e.g., `photo_portrait_overlay`, `soft_teal_photo_below`, `image_h1_body_cta`), select an appropriate photo from `figma/images.json` lifestyle pool (or product/product_mockup pool if exchange-gated) and apply it via `figma.createImage(bytes)` + new IMAGE fill on the `#Image` RECTANGLE; (3) for heroes/blocks with embedded Illustration INSTANCES (e.g., `soft_teal_illustration`, `dark_gradient_pattern`), swap to the appropriate `email_templates.illustrations.<use_case>` based on the brief and the journey phase mapping (see AGENTS-SHARED.md @cd Channel: Email); (4) for `feature_grid_compact` / `steps_pills`, swap each cell's icon from the default `Icon=1..4` numerals to semantic `Icon-<name>` matching the feature/step labels. Master placeholder text often mentions a specific campaign (e.g., the hero `photo_portrait_overlay` master says 'Não perca seu cashback') but the variant is NOT campaign-locked; the same hero is correct for any urgency/lifestyle promo. Shipping a composition with ANY master placeholder text or image left unchanged is a HARD BLOCK.",
       "Matter font is typically NOT installed in working files. Before any TEXT edit, swap fontName Matter → Inter. Style mapping: Matter SemiBold → Inter 'Semi Bold' (with a space, not 'SemiBold'). Matter Bold → Inter Bold. Matter Medium → Inter Medium. Same rule documented in PAID-MEDIA-AGENTS.md § Plugin API rules.",
       "Pre-swap fonts on instances BEFORE `appendChild()` (not just before text edits). `appendChild` itself fails with 'unloaded font' if a descendant TEXT uses an uninstalled font. Pattern: createInstance → walk findAll(TEXT) → swap fontName → appendChild.",
       "CTA buttons in this library use **DM Sans Bold** (32px) — NOT Matter. DM Sans is typically installed but verify; fallback to 'Inter' Bold if missing.",
       "Email channel uses scoped color tokens — `--gunmetal #1c2b29` (text), `--teal-2025 #00dbbf` (CTA background), `--silver #bdbfb8` (secondary text) — NOT the paid-media / in-app `teal500 #42DECA`. See `BRAND.md § 6.1` and `tokens/brand.json` -> `email_overrides`.",
-      "Hero modal composition rule: when using a `hero_modals.layout_X` at the top, the hero already carries an H1 96px. Pair with `block.body_cta` underneath (body + CTA, no H1). Pairing a hero modal with `block.h1_body_cta` produces a duplicate H1.",
+      "Hero composition rule: when using a `heroes.<variant>` at the top, the hero already carries an H1. Pair with `block.body_cta` underneath (body + CTA, no H1). Pairing a hero with `block.h1_body_cta` produces a duplicate H1.",
       "`block.body_cta` (Block=Body + CTA) has **TWO body paragraphs** by default. When only one paragraph is needed, override the first TEXT node and set `visible = false` on the second. The component does not currently expose a property to hide it.",
       "**Footer disclaimer is currently English boilerplate**, not language-matched. The text in `footer.es_ar` and `footer.pt_br` defaults to 'This email was sent to you by AstroPay...' instead of the FSA1399 disclaimer. Manual override of the disclaimer TEXT node is required for FX-touching sends — inject the BRAND.md § 5 exact text matching the user's market language. **Design system bug to fix in a separate pass.**",
-      "Replacing image fills with illustrations: the image slot inside `block.image_h1_body_cta` and `block.h1_image_body_cta` is a `RECTANGLE` with an IMAGE fill (not a swappable instance). To populate with an illustration: (1) `exportAsync({format:'PNG', constraint:{type:'SCALE', value:2}})` on the illustration component, (2) `figma.createImage(bytes)` → image hash, (3) `rectangle.fills = [{type:'IMAGE', imageHash, scaleMode:'FIT'}]`. Inside hero modals, the inner Illustration is an INSTANCE — use `swapComponent(targetUseCase)` instead.",
-      "Migration note — components renamed 2026-05-07 from legacy names to `Email / X / Y` scheme. The COMPONENT_SET 950:2162 (was 'Newsletters - Promo email', now 'Email / Template') still exists with content-size variants (XXL/XL/L/M/S/XS at 950:2163/2196/2228/2260/2291/2321), but the simplified library only canonically exposes the XXL-resized instance 1020:1951 — agents should not pick alternate sizes unless explicitly briefed. The following sets were genuinely REMOVED 2026-05-07: `headers` 950:2351, `text_layouts` 950:2426, `cobranding_logos` 950:2470, footer rounded variants (950:1522/1548/1574), menu non-logo-dark variants (950:2915/2923/2928). Any reference to those node IDs will fail."
+      "Replacing image fills with illustrations: the image slot inside `block.image_h1_body_cta`, `block.h1_image_body_cta`, `block.wide_image_h1_body`, and `block.image_numbered_list` is a `RECTANGLE` with an IMAGE fill (not a swappable instance). To populate with an illustration: (1) `exportAsync({format:'PNG', constraint:{type:'SCALE', value:2}})` on the illustration component, (2) `figma.createImage(bytes)` → image hash, (3) `rectangle.fills = [{type:'IMAGE', imageHash, scaleMode:'FIT'}]`. Inside heroes that embed an Illustration INSTANCE, use `swapComponent(targetUseCase)` instead.",
+      "**Library rebuilt 2026-05-08, renames applied 2026-05-08.** Old node IDs are obsolete — any reference to these will fail: `simple_template` instance `1020:1951`, master_set `950:2162` (sized variants XXL/XL/L/M/S/XS at `950:2163/2196/2228/2260/2291/2321`), `hero_modals.layout_2/3` (`950:2957/2960`), `cta_inline` set `950:2706` and its children (`950:2707/2710/2713`), `menus.logo_dark` standalone `950:2920`. Removed by prior pass: `headers` `950:2351`, `text_layouts` `950:2426`, `cobranding_logos` `950:2470`, footer rounded variants (`950:1522/1548/1574`), menu non-logo-dark variants (`950:2915/2923/2928`). Garbage variant `Group 48097257` (`1051:55821`) and duplicate `Icon-locker` (`1051:55814`) were also removed from the Icons set on rename pass.",
+      "**Per-variant H1 character budgets**: each hero master was designed with a specific H1 placeholder length in mind, and that length defines the visual balance the designer set. Override copy must respect the budget. When the brief's H1 exceeds the budget, **prefer SPLITTING the message across H1 + subtitle** over shrinking the fontSize (shrinking breaks visual hierarchy because the H1 ends up smaller than the subtitle). Approximate H1 budgets per variant (chars / lines at master default fontSize): `dark_gradient_pattern` ~20 chars / 2 lines at 128px (TIGHTEST budget; matches placeholder 'Bem-vindo à AstroPay'), `soft_teal_illustration` ~33 chars / 2-3 lines at 96px, `photo_portrait_overlay` ~28 chars / 2-3 lines at 152px, `soft_teal_photo_below` and `soft_teal_photo_collage` ~30 chars / 3 lines at 128px, `photo_product_overlay` ~25 chars / 2-3 lines at 152px, `dark_product_stack` ~30 chars / 3 lines at 128px, `white_wallet_product` ~25 chars / 2 lines at 128px. When a brief's H1 exceeds the variant's budget, restructure the message: keep the strongest concrete claim or product name in the H1 (≤ budget), move the rest of the value prop into the subtitle. Auto-fit fontSize reduction is a fallback only, used when the message cannot be naturally split (rare).",
+      "**Post-edit canvas refresh (mandatory)**: after any script that creates instances, swaps components, replaces image fills, or modifies multiple nodes, Figma's canvas may continue showing the pre-edit state until the user manually clicks somewhere (the so-called 'double-click to update' artifact). To force an immediate visual refresh, the agent must end every editing script with `figma.currentPage.selection = [];` followed by `figma.viewport.scrollAndZoomIntoView([targetChassis])` (or the relevant set of mutated frames). Skipping this step leaves the user with a stale-looking canvas and they have to click around to see the new state. This is a runtime requirement, not optional.",
+      "**H1 auto-fit rule (mandatory for hero H1s)**: brief H1 text often exceeds the master's default fontSize budget. After overriding the H1 string, the agent MUST: (1) set `h1.textAutoResize = 'HEIGHT'` so text wraps; (2) constrain width via `layoutSizingHorizontal = 'FILL'` (preferred, works on vertical-auto-layout parents) and verify `h1.width <= 1080`; if FILL leaves the text unconstrained (some heroes like `soft_teal_photo_below` have horizontal-auto-layout parents where FILL collapses to natural text width), fall back to `h1.layoutSizingHorizontal = 'HUG'` then `h1.resize(960, h1.height)` to set width explicitly with a 60px buffer each side; (3) iteratively reduce `fontSize` in 4px steps from the master default down to a hard floor of 48px until line count ≤ 3 (≤ 2 for `soft_teal_illustration`). Document the final fontSize and which width strategy succeeded in the output extension. Without this rule, long H1s clip on the right edge, get stuck on a single overflowing line, or push body content off-screen."
     ],
     "_naming_convention": {
       "_note": "All Figma masters in section 950:1972 follow `Email / Category / Variant` (slashes create folder hierarchy in the Figma assets panel). Inside COMPONENT_SETs, variants follow `Property=Value` per Figma convention.",
       "categories": {
-        "Email / Template": "Email frame container (COMPONENT_SET, off-section)",
-        "Email / Menu": "Top-of-email navigation",
-        "Email / Hero": "Hero modal at top of email — gradient bg + H1 + illustration",
+        "Email / Chassis": "Sample assembled email reference (standalone COMPONENT, 1080×5330)",
+        "Email / Menu": "Top-of-email navigation (COMPONENT_SET with `Style=...` variants)",
+        "Email / Hero": "Hero at top of email — varied styles (COMPONENT_SET with `Style=...` variants)",
         "Email / Block": "Modular body sections (COMPONENT_SET with `Block=...` variants)",
         "Email / CTA / Inline": "Inline CTA inside blocks (COMPONENT_SET with `Alignment=...` variants)",
-        "Email / CTA Block": "Standalone CTA blocks at sizes S/M/L",
+        "Email / CTA Block": "Standalone CTA blocks (COMPONENT_SET with `Size=...` variants)",
         "Email / Illustration": "Vector illustrations (COMPONENT_SET with `Use case=...` variants)",
+        "Email / Icon": "Decorative icons used inside blocks/grids/step-lists (COMPONENT_SET with `Icon=...` variants)",
         "Email / Footer": "Footer with unsubscribe + disclaimer, by language"
       }
     },
-    "simple_template": {
-      "instance_node": "1020:1951",
-      "master_set_node": "950:2162",
-      "master_set_name": "Email / Template",
-      "master_variant_node": "950:2163",
-      "master_variant_name": "Content=XXL",
-      "_note": "The single canonical email template instance. Composed as a vertical stack of content_blocks inside a 1080×2591 white frame, gap 72px between blocks, padding 62px vertical. The instance is sized down from the XXL master variant (3822px → 2591px). Pick how many content_blocks to instantiate based on message density — 1 block for micro-announcements, 2-3 blocks for standard comms, up to 4 blocks before email weight risks Gmail 102 KB clip.",
+    "chassis": {
+      "node": "1051:57000",
+      "figma_name": "Email / Chassis",
+      "type": "COMPONENT (standalone)",
+      "_note": "Sample assembled email — reference layout showing menu + hero + blocks + footer composed correctly with tokens, padding, and gaps applied. NOT a template to clone — agents should compose fresh emails by stacking heroes/blocks/footer inside a new auto-layout frame and refer to chassis only for visual structure validation.",
       "frame": {
         "width": 1080,
-        "height": 2591,
-        "background": "white",
-        "padding_y": 62,
-        "block_gap": 72
+        "height": 5330,
+        "background": "white"
       },
-      "default_anatomy": [
-        "menu (`menus.logo_dark` 950:2920) at top",
-        "optional hero modal (`hero_modals.layout_<N>`) for image-led emails — carries H1",
-        "1+ content_blocks stacked (h1_body_cta / body_cta / image_h1_body_cta / h1_image_body_cta)",
-        "footer (`footers.<lang>` 950:1444 es_ar / 950:1470 en / 950:1496 pt_br)"
-      ],
       "tokens_used": {
         "text_color": "--gunmetal #1c2b29",
         "secondary_text_color": "--silver #bdbfb8",
@@ -446,68 +441,189 @@
         "cta_font": "DM Sans Bold 32px",
         "cta_radius": 48,
         "image_radius": 30
-      }
+      },
+      "default_anatomy": [
+        "**Header Section** (inner auto-layout frame, itemSpacing 0): contains [menu, hero] flush — no gap between them. Menu and hero must always sit edge-to-edge to read as a continuous top section.",
+        "  - `menus.<variant>` at top of Header Section",
+        "  - `heroes.<style>` directly below menu (no spacing); carries H1 when used",
+        "N blocks stacked from `blocks.<variant>` after Header Section (text-only, image, grid, steps, wallet; pick by message density). Default itemSpacing between blocks is 72.",
+        "`footers.<lang>` at bottom"
+      ],
+      "_chassis_layout_pattern": "Outer chassis frame: vertical auto-layout, 1080 wide, white bg, paddingTop 0, paddingBottom 62, itemSpacing 72. First child is the Header Section (inner vertical auto-layout, itemSpacing 0, no padding, transparent fill) containing menu + hero flush. Subsequent chassis children are the body blocks and footer with the 72 gap between them."
     },
-    "hero_modals": {
-      "_note": "Hero modal at top of email — gradient dark teal background + H1 96px + illustration. Distinct from `content_blocks` (which live inside the white content section). Use a hero modal for image-led, attention-grabbing emails (FX rate alerts, promo announcements, milestone celebrations). Currently 3 layouts; user-defined more layouts may be added — extend this list by node ID. The naming `Onboarding - header` (legacy) was misleading: hero modals are NOT onboarding-specific.",
-      "_anatomy": "Each layout is a 1080×1229 COMPONENT with: outer GRADIENT_LINEAR fill, inner Text Layout frame with one big H1 TEXT (Matter Bold 96px), and an Illustration INSTANCE (1× swappable). When using a hero modal, omit any block.h1_* underneath to avoid duplicate H1 — use block.body_cta instead.",
-      "_swap_illustration_pattern": "Inside a hero modal instance, find the inner `Illustration` INSTANCE (by name) and call `swapComponent(targetUseCase)` where targetUseCase is fetched from `illustrations` set below.",
+    "heroes": {
+      "set_node": "1051:6473",
+      "set_name": "Email / Hero",
+      "variant_property": "Style",
+      "_note": "Hero block at top of email. 8 variants spanning illustration-led, photographic, and compound layouts. All variants carry an H1; pair with `block.body_cta` underneath to avoid duplicate H1. **Each hero's master text and image are placeholders.** The agent must always (a) override the H1 text and any other visible TEXT, and (b) for photographic variants, replace the master photo with one selected from `figma/images.json` lifestyle pool that matches the brief; for illustrated variants, swap the embedded Illustration INSTANCE to the use_case matching the brief's journey phase. Variant `use` descriptions below state the visual mood the hero is good for, NOT a campaign lock.",
+      "_internal_anatomy": "Most hero variants carry FOUR text elements + ONE inline CTA wrapper as part of their visual balance: (1) H1 (largest font), (2) subtitle / kicker (~64px), (3) body description (~32px), (4) CTA TEXT inside an `Email / CTA / Inline` INSTANCE. **These elements were designed to ship together.** Hiding the subtitle, body, or inline CTA breaks the visual rhythm of the master and leaves the hero feeling sparse. The agent must KEEP all hero elements visible and OVERRIDE each with coherent copy that approximates the placeholder character length, so the visual balance the designer set is preserved. Approximate placeholder budgets: subtitle ~30 chars (5-6 words), body description ~150 chars (~24 words, one paragraph), CTA label ~14 chars (2-3 words). Walk the hero instance, sort TEXT children by fontSize descending: index 0 = H1, index 1 = subtitle, index 2 = body description, then find the inline CTA TEXT inside the `Email / CTA / Inline` instance. Override all four with coherent brief copy. The hero CTA and the body block CTA should share the SAME action verb (e.g., both 'Convert now'), reinforcing each other rather than competing. Some hero variants (e.g., `soft_teal_illustration`) ship with fewer internal text elements; in those cases, override only what exists.",
+      "_swap_illustration_pattern": "Only `soft_teal_illustration` embeds an Illustration INSTANCE. Find the inner `Illustration` INSTANCE by name and call `swapComponent(targetUseCase)` where targetUseCase is fetched from `illustrations` set. Default placeholder is typically `email` or `exchange` use_case; the agent picks the right one per brief and journey phase. `dark_gradient_pattern` has NO embedded illustration (pure typographic on gradient + decorative pattern background); only its TEXT needs override per brief.",
+      "_image_fill_pattern": "Variants that embed a photographic image (`photo_portrait_overlay`, `soft_teal_photo_below`, `soft_teal_photo_collage`, `photo_product_overlay`, `dark_product_stack`, `white_wallet_product`): find the RECTANGLE with `name === '#Image'`, look up an appropriate photo node ID in `figma/images.json` (lifestyle pool default; product/product_mockup only when brief explicitly mentions exchange), retrieve its bytes via `exportAsync({format:'PNG', constraint:{type:'SCALE', value:2}})`, then set fill: `rectangle.fills = [{type:'IMAGE', imageHash: figma.createImage(bytes).hash, scaleMode:'FIT'}]`. The placeholder photo in the master must always be replaced.",
       "variants": {
-        "layout_1": { "node": "950:2954", "figma_name": "Email / Hero / Layout 1" },
-        "layout_2": { "node": "950:2957", "figma_name": "Email / Hero / Layout 2" },
-        "layout_3": { "node": "950:2960", "figma_name": "Email / Hero / Layout 3" }
+        "soft_teal_illustration": {
+          "node": "950:2954",
+          "figma_name": "Style=Soft Teal + Illustration",
+          "size": "1080×1256",
+          "use": "Soft teal background + illustration on left + H1 on right + body. Visual mood: calm, educational, brand-soft. Use for Education / Memorable intro / Support journey phases. Illustration MUST be selected per brief from `email_templates.illustrations.<use_case>` matching the journey phase (see Illustration ↔ journey phase table in @cd Channel: Email); never ship the master placeholder illustration."
+        },
+        "photo_portrait_overlay": {
+          "node": "1051:6474",
+          "figma_name": "Style=Photo Portrait + Overlay",
+          "size": "1080×1229",
+          "use": "Full-bleed photographic portrait + dark gradient overlay + H1 over image. Visual mood: dramatic, time-sensitive, lifestyle. Use for urgency cues (cashback windows closing, promo deadlines, lifecycle nudges with a personal angle). Photo MUST be selected per brief from `figma/images.json` lifestyle pool (digital_nomad / freelancer for relatable, traveler / places for aspirational); never ship the master placeholder photo."
+        },
+        "soft_teal_photo_below": {
+          "node": "1051:6825",
+          "figma_name": "Style=Soft Teal + Photo Below",
+          "size": "1080×1229",
+          "use": "Light teal banner with H1 on top + photographic image full-width below. Visual mood: calm, lifestyle, no overlay. Use when the photo should breathe (no dark gradient over it). Photo MUST be selected per brief from `figma/images.json` lifestyle pool; never ship the master placeholder."
+        },
+        "soft_teal_photo_collage": {
+          "node": "1051:7014",
+          "figma_name": "Style=Soft Teal + Photo Collage",
+          "size": "1080×1229",
+          "use": "Light teal background + multi-image collage + H1 + center action element. Visual mood: storytelling, multi-beat, narrative. Use when the email opens with a sequence or theme rather than a single moment. Each photo cell MUST be replaced per brief from `figma/images.json`."
+        },
+        "photo_product_overlay": {
+          "node": "1051:7084",
+          "figma_name": "Style=Photo Product + Overlay",
+          "size": "1080×1229",
+          "use": "Full-bleed product photo + dark overlay + H1 over image. Visual mood: product-centered, tactile, premium-adjacent. Use when the brief is about a physical product (card, device). Photo MUST be selected per brief from `figma/images.json` product or product_mockup pool (only when brief explicitly mentions exchange / FX) or lifestyle pool otherwise."
+        },
+        "dark_product_stack": {
+          "node": "1051:7094",
+          "figma_name": "Style=Dark + Product Stack",
+          "size": "1080×1485",
+          "use": "Dark teal background + stacked product visual + H1 below. Visual mood: premium, aspirational, dense. Use for high-impact product moments. Photo (card stack or similar) MUST be replaced per brief; never ship master placeholder."
+        },
+        "white_wallet_product": {
+          "node": "1051:35722",
+          "figma_name": "Style=White + Wallet + Product",
+          "size": "1080×1485",
+          "use": "White background + H1 + product photo + Apple Pay / G Pay badges + balance preview + CTA. Compound hero with multiple atomic elements. Use sparingly, only when message warrants the density (typically newsletter-style sends). Photo MUST be replaced per brief; balance numbers and CTA copy MUST be overridden."
+        },
+        "dark_gradient_pattern": {
+          "node": "1051:35766",
+          "figma_name": "Style=Dark Gradient + Pattern",
+          "size": "1080×988",
+          "use": "Dark teal gradient + decorative pattern background + H1 + body. Visual mood: brand-led, ceremonial, no photo. Use for welcome moments, anchor brand sends, or Memorable intro phase emails where typographic delivery is the focus. The pattern is decorative; H1 and body text MUST be overridden per brief."
+        }
       }
     },
-    "content_blocks": {
+    "blocks": {
       "set_node": "950:2681",
       "set_name": "Email / Block",
-      "_note": "Modular content blocks for assembling email body sections inside the `simple_template`. Mix freely — pick the smallest set of blocks that delivers the message. When the email already has a hero modal at top, use `body_cta` (no H1) underneath to avoid duplicate H1.",
+      "variant_property": "Block",
+      "_note": "Modular content blocks for assembling email body sections, 12 variants. Mix freely; pick the smallest set of blocks that delivers the message. When the email has a hero at top, use `body_cta` (no H1) for the first block to avoid duplicate H1. **Each block's master text and image are placeholders.** The agent must override every visible TEXT node (H1s, paragraphs, CTA labels, feature titles, step labels) and, for image-bearing blocks (`image_h1_body_cta`, `h1_image_body_cta`, `wide_image_h1_body`, `promo_image_callout`), replace the placeholder photo with one selected from `figma/images.json` per brief. For icon-bearing blocks (`steps_pills`, `feature_grid_compact`), swap each `Icon=1..4` default to a semantic `Icon-<name>` matching the feature/step text.",
       "variants": {
         "h1_body_cta": {
           "node": "950:2682",
           "figma_name": "Block=H1 + Body + CTA",
-          "use": "Headline + paragraph + CTA — text-only block. Default for announcements and lifecycle nudges WITHOUT a hero modal."
+          "size": "930×549",
+          "use": "Headline + paragraph + CTA — text-only block. Default for announcements and lifecycle nudges WITHOUT a hero."
         },
         "body_cta": {
           "node": "950:2687",
           "figma_name": "Block=Body + CTA",
+          "size": "930×682",
           "use": "Two body paragraphs + CTA, no headline. Use for follow-up sections after the hero already set context. **Has 2 body paragraphs by default** — override 1st and hide 2nd if only one paragraph is needed.",
           "_default_text_nodes": ["body_paragraph_1", "body_paragraph_2 (hide if not used)", "cta"]
         },
         "image_h1_body_cta": {
           "node": "950:2692",
           "figma_name": "Block=Image + H1 + Body + CTA",
+          "size": "930×1173",
           "use": "Image rectangle (850×479) + headline + body + secondary body + CTA — image leads. The image is a RECTANGLE with IMAGE fill — replace with rendered illustration via `figma.createImage(exportedPNG)`."
         },
         "h1_image_body_cta": {
           "node": "950:2699",
           "figma_name": "Block=H1 + Image + Body + CTA",
+          "size": "930×1173",
           "use": "Headline + image + body + CTA — headline leads, image supports."
+        },
+        "steps_pills": {
+          "node": "1051:36889",
+          "figma_name": "Block=Steps Pills",
+          "size": "930×996",
+          "use": "Numbered step list — circle numerals (1..N) + bold text in horizontal pills. Default for activation / onboarding / how-to flows with 3–5 short steps. Numerals come from `icons` set (`Icon=1`..`Icon=5`).",
+          "_icon_swap_supported": true,
+          "_icon_swap_note": "4 inner INSTANCE nodes (default `Icon=1..4`). Steps naturally keep numerals — only swap if brief explicitly calls for non-numbered indicators."
+        },
+        "feature_grid_compact": {
+          "node": "1051:55929",
+          "figma_name": "Block=Feature Grid Compact",
+          "size": "930×842",
+          "use": "2×2 grid of feature cards — icon (teal circle) + bold title only, no body. Default for compact benefits list / quick callouts. Icons from `icons` set.",
+          "_icon_swap_supported": true,
+          "_icon_swap_note": "4 inner INSTANCE nodes (default `Icon=1..4` numerals — MUST be overridden per send to semantic icons matching the feature labels). Use `swapComponent(targetIconVariant)` per cell."
+        },
+        "feature_grid_with_body": {
+          "node": "1051:55973",
+          "figma_name": "Block=Feature Grid + Body",
+          "size": "930×1177",
+          "use": "2×2 grid of feature cards — icon + title + body. Default for benefits explainer / value props. Use this over `feature_grid_compact` when each feature needs a sentence of context.",
+          "_icon_swap_supported": false,
+          "_icon_swap_note": "Icons embed `Icon button / Base` instances from the in-app system (NOT Email/Icon set), defaulting to `system/check_circle_line`. Pending migration to Email/Icon Instances — until then, agent cannot reliably swap. Flag any brief needing custom icons here."
+        },
+        "promo_image_callout": {
+          "node": "1051:56105",
+          "figma_name": "Block=Image + Callout + Card + CTA",
+          "size": "1080×981",
+          "use": "H1 (above) + photographic image (full-width 1080) with a teal-glass pill **callout** overlay on top (configurable text, e.g., '115% do CDI', 'IOF zero', '5% cashback') + an **inset white card** overlapping the bottom of the image with sub-H1 + body + CTA. Default for promo announcements that pair a single big-number/headline claim with a lifestyle photo and supporting context. Pick this when the brief has ONE marquee number/fact to highlight.",
+          "_default_text_nodes": ["h1_top", "callout_pill_text (e.g. '115% do CDI')", "sub_h1_in_card", "body_in_card", "cta"]
+        },
+        "multi_section_compound": {
+          "node": "1051:56270",
+          "figma_name": "Block=Multi-Section Compound",
+          "size": "1080×2927",
+          "use": "Tall compound block stitching multiple sub-sections (H1 + body + image + Q&A pattern). **Use sparingly** — 2927h is roughly half a typical email and risks dilution. Prefer to break into separate blocks unless content genuinely belongs together (e.g., 'Como funciona' explainer)."
+        },
+        "wide_image_h1_body": {
+          "node": "1051:56322",
+          "figma_name": "Block=Wide Image + H1 + Body",
+          "size": "1080×1799",
+          "use": "Full-width image (1080 wide, taller crop) + H1 + body. No CTA on this block — pair with a `cta_block` below or another block carrying the CTA. Default for image-led narrative beats."
+        },
+        "h1_body_cta_wallet": {
+          "node": "1051:56462",
+          "figma_name": "Block=H1 + Body + CTA + Wallet",
+          "size": "930×1015",
+          "use": "H1 + body + CTA inline + Apple Pay / Google Pay badges row. Default for AstroCard payment-method emphasis blocks. Wallet badges are an embedded layer — preserve when overriding."
+        },
+        "h1_body_cta_wallet_global": {
+          "node": "1051:56555",
+          "figma_name": "Block=H1 + Body + CTA + Wallet (Global)",
+          "size": "930×1015",
+          "use": "Variant of `h1_body_cta_wallet` with AstroCard Global product framing instead of standard AstroCard. Use when the message is specifically about the Global card. Otherwise prefer the standard wallet variant."
         }
       }
     },
     "cta_inline": {
-      "set_node": "950:2706",
+      "set_node": "1051:6441",
       "set_name": "Email / CTA / Inline",
-      "_note": "Inline CTA used INSIDE content blocks. Variant property is `Alignment` (renamed from 'Align to'). CTA visual treatment (DM Sans Bold 32px on `--teal-2025 #00dbbf`, radius 48px) is fixed by the template tokens.",
+      "variant_property": "Alignment",
+      "_note": "Inline CTA used INSIDE content blocks. CTA visual treatment (DM Sans Bold 32px on `--teal-2025 #00dbbf`, radius 48px) is fixed by the template tokens.",
       "variants": {
-        "center": { "node": "950:2707", "figma_name": "Alignment=Center" },
-        "left":   { "node": "950:2710", "figma_name": "Alignment=Left" },
-        "right":  { "node": "950:2713", "figma_name": "Alignment=Right" }
+        "center": { "node": "1051:6442", "figma_name": "Alignment=Center" },
+        "left":   { "node": "1051:6445", "figma_name": "Alignment=Left" },
+        "right":  { "node": "1051:6448", "figma_name": "Alignment=Right" }
       }
     },
     "cta_block": {
-      "_note": "Standalone CTA blocks (sized S/M/L). NOT a COMPONENT_SET — 3 separate COMPONENTs. Use S for follow-up nudges, M for default activation, L for hero CTA in welcome emails.",
+      "set_node": "1051:35957",
+      "set_name": "Email / CTA Block",
+      "variant_property": "Size",
+      "_note": "Standalone CTA blocks (sized S/M/L). Use S for follow-up nudges, M for default activation, L for hero CTA in welcome emails.",
       "variants": {
-        "s": { "node": "950:2932", "figma_name": "Email / CTA Block / S" },
-        "m": { "node": "950:2938", "figma_name": "Email / CTA Block / M" },
-        "l": { "node": "950:2944", "figma_name": "Email / CTA Block / L" }
+        "s": { "node": "950:2932", "figma_name": "Size=S" },
+        "m": { "node": "950:2938", "figma_name": "Size=M" },
+        "l": { "node": "950:2944", "figma_name": "Size=L" }
       }
     },
     "illustrations": {
       "set_node": "950:2716",
       "set_name": "Email / Illustration",
-      "_note": "Email-specific illustration COMPONENT_SET — variant property is `Use case`. 8 use cases. Distinct component instances from the in-app `newsletter_illustration` set (789:1786) — DO NOT cross-reference. Typo `Astronaunt` was corrected to `Astronaut` on 2026-05-07.",
+      "_note": "Email-specific illustration COMPONENT_SET — variant property is `Use case`. 8 use cases. Distinct component instances from the in-app `newsletter_illustration` set (789:1786) — DO NOT cross-reference.",
       "use_cases": {
         "identity":  { "node": "950:2717", "figma_name": "Use case=Identity" },
         "card":      { "node": "950:2720", "figma_name": "Use case=Card" },
@@ -520,14 +636,116 @@
       }
     },
     "menus": {
-      "_note": "Top-of-email navigation. The simplified library exposes only `logo_dark` (renamed from `menu_logo_dark`). Other menu variants (menu_dark, menu_light, menu_logo_light) were removed on 2026-05-07.",
-      "logo_dark": { "node": "950:2920", "figma_name": "Email / Menu / Logo Dark" }
+      "set_node": "1051:6451",
+      "set_name": "Email / Menu",
+      "variant_property": "Style",
+      "_note": "Top-of-email navigation — 2 variants. Default to `logo_dark` (used by every email shipped to date). `logo_light` is available for inverted/dark-mode-locked sends but has not yet been adopted in production.",
+      "variants": {
+        "logo_dark":  { "node": "1051:6457", "figma_name": "Style=Logo Dark" },
+        "logo_light": { "node": "1051:6465", "figma_name": "Style=Logo Light" }
+      }
     },
     "footers": {
-      "_note": "Mandatory footer at the bottom of every marketing and lifecycle email. Match language to audience: `en` default, `es_ar` for AR market (ES-AR), `pt_br` for BR market (PT-BR). Carries unsubscribe link and disclaimer placeholder — swap by language. **CAVEAT**: the disclaimer text in all 3 footers currently defaults to English boilerplate, NOT the FSA1399 ES-AR/PT-BR text. For any FX-touching send, manually override the disclaimer TEXT node with BRAND.md § 5 exact text in the matching language.",
-      "es_ar": { "node": "950:1444", "figma_name": "Email / Footer / ES-AR" },
-      "en":    { "node": "950:1470", "figma_name": "Email / Footer / EN" },
-      "pt_br": { "node": "950:1496", "figma_name": "Email / Footer / PT-BR" }
+      "set_node": "1051:6406",
+      "set_name": "Email / Footer",
+      "variant_property": "Language",
+      "_note": "Mandatory footer at the bottom of every marketing and lifecycle email. Match language to audience: `en` default, `es_ar` for AR market (ES-AR), `pt_br` for BR market (PT-BR). Carries unsubscribe link and disclaimer placeholder. **CAVEAT**: the disclaimer text in all 3 footers currently defaults to English boilerplate, NOT the FSA1399 ES-AR/PT-BR text. For any FX-touching send, manually override the disclaimer TEXT node with BRAND.md § 5 exact text in the matching language.",
+      "variants": {
+        "es_ar": { "node": "950:1444", "figma_name": "Language=ES-AR" },
+        "en":    { "node": "950:1470", "figma_name": "Language=EN" },
+        "pt_br": { "node": "950:1496", "figma_name": "Language=PT-BR" }
+      }
+    },
+    "icons": {
+      "set_node": "1051:55882",
+      "set_name": "Email / Icon",
+      "variant_property": "Icon",
+      "_note": "Decorative icons used inside `blocks.feature_grid_*`, `blocks.steps_pills`, and other compound blocks. 82 variants. Numerals 1–5 are step-list indicators (used inside `steps_pills`). All icons render inside a teal-2025 circle (180×180 px). Variant values below are the exact Figma variant names — agent calls `setProperties({ Icon: 'Icon-card' })` etc.",
+      "_swap_pattern": "Blocks `steps_pills` and `feature_grid_compact` embed icons as INSTANCE nodes (mainComponent matches `Icon=...`). To swap per-cell: walk the block instance's descendants, find INSTANCE nodes whose `mainComponent.name` starts with `Icon=`, then call `iconInst.swapComponent(targetIconComponent)` where `targetIconComponent = await figma.getNodeByIdAsync('1051:55XXX')` for the chosen variant. Defaults are `Icon=1..4` numerals — must be overridden for non-numbered grids (steps_pills naturally keeps numerals 1..N). Block `feature_grid_with_body` does NOT yet use Email/Icon Instances — embeds in-app `Icon button / Base` defaulting to `system/check_circle_line`; pending migration. Block `promo_image_callout` does NOT use icons at all (image + callout pill + inset card pattern) — irrelevant to this swap pattern.",
+      "variants": {
+        "1":                "1051:55881",
+        "2":                "1051:55875",
+        "3":                "1051:55880",
+        "4":                "1051:55869",
+        "5":                "1051:55854",
+        "Icon-AB":          "1051:55824",
+        "Icon-alert":       "1051:55858",
+        "Icon-app":         "1051:55841",
+        "Icon-arrow-down":  "1051:55879",
+        "Icon-arrow-up":    "1051:55861",
+        "Icon-bag":         "1051:55802",
+        "Icon-bank":        "1051:55836",
+        "Icon-basket":      "1051:55847",
+        "Icon-bills":       "1051:55839",
+        "Icon-card":        "1051:55798",
+        "Icon-cart":        "1051:55856",
+        "Icon-charger":     "1051:55842",
+        "Icon-chat":        "1051:55867",
+        "Icon-chat-2":      "1051:55828",
+        "Icon-chat-3":      "1051:55857",
+        "Icon-check":       "1051:55843",
+        "Icon-check-2":     "1051:55838",
+        "Icon-check-3":     "1051:55808",
+        "Icon-community":   "1051:55807",
+        "Icon-compass":     "1051:55864",
+        "Icon-connect":     "1051:55862",
+        "Icon-contact":     "1051:55826",
+        "Icon-dollar":      "1051:55805",
+        "Icon-dollar-cb":   "1051:55800",
+        "Icon-euro":        "1051:55804",
+        "Icon-euro-cb":     "1051:55799",
+        "Icon-fast":        "1051:55866",
+        "Icon-gas":         "1051:55878",
+        "Icon-home":        "1051:55820",
+        "Icon-in":          "1051:55816",
+        "Icon-invest":      "1051:55803",
+        "Icon-invest-2":    "1051:55830",
+        "Icon-key":         "1051:55845",
+        "Icon-KYC":         "1051:55850",
+        "Icon-link":        "1051:55871",
+        "Icon-link-2":      "1051:55851",
+        "Icon-locker":      "1051:55817",
+        "Icon-mail":        "1051:55859",
+        "Icon-message":     "1051:55829",
+        "Icon-minus":       "1051:55809",
+        "Icon-notifications":"1051:55819",
+        "Icon-option":      "1051:55868",
+        "Icon-options":     "1051:55834",
+        "Icon-order":       "1051:55833",
+        "Icon-pile":        "1051:55825",
+        "Icon-pin":         "1051:55846",
+        "Icon-pix":         "1051:55810",
+        "Icon-plus":        "1051:55873",
+        "Icon-plus-2":      "1051:55865",
+        "Icon-qr":          "1051:55822",
+        "Icon-reward":      "1051:55801",
+        "Icon-road":        "1051:55877",
+        "Icon-search":      "1051:55806",
+        "Icon-security":    "1051:55840",
+        "Icon-security-plus":"1051:55813",
+        "Icon-send":        "1051:55849",
+        "Icon-sendreceive": "1051:55818",
+        "Icon-service-fire":"1051:55811",
+        "Icon-settings":    "1051:55831",
+        "Icon-settings-2":  "1051:55863",
+        "Icon-store":       "1051:55853",
+        "Icon-target":      "1051:55848",
+        "Icon-timer":       "1051:55844",
+        "Icon-timer-2":     "1051:55872",
+        "Icon-timer-3":     "1051:55832",
+        "Icon-toggle-view": "1051:55812",
+        "Icon-transport-1": "1051:55852",
+        "Icon-transport-2": "1051:55874",
+        "Icon-transport-3": "1051:55837",
+        "Icon-transport-4": "1051:55835",
+        "Icon-transport-5": "1051:55823",
+        "Icon-transport-6": "1051:55827",
+        "Icon-warning":     "1051:55815",
+        "Icon-watch":       "1051:55870",
+        "Icon-world":       "1051:55855",
+        "Icon-wrench":      "1051:55860",
+        "Icon-x":           "1051:55876"
+      }
     }
   },
   "frame_layers": {

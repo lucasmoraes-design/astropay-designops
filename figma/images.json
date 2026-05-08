@@ -7,8 +7,13 @@
     "page_url": "https://www.figma.com/design/6kHkKTxW1ygct6vTQsIGF1/Claude-lab?node-id=145-5528",
     "rules": [
       "ABSOLUTE RULE — every image used by any agent MUST come from one of the six sections on this page: Traveler, Places, Freelancer, Digital nomad, Product Mockup, Product. No external URLs. No free-floating canvas frames. No images from any other Figma file or page.",
-      "DEFAULT POOL — for any standard paid media creative, pick from the four lifestyle categories ONLY: Traveler, Places, Freelancer, Digital nomad. These cover ~95% of briefs (PIX, Infinite, Freelance SMB, brand awareness, retention, lifecycle, social, etc.).",
-      "EXCHANGE GATE — Product and Product Mockup are OPT-IN ONLY. Use them ONLY when the brief explicitly mentions currency exchange, FX, conversion, multicurrency, or names a currency pair (e.g., BRL→USD, ARS→EUR). If the brief does not mention any of these, do NOT pick from Product or Product Mockup, even if they technically fit the format. When in doubt, default to a lifestyle category and ask the user before reaching for Product/Product Mockup.",
+      "DEFAULT POOL — for any standard paid media creative, pick from the four lifestyle categories ONLY: Traveler, Places, Freelancer, Digital nomad. These cover ~95% of briefs (PIX, Freelance SMB, brand awareness, retention, lifecycle, social, etc.).",
+      "EXCHANGE GATE — Product and Product Mockup are OPT-IN ONLY. Use them ONLY when the brief explicitly mentions currency exchange, FX, conversion, multicurrency, or names a currency pair. If the brief does not mention any of these, do NOT pick from Product or Product Mockup, even if they technically fit the format. When in doubt, default to a lifestyle category and ask the user before reaching for Product/Product Mockup.",
+      "NEVER STRETCH PHOTOS — when applying a photo via `figma.createImage` to an IMAGE fill, preserve the master's scaleMode (typically FILL or FIT, never SCALE / STRETCH). Use the pattern `target.fills = target.fills.map(f => f.type === 'IMAGE' ? { ...f, imageHash: newHash } : f)` to preserve scaleMode and other fill properties. Never construct a new fill with `scaleMode: 'SCALE'`.",
+      "FX / EXCHANGE TOPIC IMAGE RULES — for any creative whose topic is currency exchange, FX, conversion, or multicurrency:",
+      "  (a) Photo MUST show a phone in the person's hand or as the dominant device. The exchange flow IS a phone interaction. Laptop-only photos read as remote-work / freelance, not exchange. Reject any photo whose name implies laptop-only with no phone reference.",
+      "  (b) Avoid very touristy / iconic-landmark imagery (Eiffel Tower, Statue of Liberty, Christ the Redeemer, named cities like 'paris', 'rio'). These pull the viewer toward travel content rather than transactional / day-to-day exchange. The `traveler` pool is acceptable for travel briefs (PIX AR-to-BR, on-the-go lifestyle), but most of its photos are too touristy for exchange. Default to `digital_nomad` or `freelancer` for exchange topics; within those pools, prefer photos whose names suggest phone-in-cafe or phone-at-desk over destination imagery.",
+      "  (c) For multi-cell collage heroes (`soft_teal_photo_collage`), all cells must satisfy rules (a) and (b), and all cells should show visually distinct people / scenes (no repeating the same image).",
       "Never use findAll() on this page (200+ nodes = timeout) — always findOne() by exact name.",
       "Image must match the campaign category — see selection_rules below.",
       "Cache the imageHash immediately after retrieval — never re-fetch in the same task."
@@ -234,8 +239,9 @@
     "digital_nomad": {
       "section_id": "939:42984",
       "section_name": "Digital nomad",
-      "description": "Remote workers, laptops in cafes, professionals on the go. Warm, relatable, urban — bridges traveler and freelancer.",
+      "description": "Remote workers, laptops in cafes, professionals on the go. Warm, relatable, urban; bridges traveler and freelancer.",
       "image_count": 22,
+      "_fx_topic_gap": "The pool currently has only 1-2 photos that prominently feature a phone in hand (e.g., `939:43093` man-in-cafe-reads-message-phone, plus `939:43089` Bellaa with phone). Most photos are laptop-dominant, with phones either absent or visible only as small props on the table that may be cropped out by hero cell aspect ratios. **Implication for FX/exchange briefs**: prefer single-photo heroes (`photo_portrait_overlay`, `soft_teal_photo_below`, `photo_product_overlay`) using a confirmed phone-in-hand photo, rather than multi-cell collage heroes (`soft_teal_photo_collage`) where the agent cannot fill all 3 cells with phone-dominant content. Document this pool gap to design ops and request more phone-centric stock for FX usage.",
       "selection_examples": [
         {
           "name": "ASTROPAY-3136",

@@ -126,7 +126,7 @@ Fallback: `Inter` — note `"Semi Bold"` with a space (not `"SemiBold"`).
 
 ## 6.1 EMAIL TOKENS (CHANNEL-SCOPED)
 
-> Tokens scoped to the email channel only. Paid media and in-app continue using the § 6 palette and Matter/Inter for all text. Source of truth: `tokens/brand.json` → `email_overrides`. Figma reference: `figma/components.json` → `email_templates.simple_template.tokens_used`.
+> Tokens scoped to the email channel only. Paid media and in-app continue using the § 6 palette and Matter/Inter for all text. Source of truth: `tokens/brand.json` → `email_overrides`. Figma reference: `figma/components.json` → `email_templates.chassis.tokens_used`.
 
 **Color**:
 

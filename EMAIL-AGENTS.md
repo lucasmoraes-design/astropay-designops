@@ -3,7 +3,7 @@
 > Depends on: BRAND.md for identity, voice, products and disclaimers (incl. § 6.1 Email tokens)
 > Cross-channel agents: AGENTS-SHARED.md (@cd, @copy, @guardian, @legal-copy)
 > Design tokens: tokens/brand.json (with `email_overrides` for channel-scoped tokens)
-> Figma components: figma/components.json -> email_templates (simplified library — single canonical template + content_blocks + ctas + illustrations + menu + onboarding + footers)
+> Figma components: figma/components.json -> email_templates (rebuilt 2026-05-08 — chassis + 8 heroes + 12 blocks + cta_inline + cta_block + illustrations + 82 icons + menus + footers)
 > Figma images: figma/images.json
 > Do not duplicate BRAND.md content here
 > Do not hardcode colors, font names, or node IDs — always read from the JSON files above
@@ -45,18 +45,19 @@ This file defines email-only agents (`@email-lifecycle`, `@email-subject`, `@ema
 
 ## Component reference (quick glance)
 
-The `Email marketing` section (`950:1972`) was simplified 2026-05-07 and renamed to a scalable `Email / X / Y` semantic scheme on the same date. All masters now use clear category namespacing in the Figma assets panel. Detailed composition rules in `AGENTS-SHARED.md` -> `@cd` -> Channel: Email.
+The `Email marketing` section (`950:1972`) was rebuilt 2026-05-08. Library now spans 8 component groups + 1 standalone chassis. Several sets still have Figma placeholder property names (`Property 1`, `Block5..12`) — see [`figma/components.json`](figma/components.json) → `email_templates.<set>._pending_figma_renames` for what needs to be renamed in Figma. Detailed composition rules in `AGENTS-SHARED.md` -> `@cd` -> Channel: Email.
 
-| Group | Figma name | Use |
+| Group | Figma name (target) | Use |
 |---|---|---|
-| `simple_template` | `Email / Template / Default` (instance `1020:1951`) | Single canonical email frame (1080×2591), stacked content_blocks |
-| `hero_modals` | `Email / Hero / Layout 1/2/3` | 3 hero modals (1080×1229, gradient bg + H1 96px + illustration). Carries the H1 — pair with `body_cta` below to avoid duplicate H1. **Scales as new layouts are added.** |
-| `content_blocks` | `Email / Block` (set) | 4 variants: `h1_body_cta`, `body_cta`, `image_h1_body_cta`, `h1_image_body_cta` |
-| `cta_inline` | `Email / CTA / Inline` (set) | Inline CTA inside blocks — alignment: center / left / right |
-| `cta_block` | `Email / CTA Block / S / M / L` | Standalone CTA blocks at 3 sizes |
-| `illustrations` | `Email / Illustration` (set, `950:2716`) | 8 use cases: identity, card, email, exchange, kyc, completed, astronaut, spin. **Distinct from in-app `newsletter_illustration` (`789:1786`).** |
-| `menus` | `Email / Menu / Logo Dark` | Only one variant — `logo_dark` |
-| `footers` | `Email / Footer / ES-AR / EN / PT-BR` | 3 language variants — rounded variants removed |
+| `chassis` | `Email / Chassis` (standalone COMPONENT `1051:57000`) | Sample assembled email (1080×5330) — reference layout, NOT a clone source. Compose fresh emails by stacking heroes/blocks/footer in a new auto-layout frame. |
+| `heroes` | `Email / Hero` (set `1051:6473`) | **8 variants** — `soft_teal_illustration`, `photo_portrait_overlay`, `soft_teal_photo_below`, `soft_teal_photo_collage`, `photo_product_overlay`, `dark_product_stack`, `white_wallet_product`, `dark_gradient_pattern`. All carry an H1 — pair with `block.body_cta` below to avoid duplicate H1. |
+| `blocks` | `Email / Block` (set `950:2681`) | **12 variants** — text-only (`h1_body_cta`, `body_cta`), image-led (`image_h1_body_cta`, `h1_image_body_cta`, `wide_image_h1_body`, `promo_image_callout`), pattern blocks (`steps_pills`, `feature_grid_compact`, `feature_grid_with_body`), wallet (`h1_body_cta_wallet`, `h1_body_cta_wallet_global`), compound (`multi_section_compound`). |
+| `cta_inline` | `Email / CTA / Inline` (set `1051:6441`) | Inline CTA inside blocks — alignment: center / left / right |
+| `cta_block` | `Email / CTA Block` (set `1051:35957`) | Standalone CTA blocks — sizes S / M / L |
+| `illustrations` | `Email / Illustration` (set `950:2716`) | 8 use cases: identity, card, email, exchange, kyc, completed, astronaut, spin. **Distinct from in-app `newsletter_illustration` (`789:1786`).** |
+| `icons` | `Email / Icon` (set `1051:55882`) | **82 variants** — decorative icons used inside `feature_grid_*`, `steps_pills`, and other compound blocks. Numerals 1–5 are step indicators. |
+| `menus` | `Email / Menu` (set `1051:6451`) | 2 variants: `logo_dark` (default), `logo_light` |
+| `footers` | `Email / Footer` (set `1051:6406`) | 3 language variants: `es_ar`, `en`, `pt_br` — disclaimer slot defaults to English boilerplate (manual override needed for FX-touching sends). |
 
 **Channel tokens** — email-scoped, NOT the paid-media palette. See `BRAND.md § 6.1` and `tokens/brand.json` -> `email_overrides`:
 - Text: `gunmetal #1c2b29` (H1 + body) / `silver #bdbfb8` (secondary)
@@ -273,7 +274,7 @@ ENTRY CONDITION:
   Audience filter: [country_code, subscription_tier, last_app_open_days_ago, etc.]
 
 JOURNEY STAGES:
-  Stage 1: [N content_blocks + nudge type + send time relative to entry]
+  Stage 1: [N blocks + nudge type + send time relative to entry]
     Subject pattern: [from @email-subject library]
     Exit if: [condition for the user to leave the journey here — e.g., conversion event]
   Stage 2: [...]
@@ -339,7 +340,7 @@ Structured A/B testing specialist for AstroPay email. Knows that testing too man
 - **Valid testable angles for AstroPay email**:
   - **Subject line patterns** (within voice rules): curiosity vs number vs question vs urgency — same campaign, different angle (see `@email-subject` library)
   - **Preheader length**: full ~90 chars vs short ~40 chars (mobile vs desktop optimization)
-  - **Content density**: 1 vs 2 vs 3 content_blocks for the same campaign — does extra content lift conversion or just increase email weight?
+  - **Content density**: 1 vs 2 vs 3 blocks for the same campaign — does extra content lift conversion or just increase email weight?
   - **Lead block type**: `h1_body_cta` vs `image_h1_body_cta` for the same opening — text-led vs image-led entry. Or test `h1_body_cta` (no hero) vs `hero_modal + body_cta` (image-led top-of-funnel)
   - **Hero source**: photographic vs illustrated — does an `illustrations` use case beat a lifestyle photo for the same message?
   - **CTA alignment**: center vs left for the same CTA copy
@@ -361,7 +362,7 @@ Structured A/B testing specialist for AstroPay email. Knows that testing too man
 |---|---|
 | Subject + preheader | Pattern (curiosity/number/question/urgency), length, emoji 0/1, personalization on/off |
 | Lead block | h1_body_cta vs image_h1_body_cta vs h1_image_body_cta; hero_modal vs no hero; photographic vs illustrated hero |
-| Body | Number of content_blocks (1 vs 2 vs 3); copy length within each block |
+| Body | Number of blocks (1 vs 2 vs 3); copy length within each block |
 | CTA | Alignment (center/left); copy variant within campaign-locked CTA family |
 | Send mechanics | Day of week, hour of day, frequency cap (if testing fatigue) |
 | From / sender | From-name format (within `@email-legal` truthfulness rules) |
@@ -771,7 +772,7 @@ DEVICE / CLIENT BREAKDOWN:
   Other: %
 
 CONTENT BREAKDOWN (if multiple variants in test):
-  Density (1 / 2 / 3 / 4 content_blocks):  open / CTR / conv per density
+  Density (1 / 2 / 3 / 4 blocks):  open / CTR / conv per density
   Lead block type (h1_body_cta / image_h1_body_cta / h1_image_body_cta) and hero_modal (yes/no): per type
   Hero source (photographic / illustrated):  per source
 
@@ -818,7 +819,7 @@ Brief in
   ↓
 @email-copy         → Produces 2 copy variants (header H1 + body + CTA, with Liquid tags + defaults)
   ↓
-@cd                 → Composes the email — picks content_blocks, CTA alignment, hero (illustration/photo), menu, footer
+@cd                 → Composes the email — picks blocks, CTA alignment, hero (illustration/photo), menu, footer
   ↓
 @email-guardian     → Tone QA (Infinite vs Core, voseo, forbidden words, truncation, channel tokens, dark-mode, footer language) → score ≥ 7 to proceed
   ↓
