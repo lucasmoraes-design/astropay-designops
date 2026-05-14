@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "AstroPay Figma component node IDs — live-extracted from Figma source",
-    "last_updated": "2026-05-08",
+    "last_updated": "2026-05-14",
     "file_key": "6kHkKTxW1ygct6vTQsIGF1",
     "file_url": "https://www.figma.com/design/6kHkKTxW1ygct6vTQsIGF1/Claude-lab",
     "source_pages": {
@@ -24,12 +24,17 @@
       "design_components": "ecdf117e022f",
       "images": "8ecadf0fe159"
     },
-    "sync_note": "2026-05-08 (renames applied) — All email sets and variants renamed semantically in Figma via use_figma plugin API: Hero set (Style property, 8 variants), Block set (Block property, 12 variants now Block=Steps Pills/Feature Grid Compact/etc instead of Block5..12), Footer (Language), Menu (Style), CTA Block (Size), CTA Inline (Alignment, arrow glyphs stripped), Icon (Icon property, 82 variants after removing garbage `Group 48097257` and duplicate `Icon-locker`; `check` renamed to `Icon-check-3`). Set masters all renamed to `Email / X / Y` convention. Chassis component renamed `Email / Chassis`. 2026-05-08 (rebuild) — Email library rebuilt: chassis (1051:57000) replaces simple_template; heroes set (1051:6473) with 8 variants replaces hero_modals; blocks set (950:2681) extended from 4 → 12 variants; cta_inline migrated to 1051:6441; cta_block now a set (1051:35957); menus a set (1051:6451) with 2 variants; footers a set (1051:6406); new icons set (1051:55882). 2026-05-04 (re-sync) — Email marketing library reconciled against live Figma (promo_email content_sizes shrunk ~169px; text_layouts Rappi/Uber removed). 2026-05-04 (initial) — Email marketing component library added (section 950:1972).",
+    "sync_note": "2026-05-14 (Infinite email library added) — A SECOND email library now lives at section `1165:20363` (`Email marketing (Infinite)`) on the Design Components page. It is the SEPARATE Infinite-aesthetic library — agents must NEVER mix its components with the Core `email_templates` library and must only invoke it when the brief is explicitly tagged Infinite (Product=Infinite, campaign=Infinite GTM AR, subscription_tier=infinite). Documented as the new top-level `email_templates_infinite` section in this file. Same pass: all Infinite components renamed to `Email Infinite / Category / Variant` convention, all variant property names normalized (no more `Property 1/2/3=...`), duplicate set name `Circled Icon Medium Dark` fixed to `Big Dark`, duplicate `Icon=Dollar` variants in Light icon sets renamed to `MGM` to match Dark sets, `CurrencyExchange`/`SendAndReceive` normalized to `Currency Exchange`/`Send and Receive`. Pattern documentation frames (`Pattern/Email/*`) componentized into two new COMPONENT_SETs: `Email Infinite / Hero` (1177:16190, Style=Image/Dark) and `Email Infinite / Block` (1177:16191, Block=Headline/Metric/Benefit List/CTA/Promo/Info Card/Step List). Assembled email frames renamed to `Chassis / Email Infinite / <use case> / <theme>` to make their role explicit. 2026-05-08 (renames applied) — All email sets and variants renamed semantically in Figma via use_figma plugin API: Hero set (Style property, 8 variants), Block set (Block property, 12 variants now Block=Steps Pills/Feature Grid Compact/etc instead of Block5..12), Footer (Language), Menu (Style), CTA Block (Size), CTA Inline (Alignment, arrow glyphs stripped), Icon (Icon property, 82 variants after removing garbage `Group 48097257` and duplicate `Icon-locker`; `check` renamed to `Icon-check-3`). Set masters all renamed to `Email / X / Y` convention. Chassis component renamed `Email / Chassis`. 2026-05-08 (rebuild) — Email library rebuilt: chassis (1051:57000) replaces simple_template; heroes set (1051:6473) with 8 variants replaces hero_modals; blocks set (950:2681) extended from 4 → 12 variants; cta_inline migrated to 1051:6441; cta_block now a set (1051:35957); menus a set (1051:6451) with 2 variants; footers a set (1051:6406); new icons set (1051:55882). 2026-05-04 (re-sync) — Email marketing library reconciled against live Figma (promo_email content_sizes shrunk ~169px; text_layouts Rappi/Uber removed). 2026-05-04 (initial) — Email marketing component library added (section 950:1972).",
     "runtime_rule": "image_node values below are documentation only — at runtime, ALWAYS resolve image slots via findOne(n => n.name === '#Image') after creating or cloning the template instance. Property keys (Title#xxx, Subheadline#xxx, Gradient/Overlay BOOLEAN toggles) vary per format and must be discovered at runtime via Object.keys(inst.componentProperties).",
     "_auto_sync_log": [
       {
         "date": "2026-05-06",
         "changed": "design_components"
+      },
+      {
+        "date": "2026-05-14",
+        "changed": "design_components",
+        "note": "Infinite email library (section 1165:20363) added + renamed + componentized; documented as email_templates_infinite"
       }
     ]
   },
@@ -746,6 +751,228 @@
         "Icon-wrench":      "1051:55860",
         "Icon-x":           "1051:55876"
       }
+    }
+  },
+  "email_templates_infinite": {
+    "_section_node": "1165:20363",
+    "_section_label": "Email marketing (Infinite)",
+    "_when_to_use": "AstroPay Infinite ONLY. Invoke this library when the brief is explicitly tagged Infinite: Product=Infinite, campaign anchor = Infinite GTM AR, audience filter subscription_tier=infinite, Infinite trial/renewal journey, or copy that anchors on `La membresía que se paga sola`. For ANY OTHER brief — Core, PIX, Currency Exchange, Freelance SMB, generic lifecycle, brand awareness — use `email_templates` instead. The Infinite-vs-Core firewall (BRAND.md § 2, AGENTS-SHARED.md @guardian) extends to component libraries: NEVER mix `email_templates_infinite` components with `email_templates` components inside the same email. A single email is fully Infinite or fully Core, never both.",
+    "_when_NOT_to_use": [
+      "Brief is for Core (default for everything not explicitly tagged Infinite) — use `email_templates`.",
+      "Brief is for Currency Exchange (FX), PIX, or Freelance SMB on Core audiences — use `email_templates`.",
+      "Brief is a lifecycle send that does not specify Infinite — default to Core (`email_templates`). Shift to `email_templates_infinite` ONLY if the audience filter pins `subscription_tier = infinite`.",
+      "Brief asks for a hybrid Core+Infinite email — REJECT. Split into two separate sends, one per product (firewall rule)."
+    ],
+    "_distinguishing_aesthetic": [
+      "Backgrounds: Light theme uses cream `#f5f7f2` (NOT pure white) and secondary `#eff1ec`; Dark theme uses very-dark teal/black `#0f1514` / `#02100e`. Core email library uses pure white only.",
+      "CTA color: Infinite CTAs use solid dark pill (`#1c2b29` on Light) or solid light pill (`#f5f7f2` on Dark). NEVER `--teal-2025 #00dbbf` — that is the Core email CTA token and is reserved for Core. Cross-applying the teal CTA token to an Infinite send is a wrong-channel violation flagged by `@guardian`.",
+      "Header: Infinite emails open with a dark `Email Infinite / Menu` carrying the Infinite wordmark lockup (∞ + INFINITE) on a dark teal pill, NOT the AstroPay wordmark used by Core emails.",
+      "Typography: shares Matter SemiBold / Regular / Medium / Bold (with the Inter fallback rule). Infinite also uses Matter Bold Italic for accent moments — Core email does not.",
+      "Imagery: when photographic, sourced from `images.places` or `images.traveler` (aspirational pools — see AGENTS-SHARED.md @cd Channel: Email image strategy). NEVER `freelancer` or `digital_nomad`.",
+      "Voice: ROI-first, specific numbers, premium without pretense. NEVER the Core lifestyle voice (`Aprovechá / Conocé / Descubrí / sin vueltas / como un local`). See BRAND.md § 1–2."
+    ],
+    "_naming_convention": {
+      "_note": "All masters in section 1165:20363 follow `Email Infinite / Category / Variant` (slashes create folder hierarchy in the Figma assets panel). Inside COMPONENT_SETs, variants follow `Property=Value` per Figma convention.",
+      "categories": {
+        "Email Infinite / Menu": "Top-of-email navigation with Infinite wordmark (COMPONENT_SET with `Type=Default|Transactional`)",
+        "Email Infinite / Hero": "Hero block at top — Infinite-style (COMPONENT_SET with `Style=Image|Dark`)",
+        "Email Infinite / Block": "Modular body sections (COMPONENT_SET with `Block=Headline|Metric|Benefit List|CTA|Promo|Info Card|Step List`)",
+        "Email Infinite / CTA / Button": "Pill CTA (COMPONENT_SET with `Theme=Dark|Light`)",
+        "Email Infinite / CTA / Inline Link": "Inline link with arrow glyph (COMPONENT_SET with `Theme=Light|Dark`)",
+        "Email Infinite / Card / Info Billing": "Info card variants (COMPONENT_SET with `Variant=Metric OneCol|Metric TwoCol|Rows 2|Rows 3|Rows 4`)",
+        "Email Infinite / Row / Benefit": "Single benefit row (COMPONENT_SET with `Sample=Rendimiento|Beneficios|AstroPoints|Cambio Preferente` — pick the variant whose placeholder content visually matches the brief, then override)",
+        "Email Infinite / Row / Benefit Numbered": "Numbered benefit row (single COMPONENT — clone per step, override numeral)",
+        "Email Infinite / Icon / <Size> <Theme>": "Decorative circled icon, 16 variants per set — 6 sets total (Small/Medium/Big × Light/Dark). Variant property `Icon=...`",
+        "Email Infinite / Footer": "Email footer with Infinite branding (COMPONENT_SET with `Type=Default|Transactional`)",
+        "Email Infinite / Media": "Media block — feature image / hero image area (COMPONENT_SET with `Layout=Default|Hero Image`)",
+        "Chassis / Email Infinite / <use case> / <theme>": "Pre-assembled reference emails (FRAMEs, NOT components — agents reference them visually for layout, then compose fresh from the components above)",
+        "Sample / Infinite <...>": "Documentation swatches (badges, lockup, iso pill). Reference only — do not clone."
+      }
+    },
+    "_runtime_caveats": [
+      "**Hard firewall: never use any `email_templates_infinite.*` node inside a Core (`email_templates`) email and vice versa.** A single email is fully Infinite or fully Core. This is BRAND.md § 2 enforced through the component library — the two libraries are intentionally not compatible.",
+      "**Pick a Theme (Light vs Dark) upfront and stick with it for the whole email.** Light theme: cream `#f5f7f2` body, dark text `#1c2b29`, dark CTA pill (Button `Theme=Dark`), Menu `Type=Default` (dark wordmark sits on light bg), Footer `Type=Default`, Icon set `Small/Medium/Big Light`. Dark theme: very-dark body `#0f1514`, light text `#f5f7f2`, light CTA pill (Button `Theme=Light`), Footer dark variant, Icon set `Small/Medium/Big Dark`. Mixing themes mid-email (light hero + dark block) breaks the visual contract.",
+      "**Choose icon set size by where the icon appears**: Small (36px) — inline within numbered Benefit Rows, dense lists; Medium (48px) — Feature/Benefit list cards, default usage; Big (64px) — Hero accents, large standalone callouts. Theme axis (Light/Dark) MUST match the chosen email theme.",
+      "**Fonts**: same preflight rule as Core email — Matter is typically NOT installed in working files. Before any TEXT edit, swap fontName Matter → Inter. Style mapping: Matter SemiBold → Inter `Semi Bold` (with a space). Matter Bold → Inter Bold. Matter Medium → Inter Medium. Pre-swap fonts on instances BEFORE `appendChild()` (`appendChild` itself fails with `unloaded font` if a descendant uses an uninstalled font). Pattern: createInstance → walk findAll(TEXT) → swap fontName → appendChild.",
+      "**No DM Sans here**: Infinite CTAs use Matter Bold (or Inter Bold fallback) — not DM Sans. DM Sans is the Core email CTA font only.",
+      "**No teal CTA**: do NOT apply `--teal-2025 #00dbbf` or `teal500 #42DECA` to any element in an Infinite email. Infinite CTA backgrounds come from the Button COMPONENT_SET variants (`Theme=Dark` solid `#1c2b29`, `Theme=Light` solid `#f5f7f2`), and the contrast text inherits from the variant.",
+      "**Chassis examples are reference-only, NOT clone sources.** The 6 `Chassis / Email Infinite / *` FRAMEs (Welcome Light/Dark, CBU USD Light/Dark, SI Global Card Launch/Reminder 1) are assembled examples that document layout, density, and section choreography for specific campaigns. Agents should compose fresh emails from the `heroes` + `blocks` + `cta_button` + `menu` + `footer` components — NEVER clone an entire chassis frame as a starting point (campaign content would leak across sends). When in doubt about layout, open the chassis whose use case best matches the brief and replicate the structure with fresh content.",
+      "**Pattern frames were converted to components (2026-05-14).** The 9 documentation-only `Pattern/Email/*` frames are now the canonical `Email Infinite / Hero` set (2 variants) and `Email Infinite / Block` set (7 variants). Master content inside them is documentation placeholder — agents override ALL visible TEXT and image fills per the brief, same rule as the Core `email_templates` library.",
+      "**BenefitRow `Sample=...` variants are placeholders, not topic locks.** The 4 variants (`Rendimiento`, `Beneficios`, `AstroPoints`, `Cambio Preferente`) carry pre-written benefit copy as visual reference. Pick the variant whose placeholder text MOST resembles the brief's benefit, then override every TEXT node. Do not ship master placeholder copy.",
+      "**Visual Identity Guidelines reference**: the full Infinite brand spec lives at `1165:22703` (`Infinite – Visual Identity Guidelines`) and `1165:23655` (`Document`). Both are documentation frames — never instantiated, never copy-pasted. Read for context when designing new Infinite touchpoints; for production composition, the components above are sufficient.",
+      "**Post-edit canvas refresh (mandatory)**: same rule as Core email. End every editing script with `figma.currentPage.selection = []; figma.viewport.scrollAndZoomIntoView([targetChassis]);` to force an immediate visual refresh."
+    ],
+    "tokens_used": {
+      "light_theme": {
+        "background_primary": "#f5f7f2",
+        "background_secondary": "#eff1ec",
+        "surface_white": "#ffffff",
+        "text_primary": "#1c2b29",
+        "cta_background": "#1c2b29",
+        "cta_text": "#f5f7f2"
+      },
+      "dark_theme": {
+        "background_primary": "#0f1514",
+        "background_secondary": "#02100e",
+        "background_tertiary": "#192120",
+        "text_primary": "#f5f7f2",
+        "cta_background": "#f5f7f2",
+        "cta_text": "#1c2b29"
+      },
+      "typography": {
+        "h1_font": "Matter SemiBold (fallback Inter Semi Bold)",
+        "body_font": "Matter Regular (fallback Inter Regular)",
+        "secondary_font": "Matter Medium (fallback Inter Medium)",
+        "accent_italic_font": "Matter Bold Italic (fallback Inter Bold Italic)",
+        "cta_font": "Matter Bold (fallback Inter Bold) — NOTE: Infinite uses Matter Bold for CTAs, NOT DM Sans. DM Sans is exclusive to Core email."
+      }
+    },
+    "chassis_examples": {
+      "_note": "Reference-only assembled emails. NOT clone sources. Agents compose fresh from heroes/blocks/cta_button/menu/footer; reference these chassis visually for layout and density choices.",
+      "welcome_light": { "node": "1165:24133", "figma_name": "Chassis / Email Infinite / Welcome / Light", "size": "1080×3121", "use": "Welcome / onboarding for Infinite trial activation. Light theme. Shows: dark Menu + Hero with ∞ wordmark, H1 + sub-H1, Metric Card (TwoCol), Button (Dark), Numbered Benefit Rows (3) with inline links, support help section, dark Footer." },
+      "welcome_dark":  { "node": "1165:24244", "figma_name": "Chassis / Email Infinite / Welcome / Dark",  "size": "1080×3121", "use": "Welcome / onboarding for Infinite trial activation. Dark theme. Same layout as `welcome_light` with inverted surface and text colors." },
+      "cbu_usd_light": { "node": "1165:24354", "figma_name": "Chassis / Email Infinite / CBU USD / Light", "size": "1080×2528", "use": "CBU USD account announcement for Infinite users in AR. Light theme. Shows: USD-flag illustration hero, multi-column info card, supporting blocks, CTA." },
+      "cbu_usd_dark":  { "node": "1165:24444", "figma_name": "Chassis / Email Infinite / CBU USD / Dark",  "size": "1080×2496", "use": "CBU USD account announcement. Dark theme equivalent of `cbu_usd_light`." },
+      "si_global_card_launch":   { "node": "1165:23939", "figma_name": "Chassis / Email Infinite / SI Global Card / Launch (ES-AR)",   "size": "1080×3476", "use": "Launch email for SI Global Card to Infinite trial users (ES-AR). Single-language chassis (ES-AR only)." },
+      "si_global_card_reminder": { "node": "1165:24047", "figma_name": "Chassis / Email Infinite / SI Global Card / Reminder 1 (ES-AR)", "size": "1080×2490", "use": "Reminder 1 email follow-up for SI Global Card trial users (ES-AR). Single-language chassis." }
+    },
+    "menu": {
+      "set_node": "1165:22322",
+      "set_name": "Email Infinite / Menu",
+      "variant_property": "Type",
+      "_note": "Header / menu at the top of every Infinite email. Carries the Infinite wordmark lockup (∞ + INFINITE) on a dark teal pill. Two variants:",
+      "variants": {
+        "default":       { "node": "1165:22323", "figma_name": "Type=Default",       "use": "Marketing / lifecycle / promo sends. Default." },
+        "transactional": { "node": "1165:22327", "figma_name": "Type=Transactional", "use": "Transactional sends (KYC, receipts, security). Stripped chrome; no marketing affordances." }
+      }
+    },
+    "heroes": {
+      "set_node": "1177:16190",
+      "set_name": "Email Infinite / Hero",
+      "variant_property": "Style",
+      "_note": "Hero block at top of an Infinite email. 2 variants. Created from the previous `Pattern/Email/HeroImage` and `Pattern/Email/HeroDark` documentation frames on 2026-05-14. Master content is placeholder — agents override per brief. The hero carries an H1; pair with `block.headline` only when a second headline is needed (rare in Infinite which favors single concrete claims).",
+      "variants": {
+        "image": { "node": "1177:16181", "figma_name": "Style=Image", "size": "600×280", "use": "Hero with photographic image / app mockup / partner imagery. Replace fill on the image RECTANGLE per brief from `images.places` or `images.traveler` (aspirational pools per Infinite firewall)." },
+        "dark":  { "node": "1177:16182", "figma_name": "Style=Dark",  "size": "600×120", "use": "Typographic hero on dark background. No image. Use for brand-led / ceremonial moments where the H1 carries the weight (welcome, trial-end, anchor sends)." }
+      }
+    },
+    "blocks": {
+      "set_node": "1177:16191",
+      "set_name": "Email Infinite / Block",
+      "variant_property": "Block",
+      "_note": "Modular body sections, 7 variants. Created from the previous `Pattern/Email/*` documentation frames on 2026-05-14. Mix freely — pick the smallest set that delivers the message. When the email opens with `heroes.dark` or `heroes.image`, the hero already carries an H1; prefer `body_cta`-style follow-ups (in this library, that is `Block=Metric` or `Block=CTA`) to avoid duplicate H1.",
+      "variants": {
+        "headline":     { "node": "1177:16183", "figma_name": "Block=Headline",     "size": "560×194", "use": "H1 + supporting paragraph, no CTA. Use for section openers between blocks." },
+        "metric":       { "node": "1177:16184", "figma_name": "Block=Metric",       "size": "560×193", "use": "Metric card (e.g. `6.00% anual`) + supporting body. Default for ROI claims — Infinite's signature framing." },
+        "benefit_list": { "node": "1177:16185", "figma_name": "Block=Benefit List", "size": "560×300", "use": "Stack of `Email Infinite / Row / Benefit` instances. Use for 2–4 short benefits where each line has an icon + bold title + sentence." },
+        "cta":          { "node": "1177:16186", "figma_name": "Block=CTA",          "size": "560×108", "use": "Standalone CTA block — `Email Infinite / CTA / Button` instance + optional inline link below (`conoce más →` style)." },
+        "promo":        { "node": "1177:16187", "figma_name": "Block=Promo",        "size": "560×199", "use": "Bordered promo callout — title + body + small-print legal line. Use for time-bound offers (e.g. `3 meses de premium sin costo`)." },
+        "info_card":    { "node": "1177:16188", "figma_name": "Block=Info Card",    "size": "560×150", "use": "Wrapper around `Email Infinite / Card / Info Billing` instance. Use to show structured info (rows of label:value, or 1–2 metric values)." },
+        "step_list":    { "node": "1177:16189", "figma_name": "Block=Step List",    "size": "560×367", "use": "Numbered step list (3+ steps). Use for activation / onboarding / how-to flows. Compose from `Email Infinite / Row / Benefit Numbered` instances." }
+      }
+    },
+    "cta_button": {
+      "set_node": "1165:21860",
+      "set_name": "Email Infinite / CTA / Button",
+      "variant_property": "Theme",
+      "_note": "Pill CTA. NOT a teal CTA — Infinite CTAs are solid dark or solid light. Theme MUST match the email's chosen theme (Dark button on Light theme, Light button on Dark theme).",
+      "variants": {
+        "dark":  { "node": "1165:21861", "figma_name": "Theme=Dark",  "use": "Dark pill on light-theme backgrounds. Default CTA for Light-theme Infinite emails." },
+        "light": { "node": "1165:21863", "figma_name": "Theme=Light", "use": "Light pill on dark-theme backgrounds. Default CTA for Dark-theme Infinite emails." }
+      }
+    },
+    "cta_inline_link": {
+      "set_node": "1165:21865",
+      "set_name": "Email Infinite / CTA / Inline Link",
+      "variant_property": "Theme",
+      "_note": "Inline link with arrow glyph (e.g., `Activar →` / `Cambiar ahora →`). Use as the *secondary* action under a primary Button, or inline within a Benefit Row.",
+      "variants": {
+        "light": { "node": "1165:21866", "figma_name": "Theme=Light", "use": "Dark text on light-theme backgrounds." },
+        "dark":  { "node": "1165:21869", "figma_name": "Theme=Dark",  "use": "Light text on dark-theme backgrounds." }
+      }
+    },
+    "card_info_billing": {
+      "set_node": "1165:21899",
+      "set_name": "Email Infinite / Card / Info Billing",
+      "variant_property": "Variant",
+      "_note": "Structured info card. Pick by content shape: Metric cards for big numbers, Rows for label/value pairs.",
+      "variants": {
+        "metric_one_col": { "node": "1165:21900", "figma_name": "Variant=Metric OneCol", "size": "220×98",  "use": "Single big number with label (e.g., `6.00% anual / en tus ahorros en USD`)." },
+        "metric_two_col": { "node": "1165:21903", "figma_name": "Variant=Metric TwoCol", "size": "440×93",  "use": "Two metric values side-by-side (e.g., `6.00% anual` + `Tipo de cambio preferencial`)." },
+        "rows_2":         { "node": "1165:21911", "figma_name": "Variant=Rows 2",        "size": "536×88",  "use": "2-row label/value table." },
+        "rows_3":         { "node": "1165:21918", "figma_name": "Variant=Rows 3",        "size": "536×132", "use": "3-row label/value table." },
+        "rows_4":         { "node": "1165:21928", "figma_name": "Variant=Rows 4",        "size": "536×176", "use": "4-row label/value table." }
+      }
+    },
+    "benefit_row": {
+      "set_node": "1165:21941",
+      "set_name": "Email Infinite / Row / Benefit",
+      "variant_property": "Sample",
+      "_note": "Single benefit line with an inline icon, bold title, and supporting sentence. The 4 variants carry pre-written Infinite benefit copy as VISUAL placeholder — pick the variant whose layout MOST resembles the brief, then OVERRIDE every TEXT node with brief copy. Master copy must never ship.",
+      "variants": {
+        "rendimiento":      { "node": "1165:21942", "figma_name": "Sample=Rendimiento",      "use": "Default layout — rendimiento / yield framing." },
+        "beneficios":       { "node": "1165:21947", "figma_name": "Sample=Beneficios",       "use": "Generic exclusive-benefits framing." },
+        "astropoints":      { "node": "1165:21952", "figma_name": "Sample=AstroPoints",      "use": "Loyalty-points framing." },
+        "cambio_preferente": { "node": "1165:21957", "figma_name": "Sample=Cambio Preferente", "use": "Preferential FX rate framing." }
+      }
+    },
+    "benefit_row_numbered": {
+      "node": "1165:21962",
+      "figma_name": "Email Infinite / Row / Benefit Numbered",
+      "type": "COMPONENT",
+      "size": "536×67",
+      "_note": "Numbered benefit row (numeral + title + inline link CTA). Single COMPONENT — clone per step, override the numeral and content. Default chassis use: stacked 3× under a `block.step_list`."
+    },
+    "icons": {
+      "_note": "6 separate COMPONENT_SETs — pick by Size (Small/Medium/Big) AND Theme (Light/Dark) to match the email. Each set carries the same 16 semantic icons. Variant property is `Icon` with semantic values (App / Benefits / Card / Check / Currency Exchange / Dollar / Global / Graph / Message / MGM / Notification / Percentage / Send and Receive / Rewards / Verify / Warning).",
+      "_size_choice": "Small (36px) — inline inside Numbered Benefit Rows or dense lists. Medium (48px) — default Benefit Row and feature-grid cells. Big (64px) — large standalone callouts inside hero areas.",
+      "_theme_choice": "Light — for emails using the Light theme (cream `#f5f7f2` body). Dark — for emails using the Dark theme (very-dark `#0f1514` body).",
+      "_swap_pattern": "Walk the block instance, find INSTANCE nodes whose `mainComponent.name` starts with `Icon=`, then `iconInst.setProperties({ Icon: '<value>' })`.",
+      "sets": {
+        "small_light":  { "set_node": "1165:21970", "set_name": "Email Infinite / Icon / Small Light",  "icon_size": "36×36" },
+        "small_dark":   { "set_node": "1165:22037", "set_name": "Email Infinite / Icon / Small Dark",   "icon_size": "36×36" },
+        "medium_light": { "set_node": "1165:22088", "set_name": "Email Infinite / Icon / Medium Light", "icon_size": "48×48" },
+        "medium_dark":  { "set_node": "1165:22156", "set_name": "Email Infinite / Icon / Medium Dark",  "icon_size": "48×48" },
+        "big_light":    { "set_node": "1165:22207", "set_name": "Email Infinite / Icon / Big Light",    "icon_size": "64×64" },
+        "big_dark":     { "set_node": "1165:22259", "set_name": "Email Infinite / Icon / Big Dark",     "icon_size": "64×64" }
+      },
+      "variant_property": "Icon",
+      "icon_values": [
+        "App", "Benefits", "Card", "Check", "Currency Exchange", "Dollar", "Global",
+        "Graph", "Message", "MGM", "Notification", "Percentage", "Send and Receive",
+        "Rewards", "Verify", "Warning"
+      ]
+    },
+    "footer": {
+      "set_node": "1165:22310",
+      "set_name": "Email Infinite / Footer",
+      "variant_property": "Type",
+      "_note": "Mandatory footer at the bottom of every Infinite email. Carries the Infinite wordmark, social links, unsubscribe link, and disclaimer slot. Type matches the send type (Default for marketing, Transactional for receipts/KYC). **Language**: footers in this set default to ES-AR copy (Infinite GTM is Argentina-led). For BR sends, manually override the disclaimer TEXT to the BRAND.md § 5 PT-BR FSA1399 text where applicable.",
+      "variants": {
+        "default":       { "node": "1165:22311", "figma_name": "Type=Default",       "use": "Marketing / lifecycle / promo footer with full social block." },
+        "transactional": { "node": "1165:22316", "figma_name": "Type=Transactional", "use": "Transactional footer — stripped marketing, retains unsubscribe + disclaimer + legal." }
+      }
+    },
+    "media": {
+      "set_node": "1165:22331",
+      "set_name": "Email Infinite / Media",
+      "variant_property": "Layout",
+      "_note": "Media block — image area for feature callouts. Two variants:",
+      "variants": {
+        "default":    { "node": "1165:22332", "figma_name": "Layout=Default",    "size": "600×280", "use": "Feature image inside a body block." },
+        "hero_image": { "node": "1165:22335", "figma_name": "Layout=Hero Image", "size": "600×400", "use": "Tall hero-style image, full-width media." }
+      }
+    },
+    "samples": {
+      "_note": "Documentation swatches — reference only. NOT components, NOT cloned at runtime.",
+      "badges_swatch":      { "node": "1165:21872", "figma_name": "Sample / Infinite Badges Swatch",   "use": "Visual reference of the 9 nested badge COMPONENTs (Badge/Status, Badge/Plan, Badge/Trial, Badge/Semantic in Light/Dark) used inside chassis examples. Read the inner COMPONENTs (children of this frame) if you need badge nodes." },
+      "wordmark_lockup":    { "node": "1165:21894", "figma_name": "Sample / Infinite Wordmark Lockup", "use": "∞ + INFINITE on a dark teal pill. Already embedded inside `Email Infinite / Menu` — never instantiate separately." },
+      "iso_pill":           { "node": "1165:21897", "figma_name": "Sample / Infinite Iso Pill",        "use": "∞ symbol alone on a dark teal pill. Already embedded in chassis examples." }
+    },
+    "documentation": {
+      "_note": "Frames carrying brand and design system documentation for the Infinite identity. Read for context; do not instantiate.",
+      "visual_identity_guidelines": { "node": "1165:22703", "figma_name": "Infinite – Visual Identity Guidelines", "use": "Full Infinite brand visual identity spec — palette, typography, voice, do/don't, lockup rules." },
+      "document":                   { "node": "1165:23655", "figma_name": "Document",                              "use": "Supporting documentation frame for the Infinite identity system." }
     }
   },
   "frame_layers": {

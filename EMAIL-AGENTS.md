@@ -1,9 +1,11 @@
 # AstroPay — Email Marketing Agents
 > Domain: Email (lifecycle, promo, transactional, onboarding) via Braze
-> Depends on: BRAND.md for identity, voice, products and disclaimers (incl. § 6.1 Email tokens)
+> Depends on: BRAND.md for identity, voice, products and disclaimers (incl. § 6.1 Core email tokens + § 6.2 Infinite email tokens)
 > Cross-channel agents: AGENTS-SHARED.md (@cd, @copy, @guardian, @legal-copy)
-> Design tokens: tokens/brand.json (with `email_overrides` for channel-scoped tokens)
-> Figma components: figma/components.json -> email_templates (rebuilt 2026-05-08 — chassis + 8 heroes + 12 blocks + cta_inline + cta_block + illustrations + 82 icons + menus + footers)
+> Design tokens: tokens/brand.json (with `email_overrides` for Core channel-scoped tokens + `email_infinite_overrides` for Infinite)
+> Figma components: figma/components.json — TWO libraries:
+>   - `email_templates` — Core library, rebuilt 2026-05-08 (chassis + 8 heroes + 12 blocks + cta_inline + cta_block + illustrations + 82 icons + menus + footers)
+>   - `email_templates_infinite` — Infinite library, added 2026-05-14 (chassis examples + menu + 2 heroes + 7 blocks + cta button + inline link + card/info-billing + benefit rows + 6 icon sets + footer + media)
 > Figma images: figma/images.json
 > Do not duplicate BRAND.md content here
 > Do not hardcode colors, font names, or node IDs — always read from the JSON files above
@@ -43,9 +45,33 @@ This file defines email-only agents (`@email-lifecycle`, `@email-subject`, `@ema
 
 ---
 
+## Library selection — Core vs Infinite (HARD FIREWALL)
+
+**Before any email production task, the agent must explicitly decide which of the two libraries to use, and that decision is binding for the entire email.** Mixing components from both libraries inside a single send is a hard `@email-guardian` reject. The rule is symmetric: Core emails use ONLY `email_templates`, Infinite emails use ONLY `email_templates_infinite`.
+
+| Signal in the brief | Library to use |
+|---|---|
+| Product=Core (default) or Product not stated | `email_templates` (Core, section `950:1972`) |
+| Currency Exchange / PIX / Freelance SMB / lifecycle for Core users | `email_templates` (Core) |
+| Generic onboarding / retention / brand awareness with no Infinite signal | `email_templates` (Core) |
+| Transactional sends to any user (KYC, receipt, security alert, password reset) | `email_templates` (Core) — UNLESS the user's `subscription_tier = infinite` AND the send carries Infinite branding (rare; default Core for transactional) |
+| Product=Infinite explicit in the brief | `email_templates_infinite` (Infinite, section `1165:20363`) |
+| Campaign anchor = `Infinite GTM AR` | `email_templates_infinite` |
+| Audience filter = `subscription_tier = infinite` AND send is lifecycle / promo / retention | `email_templates_infinite` |
+| Copy anchors on `La membresía que se paga sola` or Infinite ROI claims | `email_templates_infinite` |
+| Welcome / activation / trial / renewal for Infinite trial users | `email_templates_infinite` |
+
+**Default is Core. Promote to Infinite ONLY when one or more explicit Infinite signals are present in the brief.** Ambiguous brief → Core. Ask once if unclear; otherwise proceed Core.
+
+`@email-guardian` runs the firewall check before any tone scoring — a single Core component instantiated in an Infinite email (or vice versa) is a hard 1–4 reject regardless of how clean the copy reads. See AGENTS-SHARED.md → @guardian → Infinite vs Core firewall and AGENTS-SHARED.md → @cd → Channel: Email → Infinite library composition rules.
+
+---
+
 ## Component reference (quick glance)
 
-The `Email marketing` section (`950:1972`) was rebuilt 2026-05-08. Library now spans 8 component groups + 1 standalone chassis. Several sets still have Figma placeholder property names (`Property 1`, `Block5..12`) — see [`figma/components.json`](figma/components.json) → `email_templates.<set>._pending_figma_renames` for what needs to be renamed in Figma. Detailed composition rules in `AGENTS-SHARED.md` -> `@cd` -> Channel: Email.
+### Core library (`email_templates`, section `950:1972`)
+
+Rebuilt 2026-05-08. 8 component groups + 1 standalone chassis. Detailed composition rules in `AGENTS-SHARED.md` -> `@cd` -> Channel: Email.
 
 | Group | Figma name (target) | Use |
 |---|---|---|
@@ -59,10 +85,35 @@ The `Email marketing` section (`950:1972`) was rebuilt 2026-05-08. Library now s
 | `menus` | `Email / Menu` (set `1051:6451`) | 2 variants: `logo_dark` (default), `logo_light` |
 | `footers` | `Email / Footer` (set `1051:6406`) | 3 language variants: `es_ar`, `en`, `pt_br` — disclaimer slot defaults to English boilerplate (manual override needed for FX-touching sends). |
 
-**Channel tokens** — email-scoped, NOT the paid-media palette. See `BRAND.md § 6.1` and `tokens/brand.json` -> `email_overrides`:
+**Core channel tokens** — email-scoped, NOT the paid-media palette. See `BRAND.md § 6.1` and `tokens/brand.json` -> `email_overrides`:
 - Text: `gunmetal #1c2b29` (H1 + body) / `silver #bdbfb8` (secondary)
 - CTA background: `teal-2025 #00dbbf` (NOT `teal500 #42DECA`)
 - Fonts: `Matter SemiBold` 64px (H1) / `Matter Regular` 32px (body) / `DM Sans Bold` 32px (CTA — only place DM Sans appears in the system)
+
+### Infinite library (`email_templates_infinite`, section `1165:20363`)
+
+Added 2026-05-14. Infinite is intentionally smaller and denser than Core. **Invoke ONLY when the brief is explicitly tagged Infinite** (see Library selection table above). Detailed composition rules in `AGENTS-SHARED.md` -> `@cd` -> Channel: Email -> Infinite library composition rules.
+
+| Group | Figma name | Use |
+|---|---|---|
+| `chassis_examples` | `Chassis / Email Infinite / <use case> / <theme>` (6 reference FRAMEs) | Reference-only assembled emails (Welcome Light/Dark, CBU USD Light/Dark, SI Global Card Launch/Reminder 1). NOT clone sources — agents compose fresh from the components below. |
+| `menu` | `Email Infinite / Menu` (set `1165:22322`) | 2 variants: `default` (marketing/lifecycle), `transactional` (KYC/receipts). Carries the Infinite wordmark lockup (∞ + INFINITE on dark teal pill). |
+| `heroes` | `Email Infinite / Hero` (set `1177:16190`) | **2 variants** — `image` (photographic, pull from `images.places` or `images.traveler`) or `dark` (typographic on dark, no photo). Both carry an H1. |
+| `blocks` | `Email Infinite / Block` (set `1177:16191`) | **7 variants** — `headline` (section opener), `metric` (signature ROI framing), `benefit_list`, `cta` (standalone), `promo` (time-bound offer + legal), `info_card`, `step_list` (numbered activation flow). |
+| `cta_button` | `Email Infinite / CTA / Button` (set `1165:21860`) | 2 variants — `Theme=Dark` (dark pill for Light theme emails), `Theme=Light` (light pill for Dark theme emails). |
+| `cta_inline_link` | `Email Infinite / CTA / Inline Link` (set `1165:21865`) | 2 variants — `Theme=Light`, `Theme=Dark`. Use as secondary action under primary Button, or inside Benefit Rows. |
+| `card_info_billing` | `Email Infinite / Card / Info Billing` (set `1165:21899`) | 5 variants — `Metric OneCol`, `Metric TwoCol`, `Rows 2`, `Rows 3`, `Rows 4`. |
+| `benefit_row` | `Email Infinite / Row / Benefit` (set `1165:21941`) | 4 placeholder-copy variants (`Rendimiento`, `Beneficios`, `AstroPoints`, `Cambio Preferente`) — pick the variant whose visual layout matches the brief, then override all TEXT. |
+| `benefit_row_numbered` | `Email Infinite / Row / Benefit Numbered` (COMPONENT `1165:21962`) | Numbered benefit row — clone per step. |
+| `icons` | 6 separate sets — `Email Infinite / Icon / <Small\|Medium\|Big> <Light\|Dark>` (`1165:21970` / `22037` / `22088` / `22156` / `22207` / `22259`) | **16 icons per set** (App, Benefits, Card, Check, Currency Exchange, Dollar, Global, Graph, Message, MGM, Notification, Percentage, Send and Receive, Rewards, Verify, Warning). Size and Theme must match the email. |
+| `footer` | `Email Infinite / Footer` (set `1165:22310`) | 2 variants — `default` (marketing), `transactional`. Default ES-AR copy — override disclaimer TEXT for BR sends. |
+| `media` | `Email Infinite / Media` (set `1165:22331`) | 2 variants — `default` (600×280 inside-block), `hero_image` (600×400 hero-style). |
+
+**Infinite channel tokens** — different from Core. See `BRAND.md § 6.2` and `tokens/brand.json` -> `email_infinite_overrides`:
+- **Light theme**: bg `#f5f7f2` / `#eff1ec`, text `#1c2b29`, CTA bg `#1c2b29` / CTA text `#f5f7f2`.
+- **Dark theme**: bg `#0f1514` / `#02100e`, text `#f5f7f2`, CTA bg `#f5f7f2` / CTA text `#1c2b29`.
+- Fonts: `Matter SemiBold` (H1) / `Matter Regular` (body) / `Matter Medium` (secondary) / `Matter Bold Italic` (accent italic) / `Matter Bold` (CTA — NOT DM Sans).
+- **Forbidden in Infinite emails**: `--teal-2025 #00dbbf` (Core CTA), `teal500 #42DECA` (paid-media), DM Sans (Core CTA font). Any of these in an Infinite send is a wrong-token violation.
 
 ---
 

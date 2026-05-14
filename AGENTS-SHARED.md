@@ -196,7 +196,18 @@ Cobrand asset (if promo_cobrand): [brand_assets slot + node ID]
 
 Adds chassis composition, hero/block selection, footer rules, and channel-scoped tokens on top of the shared core. Image library rules above apply unchanged for photographic heroes; for illustrated heroes use the email-specific illustration set.
 
-**Library state — rebuilt 2026-05-08.** The email library is now: 1 standalone `chassis` (sample assembled email, NOT a clone source) + `heroes` set with 8 variants (`1051:6473`) + `blocks` set with 12 variants (`950:2681`) + `cta_inline` (`1051:6441`) + `cta_block` (`1051:35957`) + `illustrations` (`950:2716`, 8 use cases) + `icons` (`1051:55882`, 82 decorative variants) + `menus` (`1051:6451`, 2 variants) + `footers` (`1051:6406`, 3 language variants). Read all node IDs from `figma/components.json` → `email_templates`.
+**Two libraries, hard firewall — pick FIRST, never mix.** The repository now carries TWO email component libraries. Pick exactly one per email; never instantiate components from both inside the same send.
+
+| Library | When to use | `figma/components.json` key | Section node |
+|---|---|---|---|
+| **Core email** (default) | Every brief NOT explicitly tagged Infinite — PIX, Currency Exchange, Freelance SMB, generic lifecycle, brand awareness, retention, transactional, onboarding for Core users. | `email_templates` | `950:1972` (`Email marketing`) |
+| **Infinite email** | Brief explicitly tagged Infinite — Product=Infinite, campaign anchor `Infinite GTM AR`, audience filter `subscription_tier = infinite`, Infinite trial / renewal / GTM journey, or copy anchoring on `La membresía que se paga sola`. | `email_templates_infinite` | `1165:20363` (`Email marketing (Infinite)`) |
+
+The default is Core. Promote to Infinite ONLY when the brief carries an explicit Infinite signal. When in doubt → Core. The Infinite-vs-Core firewall (BRAND.md § 2) extends to the component library: mixing a Core hero with an Infinite block (or vice versa) is a hard `@guardian` block. Same rule for hybrid Core+Infinite sends — those must be split into two separate emails.
+
+The rules in the rest of this section ("**Email is assembled, not picked.**" through the H1 auto-fit pattern) target the **Core `email_templates` library**. For Infinite production, follow the Infinite-specific sub-section ("**Infinite library composition rules**") at the end of this Channel block.
+
+**Library state — rebuilt 2026-05-08.** The Core email library is now: 1 standalone `chassis` (sample assembled email, NOT a clone source) + `heroes` set with 8 variants (`1051:6473`) + `blocks` set with 12 variants (`950:2681`) + `cta_inline` (`1051:6441`) + `cta_block` (`1051:35957`) + `illustrations` (`950:2716`, 8 use cases) + `icons` (`1051:55882`, 82 decorative variants) + `menus` (`1051:6451`, 2 variants) + `footers` (`1051:6406`, 3 language variants). Read all node IDs from `figma/components.json` → `email_templates`.
 
 **Email is assembled, not picked.** Compose fresh in a new auto-layout frame (1080 wide, white bg, paddingTop 0, paddingBottom 62, itemSpacing 72). Wrap the menu and hero in an **inner Header Section auto-layout frame** (itemSpacing 0, no padding, transparent fill) so they sit edge-to-edge with no gap; the chassis's 72 gap then applies between Header Section and the first body block. Pick:
 1. A **menu** at top: `menus.logo_dark` (default) or `menus.logo_light` (rare, dark-mode-locked)
@@ -471,6 +482,74 @@ Post-edit canvas refresh: applied (selection cleared + scrollAndZoomIntoView)
 Dark mode safety: [CTA contrast preserved under inversion? logo uses alabaster variant? Y/N]
 ```
 
+### Infinite library composition rules (`email_templates_infinite`)
+
+Apply ONLY when the brief carries an explicit Infinite signal — see the firewall table at the top of this Channel block. Default is Core; do NOT use the Infinite library for any other brief.
+
+**Library state — added 2026-05-14.** The Infinite email library lives at section `1165:20363` (`Email marketing (Infinite)`). It is intentionally smaller, denser, and more ROI-oriented than the Core library — Infinite is a premium-membership product, not a lifestyle one. Components: `menu` (2 variants), `heroes` set with 2 variants (`1177:16190`), `blocks` set with 7 variants (`1177:16191`), `cta_button` (`1165:21860`, 2 themes), `cta_inline_link` (`1165:21865`, 2 themes), `card_info_billing` (`1165:21899`, 5 variants), `benefit_row` (`1165:21941`, 4 placeholder variants), `benefit_row_numbered` (`1165:21962`), `icons` (6 sets — Small/Medium/Big × Light/Dark, 16 icons each), `footer` (2 variants), `media` (2 variants). Plus 6 reference-only chassis examples (`Chassis / Email Infinite / *`) and Infinite documentation frames. Read all node IDs from `figma/components.json` → `email_templates_infinite`.
+
+**Pick a Theme upfront — Light or Dark — and stay consistent for the whole email.** Theme is the single most important early decision. Every component below has a Theme-matching variant; mixing themes mid-email breaks the visual contract.
+
+| Theme | When to use | Background | Text | CTA |
+|---|---|---|---|---|
+| **Light** | Default. Lifecycle / welcome / activation / educational / ROI explainer sends. | Cream `#f5f7f2` (primary) and `#eff1ec` (secondary) | Dark `#1c2b29` | `cta_button.dark` (dark pill on light bg) |
+| **Dark** | High-impact moments — trial-end, premium activation, anchor brand sends, retention with urgency. | Very-dark `#0f1514` (primary) and `#02100e` (secondary) | Light `#f5f7f2` | `cta_button.light` (light pill on dark bg) |
+
+**Infinite is assembled, not picked** — same composition discipline as Core, with the Infinite-specific set. In a new auto-layout frame (1080 wide, theme-matching background, padding 62, gap 72), stack:
+1. **Menu** at top: `menu.default` (marketing/lifecycle) or `menu.transactional` (KYC/receipts/security). Both carry the Infinite wordmark lockup (∞ + INFINITE on a dark teal pill).
+2. **One hero** from `heroes.<style>`: `image` (photographic — pull from `images.places` or `images.traveler` aspirational pools per the Infinite image rule) or `dark` (typographic, no photo — for welcome / anchor / ceremonial moments). Both carry an H1.
+3. **1 to 4 blocks** from `blocks.<variant>`: `headline` (section opener, no CTA), `metric` (ROI number — the signature Infinite framing), `benefit_list` (stack of `benefit_row` instances), `cta` (standalone CTA), `promo` (time-bound offer with legal small-print), `info_card` (wraps `card_info_billing`), `step_list` (numbered activation flow).
+4. **Footer**: `footer.default` for marketing, `footer.transactional` for receipts/KYC. Footer copy defaults to ES-AR (Infinite GTM is Argentina-led); for BR sends, manually override the disclaimer TEXT node with BRAND.md § 5 PT-BR text.
+
+**Image rule extends unchanged**: every photographic image used by an Infinite email must come from one of the six `figma/images.json` sections. For Infinite, default to `places` or `traveler` (aspirational pools — see image strategy table earlier in this section); `freelancer` and `digital_nomad` are Core-lifestyle pools and must not be used for Infinite.
+
+**Voice and copy** stay governed by BRAND.md § 1–2 — ROI-first, specific numbers, premium without pretense. Never the Core lifestyle voice (`Aprovechá / Conocé / Descubrí / sin vueltas / como un local`). H1s should anchor a concrete claim or product fact (`Tu dinero trabaja más`, `6.00% anual`, `Activar mi rendimiento`) and the supporting body must back it with a verifiable number — Infinite ROI claims without numbers fail `@legal-copy`. CTA verbs: `Quiero el Infinite` (BRAND.md § 4, ES-AR), `Activar mi rendimiento`, `Cambiar ahora` — punchy first-person ownership.
+
+**Icon set choice — Size and Theme MUST match the rest of the email**:
+- Size: **Small (36px)** inline inside `benefit_row_numbered`; **Medium (48px)** default for `benefit_row` / feature callouts; **Big (64px)** standalone callouts inside hero areas.
+- Theme: matches the email theme (`Small/Medium/Big Light` for Light theme emails, `Small/Medium/Big Dark` for Dark theme emails). Cross-theme icon usage is a wrong-theme violation.
+
+**Chassis examples are reference-only, NOT clone sources.** The 6 `Chassis / Email Infinite / *` FRAMEs document the canonical visual layout for specific Infinite campaigns (Welcome Light/Dark, CBU USD Light/Dark, SI Global Card Launch / Reminder 1). Open the chassis whose use case is closest to the brief, replicate the structure with fresh content composed from the components — do NOT clone the chassis frame as a starting point (campaign content would leak across sends).
+
+**Tokens** (`tokens/brand.json` → `email_infinite_overrides`, BRAND.md § 6.2):
+- Light theme: bg `#f5f7f2` / `#eff1ec`, text `#1c2b29`, CTA bg `#1c2b29` / CTA text `#f5f7f2`.
+- Dark theme: bg `#0f1514` / `#02100e`, text `#f5f7f2`, CTA bg `#f5f7f2` / CTA text `#1c2b29`.
+- Typography: H1 `Matter SemiBold` (fallback `Inter Semi Bold`), body `Matter Regular`, accent italic `Matter Bold Italic`, CTA `Matter Bold` (fallback `Inter Bold`).
+- **Never use `--teal-2025 #00dbbf`** — that is the Core email CTA token. Applying it to an Infinite send is a wrong-channel violation flagged by `@guardian`.
+- **Never use DM Sans** — that is the Core email CTA font. Infinite CTAs are Matter Bold.
+
+**Infinite-specific red flags** (in addition to all the Core red flags above where they still apply):
+- Brief references `email_templates.*` (Core library) and `email_templates_infinite.*` (Infinite library) in the same email — firewall violation.
+- Wrong-theme component used (e.g., Light-theme Menu with Dark-theme Footer in the same email).
+- `--teal-2025 #00dbbf` or `teal500 #42DECA` applied anywhere in an Infinite send.
+- DM Sans applied to an Infinite CTA (Core token leak).
+- `freelancer` or `digital_nomad` lifestyle photo used in an Infinite send (lifestyle pools are reserved for Core).
+- Master placeholder copy left unchanged in any `benefit_row.sample_*` variant (the placeholder text describes the variant's intended use case but is not campaign-locked).
+- Infinite send carries no ROI numbers — body must cite real, verifiable benefit numbers per `@legal-copy`. `La membresía que se paga sola` as headline without numbers in the body is a hard block.
+- Footer disclaimer defaults to ES-AR but the brief is BR — override TEXT with BRAND.md § 5 PT-BR exact text.
+- Chassis frame cloned wholesale as the starting point (instead of composing fresh from components).
+- Hero CTA verb and body block CTA verb diverge — same coupling rule as Core.
+
+**Channel-specific output extension for Infinite sends** — replace the Core extension above with:
+```
+Library: email_templates_infinite (firewall: confirmed no email_templates Core components instantiated)
+Theme: [Light / Dark] — consistent across menu, hero, blocks, cta, icons, footer
+Chassis reference: Chassis / Email Infinite / <use case> / <theme> (node ID) — visual layout reference, NOT cloned
+Menu: menu.default (1165:22323) | menu.transactional (1165:22327)
+Hero: heroes.<image|dark> + node ID + rationale (per Theme + journey phase)
+Blocks: list of blocks.<variant> + node IDs + rationale per block
+CTA Button: cta_button.<dark|light> + node ID — Theme matches email Theme
+CTA Inline Link: cta_inline_link.<light|dark> + node ID (if used)
+Card / Benefit Rows (if used): card_info_billing.<variant>, benefit_row.<sample>, benefit_row_numbered — node IDs
+Icons used: icons set chosen (e.g., medium_light) + list of Icon=<value> per cell
+Image source (if hero=image or media block): figma/images.json category (places | traveler ONLY for Infinite) + node ID
+Footer: footer.default | footer.transactional + node ID. Language override applied? (default ES-AR — override disclaimer for BR sends)
+Voice anchor: [single Infinite anchor phrase from the brief] + ROI numbers cited
+Tokens used: Light theme bg #f5f7f2 / text #1c2b29 / CTA #1c2b29 | Dark theme bg #0f1514 / text #f5f7f2 / CTA #f5f7f2 (NO teal-2025, NO DM Sans)
+Post-edit canvas refresh: applied (selection cleared + scrollAndZoomIntoView)
+Firewall check: zero email_templates.* components in this email. Confirmed.
+```
+
 ---
 
 ## @copy — Copywriter
@@ -722,6 +801,8 @@ Rules: subject and preheader ship as a pair, never solo. Mark line breaks as `->
 - INFINITE creatives must contain: specific numbers, ROI framing, measurable benefit, premium-but-direct tone
 - CORE creatives must contain: feeling-first language, simplicity cues, accessibility, lifestyle framing
 - Any creative that could work for both products fails this check automatically
+- **Email channel — component-library firewall (added 2026-05-14)**: Core emails must instantiate ONLY components from `email_templates`; Infinite emails must instantiate ONLY components from `email_templates_infinite`. Mixing components from both libraries inside the same email is an automatic firewall violation, regardless of how clean the copy reads. `@guardian` runs the firewall check before scoring tone — any cross-library leak (e.g., a Core `cta_inline` paired with an Infinite `Email Infinite / Hero`, or a Core `--teal-2025` CTA color in a frame whose menu is the Infinite wordmark lockup) is a hard 1–4 reject.
+- **Email channel — token firewall**: Infinite emails NEVER use `--teal-2025 #00dbbf` or DM Sans (those are Core email tokens). Core emails NEVER use the Infinite cream `#f5f7f2` background or solid dark/light pill CTAs (those are Infinite tokens). Wrong-channel tokens are flagged and rejected the same way wrong-language footers are.
 
 **Scoring scale** (any channel):
 - 9–10: Ships as-is

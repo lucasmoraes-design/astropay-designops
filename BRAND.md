@@ -145,6 +145,50 @@ Fallback: `Inter` — note `"Semi Bold"` with a space (not `"SemiBold"`).
 
 ---
 
+## 6.2 INFINITE EMAIL TOKENS (PRODUCT- AND CHANNEL-SCOPED)
+
+> Tokens scoped to the **Infinite email library only** (`figma/components.json` → `email_templates_infinite`, Figma section `1165:20363`). Use ONLY when the brief is explicitly tagged Infinite (Product=Infinite, campaign=Infinite GTM AR, `subscription_tier=infinite`, or copy anchoring on "La membresía que se paga sola"). The Core email tokens in § 6.1 remain the default for every other email. Source of truth: `tokens/brand.json` → `email_infinite_overrides`. Figma reference: `figma/components.json` → `email_templates_infinite.tokens_used`.
+
+**Theme is the single most important early decision.** Every Infinite component has a Theme-matching variant. Pick Light or Dark upfront and use that theme's tokens consistently across menu, hero, blocks, CTA, icons, and footer. Mixing themes mid-email breaks the visual contract.
+
+**Color — Light theme** (default; lifecycle / welcome / activation / educational sends):
+
+| Token | Hex | Role |
+|---|---|---|
+| `infinite-bg-light-primary` | `#f5f7f2` | Primary email background (cream, NOT pure white) |
+| `infinite-bg-light-secondary` | `#eff1ec` | Secondary background (cards, alternate sections) |
+| `infinite-surface-white` | `#ffffff` | Inset white surfaces (rare — most surfaces are cream) |
+| `infinite-text-light` | `#1c2b29` | Primary text on Light theme. Same hex as Core `gunmetal` — Infinite reuses it. |
+| `infinite-cta-bg-light` | `#1c2b29` | CTA pill background on Light theme (solid dark) |
+| `infinite-cta-text-light` | `#f5f7f2` | CTA pill text color on Light theme |
+
+**Color — Dark theme** (high-impact moments — trial-end, premium activation, anchor brand sends):
+
+| Token | Hex | Role |
+|---|---|---|
+| `infinite-bg-dark-primary` | `#0f1514` | Primary email background (very-dark teal) |
+| `infinite-bg-dark-secondary` | `#02100e` | Secondary / footer background (near-black) |
+| `infinite-bg-dark-tertiary` | `#192120` | Card / surface accents on Dark theme |
+| `infinite-text-dark` | `#f5f7f2` | Primary text on Dark theme (cream on dark) |
+| `infinite-cta-bg-dark` | `#f5f7f2` | CTA pill background on Dark theme (solid light) |
+| `infinite-cta-text-dark` | `#1c2b29` | CTA pill text color on Dark theme |
+
+**Typography**:
+- **H1**: `Matter SemiBold` (fallback `Inter Semi Bold`)
+- **Body**: `Matter Regular` (fallback `Inter Regular`)
+- **Secondary**: `Matter Medium` (fallback `Inter Medium`)
+- **Accent italic**: `Matter Bold Italic` (fallback `Inter Bold Italic`) — used for editorial emphasis
+- **CTA**: `Matter Bold` (fallback `Inter Bold`) — **NOT DM Sans.** DM Sans is reserved for Core email CTAs only; using DM Sans in an Infinite send is a wrong-channel-token violation.
+
+**Forbidden in Infinite emails**:
+- `teal-2025 #00dbbf` — Core email CTA background; using it in Infinite is a wrong-channel violation
+- `teal500 #42DECA` — paid-media / in-app primary; never appears in any email
+- `DM Sans` — Core email CTA font; Infinite uses Matter Bold for CTAs
+
+**Why scoped, not unified**: Infinite is a premium-membership product (BRAND.md § 2) with a different visual register from Core — cream surfaces, solid dark/light pills, and a more typographic-led hierarchy that signals premium without using gold/marble cliches. The Core teal CTA palette reads consumer-lifestyle; the Infinite solid dark/light pill reads premium-direct. Cross-applying tokens between Core and Infinite emails (or to other channels) breaks the firewall — flagged by `@cd` and `@guardian`.
+
+---
+
 ## 7. LANGUAGE RULES
 
 **ES-AR native**: voseo consistent throughout — Aprovechá, Conocé, Descubrí, Usá. Never tuteo. Never "usted."

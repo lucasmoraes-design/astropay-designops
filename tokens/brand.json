@@ -110,5 +110,51 @@
       "body_font":{ "family": "Matter",  "style": "Regular",  "size_px": 32, "fallback": "Inter Regular" },
       "cta_font": { "family": "DM Sans", "style": "Bold",     "size_px": 32, "fallback": "Inter Bold" }
     }
+  },
+
+  "email_infinite_overrides": {
+    "_note": "Product- AND channel-scoped tokens for the Infinite email library only (figma/components.json -> email_templates_infinite, section 1165:20363). Use ONLY when the brief is explicitly tagged Infinite (Product=Infinite, campaign=Infinite GTM AR, subscription_tier=infinite, or copy anchoring on 'La membresía que se paga sola'). For every other email — Core PIX, Core FX, Core Freelance, Core lifecycle, brand awareness — use email_overrides above. Theme is the single most important early decision: pick Light or Dark upfront and use that theme's tokens consistently across menu, hero, blocks, CTA, icons, and footer. Source of truth in BRAND.md § 6.2. Figma reference: figma/components.json -> email_templates_infinite.tokens_used.",
+    "color_light_theme": {
+      "_use_when": "Default Infinite theme — lifecycle / welcome / activation / educational / ROI explainer sends.",
+      "bg_primary":   { "hex": "#f5f7f2", "rgb": [245, 247, 242], "role": "primary email background (cream, NOT pure white)" },
+      "bg_secondary": { "hex": "#eff1ec", "rgb": [239, 241, 236], "role": "secondary background (cards, alternate sections)" },
+      "surface_white":{ "hex": "#ffffff", "rgb": [255, 255, 255], "role": "inset white surfaces (rare)" },
+      "text_primary": { "hex": "#1c2b29", "rgb": [28, 43, 41],    "role": "primary text on Light theme (same hex as Core gunmetal)" },
+      "cta_bg":       { "hex": "#1c2b29", "rgb": [28, 43, 41],    "role": "CTA pill background on Light theme (solid dark)" },
+      "cta_text":     { "hex": "#f5f7f2", "rgb": [245, 247, 242], "role": "CTA pill text color on Light theme" }
+    },
+    "color_dark_theme": {
+      "_use_when": "High-impact moments — trial-end, premium activation, anchor brand sends, retention with urgency.",
+      "bg_primary":   { "hex": "#0f1514", "rgb": [15, 21, 20],    "role": "primary email background (very-dark teal)" },
+      "bg_secondary": { "hex": "#02100e", "rgb": [2, 16, 14],     "role": "secondary / footer background (near-black)" },
+      "bg_tertiary":  { "hex": "#192120", "rgb": [25, 33, 32],    "role": "card / surface accents on Dark theme" },
+      "text_primary": { "hex": "#f5f7f2", "rgb": [245, 247, 242], "role": "primary text on Dark theme (cream on dark)" },
+      "cta_bg":       { "hex": "#f5f7f2", "rgb": [245, 247, 242], "role": "CTA pill background on Dark theme (solid light)" },
+      "cta_text":     { "hex": "#1c2b29", "rgb": [28, 43, 41],    "role": "CTA pill text color on Dark theme" }
+    },
+    "figma_color_values": {
+      "_note": "Figma Plugin API RGB values (0-1 range) for the Infinite-scoped tokens.",
+      "infinite_bg_light_primary":   { "r": 0.961, "g": 0.969, "b": 0.949 },
+      "infinite_bg_light_secondary": { "r": 0.937, "g": 0.945, "b": 0.925 },
+      "infinite_text_light":         { "r": 0.110, "g": 0.169, "b": 0.161 },
+      "infinite_bg_dark_primary":    { "r": 0.059, "g": 0.082, "b": 0.078 },
+      "infinite_bg_dark_secondary":  { "r": 0.008, "g": 0.063, "b": 0.055 },
+      "infinite_bg_dark_tertiary":   { "r": 0.098, "g": 0.129, "b": 0.125 },
+      "infinite_text_dark":          { "r": 0.961, "g": 0.969, "b": 0.949 }
+    },
+    "typography": {
+      "_note": "Infinite emails share Matter family with Core but use different styles for CTA (Matter Bold, NOT DM Sans). DM Sans is reserved for Core email CTAs — using it in an Infinite send is a wrong-channel-token violation.",
+      "h1_font":            { "family": "Matter", "style": "SemiBold",    "fallback": "Inter Semi Bold" },
+      "body_font":          { "family": "Matter", "style": "Regular",     "fallback": "Inter Regular" },
+      "secondary_font":     { "family": "Matter", "style": "Medium",      "fallback": "Inter Medium" },
+      "accent_italic_font": { "family": "Matter", "style": "Bold Italic", "fallback": "Inter Bold Italic" },
+      "cta_font":           { "family": "Matter", "style": "Bold",        "fallback": "Inter Bold" }
+    },
+    "forbidden_tokens": {
+      "_note": "Tokens that MUST NOT appear in an Infinite email. Flagged by @cd and @guardian as wrong-channel-token violations.",
+      "teal_2025":  { "hex": "#00dbbf", "reason": "Core email CTA background — never in Infinite" },
+      "teal500":    { "hex": "#42deca", "reason": "Paid-media / in-app primary — never in any email" },
+      "dm_sans":    { "family": "DM Sans", "reason": "Core email CTA font — Infinite uses Matter Bold for CTAs" }
+    }
   }
 }
